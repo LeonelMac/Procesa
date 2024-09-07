@@ -33,22 +33,14 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 // Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Inicio
+//Inicio
 Route::get('/inicio', function () {
-    return view('inicio');
-})->name('inicio');
+    return view('inicio'); 
+})->middleware('auth')->name('inicio');
 
 Route::get('/inicio_user', function () {
-    return view('inicio_user');
-})->name('inicio_user');
-
-// Route::get('/inicio', function () {
-//     return view('inicio'); 
-// })->middleware('auth')->name('inicio');
-
-// Route::get('/inicio_user', function () {
-//     return view('inicio_user'); 
-// })->middleware('auth')->name('inicio_user');
+    return view('inicio_user'); 
+})->middleware('auth')->name('inicio_user');
 
 // Ciudades
 Route::get('/ciudades', [CiudadController::class, 'index'])->name('ciudades.index');
