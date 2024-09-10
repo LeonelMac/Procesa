@@ -31,13 +31,8 @@ Route::middleware('auth')->group(function () {
 
     // Expedientes
     Route::get('/expedientes', [ExpedienteController::class, 'index'])->name('expedientes.index'); 
-    Route::get('/expedientes_user', [ExpedienteController::class, 'indexUser'])->name('expedientes_user.index'); 
-    Route::get('/expedientes/{id}', [ExpedienteController::class, 'show'])->name('expedientes.show');
-    Route::get('/expedientes/{id}/descripcion', [ExpedienteController::class, 'descripcion'])->name('expedientes.descripcion');
-    Route::get('/expedientes/{id}/descripcion-copy', [ExpedienteController::class, 'descripcionCopy'])->name('expedientes.descripcion.copy');
-    Route::get('/expedientes_user/{id}/descripcion', [ExpedienteController::class, 'descripcionUser'])->name('expedientes.user.descripcion');
-    Route::get('/expedientes_user/{id}/descripcion-copy', [ExpedienteController::class, 'descripcionUserCopy'])->name('expedientes.user.descripcion.copy');
-
+    Route::get('/expedientes/{id_expedientes}', [ExpedienteController::class, 'show'])->name('expedientes.show');
+    Route::get('/expedientes/{id_expedientes}/descripcion', [ExpedienteController::class, 'descripcion'])->name('expedientes.descripcion');
     // Usuarios
     // Route::middleware('role:Administrador')->group(function () {
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');

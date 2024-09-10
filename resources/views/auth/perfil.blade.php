@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+    <x-mensaje />
     <main id="main" class="main">
 
         <div class="pagetitle">
@@ -23,30 +24,30 @@
                             <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
                             <h2>{{ Auth::user()->nombres }} {{ Auth::user()->apellidoP }}
                                 {{ Auth::user()->apellidoM }}</h2>
-                                <span>
-                                    @php
-                                        $role = Auth::user()->rol; 
-                                        $roleName = '';
-                                        switch ($role) {
-                                            case 1:
-                                                $roleName = 'Administrador';
-                                                break;
-                                            case 2:
-                                                $roleName = 'Juzgados';
-                                                break;
-                                            case 3:
-                                                $roleName = 'Abogado';
-                                                break;
-                                            case 4:
-                                                $roleName = 'Usuario';
-                                                break;
-                                            default:
-                                                $roleName = 'Rol desconocido';
-                                                break;
-                                        }
-                                    @endphp
-                                    {{ $roleName }}
-                                </span>
+                            <span>
+                                @php
+                                    $role = Auth::user()->rol;
+                                    $roleName = '';
+                                    switch ($role) {
+                                        case 1:
+                                            $roleName = 'Administrador';
+                                            break;
+                                        case 2:
+                                            $roleName = 'Juzgados';
+                                            break;
+                                        case 3:
+                                            $roleName = 'Abogado';
+                                            break;
+                                        case 4:
+                                            $roleName = 'Usuario';
+                                            break;
+                                        default:
+                                            $roleName = 'Rol desconocido';
+                                            break;
+                                    }
+                                @endphp
+                                {{ $roleName }}
+                            </span>
                         </div>
                     </div>
 
@@ -88,7 +89,8 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label ">Nombre completo</div>
-                                        <div class="col-lg-9 col-md-8">{{ $usuario->nombres }} {{ $usuario->apellidoP }} {{ $usuario->apellidoM }}</div>
+                                        <div class="col-lg-9 col-md-8">{{ $usuario->nombres }} {{ $usuario->apellidoP }}
+                                            {{ $usuario->apellidoM }}</div>
                                     </div>
 
                                     <div class="row">
@@ -121,9 +123,10 @@
                                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                     <!-- Profile Edit Form -->
-                                    <form action="{{ route('perfil.update') }}" method="POST">
+                                    <form method="POST" action="{{ route('cambiosUsuario') }}">
                                         @csrf
-                                        @method('PUT')
+                                        <input id="id" type="number" hidden name="id"
+                                            value="{{ Session::get('usuario')->id }}" required>
                                         <div class="row mb-3">
                                             <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Imagen de
                                                 perfil</label>
@@ -138,63 +141,153 @@
                                             </div>
                                         </div>
 
+                                        <!-- Nombres -->
                                         <div class="row mb-3">
-                                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nombre
-                                                completo</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="nombre" type="text" class="form-control" id="fullName"
-                                                    value="{{ $usuario->nombre }}">
+                                            <label for="nombres"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Nombres') }}</label>
+                                            <div class="col-md-6">
+                                                <input id="nombres" type="text"
+                                                    class="form-control @error('nombres') is-invalid @enderror"
+                                                    name="nombres" value="{{ Session::get('usuario')->nombres }}" required
+                                                    autocomplete="nombres">
+                                                @error('nombres')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
 
+                                        <!-- Correo Electrónico -->
                                         <div class="row mb-3">
-                                            <label for="company"
-                                                class="col-md-4 col-lg-3 col-form-label">Compañía</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="compania" type="text" class="form-control"
-                                                    id="company" value="{{ $usuario->compania }}">
+                                            <label for="email"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Correo Electrónico') }}</label>
+                                            <div class="col-md-6">
+                                                <input id="email" type="email"
+                                                    class="form-control @error('email') is-invalid @enderror" name="email"
+                                                    value="{{ Session::get('usuario')->email }}" required
+                                                    autocomplete="email">
+                                                @error('email')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
 
+                                        <!-- Apellido Paterno -->
                                         <div class="row mb-3">
-                                            <label for="Job" class="col-md-4 col-lg-3 col-form-label">Rol</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="rol" type="text" class="form-control" id="Job"
-                                                    value="{{ $usuario->rol }}">
+                                            <label for="apellidoP"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Apellido Paterno') }}</label>
+                                            <div class="col-md-6">
+                                                <input id="apellidoP" type="text"
+                                                    class="form-control @error('apellidoP') is-invalid @enderror"
+                                                    name="apellidoP" value="{{ Session::get('usuario')->apellidoP }}"
+                                                    required autocomplete="apellidoP">
+                                                @error('apellidoP')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
 
+                                        <!-- Apellido Materno -->
                                         <div class="row mb-3">
-                                            <label for="Country" class="col-md-4 col-lg-3 col-form-label">Ciudad</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="ciudad" type="text" class="form-control" id="Country"
-                                                    value="{{ $usuario->ciudad }}">
+                                            <label for="apellidoM"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Apellido Materno') }}</label>
+                                            <div class="col-md-6">
+                                                <input id="apellidoM" type="text"
+                                                    class="form-control @error('apellidoM') is-invalid @enderror"
+                                                    name="apellidoM" value="{{ Session::get('usuario')->apellidoM }}"
+                                                    required autocomplete="apellidoM">
+                                                @error('apellidoM')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
 
+                                        <!-- Rol -->
                                         <div class="row mb-3">
-                                            <label for="Address"
-                                                class="col-md-4 col-lg-3 col-form-label">Dirección</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="direccion" type="text" class="form-control"
-                                                    id="Address" value="{{ $usuario->direccion }}">
+                                            <label for="rol"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Rol') }}</label>
+                                            <div class="col-md-6">
+                                                <select id="rol"
+                                                    class="form-control @error('rol') is-invalid @enderror" name="rol"
+                                                    required>
+                                                    <option value="">Seleccione un rol</option>
+                                                    @foreach ($roles as $rol)
+                                                        <option value="{{ $rol->id_rolusuarios }}"
+                                                            {{ Session::get('usuario')->rol == $rol->id_rolusuarios ? 'selected' : '' }}>
+                                                            {{ $rol->rolusuarios }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('rol')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
 
+                                        <!-- Municipio -->
                                         <div class="row mb-3">
-                                            <label for="Phone"
-                                                class="col-md-4 col-lg-3 col-form-label">Teléfono</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="telefono" type="text" class="form-control"
-                                                    id="Phone" value="{{ $usuario->telefono }}">
+                                            <label for="municipio"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Municipio') }}</label>
+                                            <div class="col-md-6">
+                                                <select id="municipio"
+                                                    class="form-control @error('municipio') is-invalid @enderror"
+                                                    name="municipio" required>
+                                                    <option value="">Seleccione un municipio</option>
+                                                    @foreach ($municipios as $municipio)
+                                                        <option value="{{ $municipio->idmunicipio }}"
+                                                            {{ Session::get('usuario')->municipio == $municipio->idmunicipio ? 'selected' : '' }}>
+                                                            {{ $municipio->municipio }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('municipio')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
 
+                                        <!-- Dirección -->
                                         <div class="row mb-3">
-                                            <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="email" type="email" class="form-control" id="Email"
-                                                    value="{{ $usuario->email }}">
+                                            <label for="direccion"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Dirección') }}</label>
+                                            <div class="col-md-6">
+                                                <input id="direccion" type="text"
+                                                    class="form-control @error('direccion') is-invalid @enderror"
+                                                    name="direccion" value="{{ Session::get('usuario')->direccion }}"
+                                                    required autocomplete="direccion">
+                                                @error('direccion')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <!-- Teléfono -->
+                                        <div class="row mb-3">
+                                            <label for="telefono"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Teléfono') }}</label>
+                                            <div class="col-md-6">
+                                                <input id="telefono" type="text"
+                                                    class="form-control @error('telefono') is-invalid @enderror"
+                                                    name="telefono" value="{{ Session::get('usuario')->telefono }}"
+                                                    required autocomplete="telefono">
+                                                @error('telefono')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
 

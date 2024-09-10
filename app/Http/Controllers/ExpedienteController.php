@@ -7,45 +7,22 @@ use App\Models\Expediente;
 
 class ExpedienteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $expedientes = Expediente::all();
+        $term = $request->input('search');
+        $columns = ['numero', 'asunto', 'destino'];
+
+        $expedientes = Expediente::when($term, function ($query, $term) use ($columns) {
+            return $query->search($columns, $term);
+        })->paginate(10); 
+
         return view('expedientes', compact('expedientes'));
     }
 
-    public function indexUser()
+    public function show($id_expedientes)
     {
-        $expedientes = Expediente::where('user_id', auth()->id())->get(); 
-        return view('expedientes_user', compact('expedientes'));
-    }
-
-    public function show($id)
-    {
-        $expediente = Expediente::findOrFail($id);
+        $expediente = Expediente::findOrFail($id_expedientes);
         return view('expedientes_show', compact('expediente'));
     }
 
-    public function descripcion($id)
-    {
-        $expediente = Expediente::findOrFail($id);
-        return view('descripcion_expedientes', compact('expediente'));
-    }
-
-    public function descripcionCopy($id)
-    {
-        $expediente = Expediente::findOrFail($id);
-        return view('descripcion_expedientes_copy', compact('expediente'));
-    }
-
-    public function descripcionUser($id)
-    {
-        $expediente = Expediente::findOrFail($id);
-        return view('descripcion_expedientes_user', compact('expediente'));
-    }
-
-    public function descripcionUserCopy($id)
-    {
-        $expediente = Expediente::findOrFail($id);
-        return view('descripcion_expedientes_user_copy', compact('expediente'));
-    }
 }

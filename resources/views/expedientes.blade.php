@@ -1,57 +1,73 @@
-@extends('layouts.main')
+{{-- @extends('layouts.main')
 
 @section('content')
-    <main id="main" class="main">
-        <!-- Page Title -->
-        <div class="pagetitle">
-            <h1>EXPEDIENTES</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
-                    <li class="breadcrumb-item active">Expedientes</li>
-                </ol>
-            </nav>
+<main id="main" class="main">
+    <!-- Page Title -->
+    <div class="pagetitle">
+        <h1>Expedientes</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
+                <li class="breadcrumb-item active">Expedientes</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <!-- Formulario de búsqueda -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <form action="{{ route('expedientes.index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Buscar expediente..." value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+            </form>
         </div>
-        <!-- End Page Title -->
+    </div>
 
-        <section class="section dashboard">
-            <div class="row">
-                <section class="section">
-                    <div class="row">
-                        <!-- Aquí es donde debes hacer un bucle sobre los expedientes desde el controlador -->
-                        @foreach ($expedientes as $expediente)
-                            <div class="col-lg-6">
-                                <div class="card mb-3">
-                                    <div class="row g-0">
-                                        <div class="col-md-4 d-flex justify-content-center align-items-center">
-                                            <img src="{{ asset('assets/img/archivo.png') }}" class="img-fluid rounded-start"
-                                                alt="Expediente {{ $expediente->id }}" />
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Expediente: {{ $expediente->id }}</h5>
-                                                <p class="card-text m-0">Estatus: {{ $expediente->estatus }}</p>
-                                                <p class="card-text m-0">Fecha:
-                                                    {{ \Carbon\Carbon::parse($expediente->fecha)->format('d/m/Y') }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="d-grid gap-2">
-                                            <a href="{{ route('expedientes.show', $expediente->id) }}"
-                                                class="btn btn-sm btn-primary">
-                                                <i class="bi bi-eye"></i> VER
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </section>
-            </div>
-        </section>
-    </main>
+    <!-- Tabla de expedientes -->
+    <section class="section dashboard">
+        <div class="row">
+            <section class="section">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Expediente</th>
+                                <th scope="col">Número</th>
+                                <th scope="col">Estatus</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($expedientes as $expediente)
+                            <tr>
+                                <td>
+                                    <img src="{{ asset('assets/img/archivo.png') }}" class="img-fluid rounded-start" alt="Expediente {{ $expediente->id_expedientes }}" style="width: 50px; height: 50px;">
+                                </td>
+                                <td>{{ $expediente->numero }}</td>
+                                <td>{{ $expediente->estatusexpediente }}</td>
+                                <td>{{ \Carbon\Carbon::parse($expediente->fechaexpe)->format('d/m/Y') }}</td>
+                                <td>
+                                    <a href="{{ route('expedientes.descripcion', $expediente->id_expedientes ) }}" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginación -->
+                <div class="d-flex justify-content-center">
+                    {{ $expedientes->links() }}
+                </div>
+            </section>
+        </div>
+    </section>
+</main>
 @endsection
 
 @section('scripts')
@@ -73,4 +89,37 @@
     <!-- Incluir SweetAlert2 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/expedientes.js') }}"></script>
+@endsection --}}
+@extends('layouts.main')
+
+@section('content')
+    <main id="main" class="main">
+        <!-- Page Title -->
+        <div class="pagetitle">
+            <h1>Expedientes</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
+                    <li class="breadcrumb-item active">Expedientes</li>
+                </ol>
+            </nav>
+        </div>
+        <!-- End Page Title -->
+
+        <section class="section dashboard">
+            <div class="row">
+                <section class="section">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <livewire:expediente-component></livewire:expediente-component>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
 @endsection
