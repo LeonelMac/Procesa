@@ -42,45 +42,42 @@ class UsuariosTable extends TablaComponent
         return redirect('/usuarios/editar/' . $value);
     }
 
-    public function resetPassword($id){
-        $usuario =  User::find($id);
-        if($usuario){
+    public function resetPassword($id)
+    {
+        $usuario = User::find($id);
+        if ($usuario) {
             $usuario->password = bcrypt('123456789');
             $usuario->password_restaurada = true;
             $usuario->save();
             session()->flash('message', 'Contraseña restablecida');
-            session()->flash('message_type','success');
-            $usuariosController = new UsuarioController();
-            $usuariosController->usuario('resetPassword', 'reinició o intentó reiniciar la contraseña del usuario ' . $usuario->usuario, request());
+            session()->flash('message_type', 'success');
             return redirect('/usuarios');
-        }
-        else{
+        } else {
             session()->flash('message', 'Usuario no encontrado');
-            session()->flash('message_type','error');
+            session()->flash('message_type', 'error');
             return redirect('/usuarios');
         }
     }
-
-    public function deleteUser($id) {
-        $usuario =  User::find($id);
-        if($usuario && $usuario != auth()->user()){
+    
+    public function deleteUser($id)
+    {
+        $usuario = User::find($id);
+        if ($usuario && $usuario != auth()->user()) {
             $usuario->delete();
             session()->flash('message', 'Usuario eliminado');
-            session()->flash('message_type','success');
-            $usuariosController = new UsuarioController();
-            $usuariosController->usuario('deleteUser', 'borró o intentó borrar al usuario ' . $usuario->usuario, request());
+            session()->flash('message_type', 'success');
             return redirect('/usuarios');
-        }
-        else{
-            if($usuario && $usuario == auth()->user()){
+        } else {
+            if ($usuario && $usuario == auth()->user()) {
                 session()->flash('message', 'No puedes eliminar tu propio usuario');
-                session()->flash('message_type','error');
+                session()->flash('message_type', 'error');
                 return redirect('/usuarios');
             } else {
                 session()->flash('message', 'Usuario no encontrado');
-                session()->flash('message_type','error');
+                session()->flash('message_type', 'error');
                 return redirect('/usuarios');
             }
         }
     }
+    
 }
