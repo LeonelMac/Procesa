@@ -72,14 +72,40 @@
                     <a class="nav-link nav-profile d-flex align-items-center pe-0 text-light" href="#"
                         data-bs-toggle="dropdown">
                         <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Perfil" class="rounded-circle">
-                        <span
-                            class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name ?? 'Usuario' }}</span>
+                        <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->nombres }}
+                            {{ Auth::user()->apellidoP }}
+                            {{ Auth::user()->apellidoM }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6>{{ Auth::user()->name ?? 'Usuario' }}</h6>
-                            <span>{{ Auth::user()->role ?? 'Rol' }}</span>
+                            <h6>{{ Auth::user()->nombres }} {{ Auth::user()->apellidoP }}
+                                {{ Auth::user()->apellidoM }}</h6>
+                            <span>
+                                @php
+                                    $role = Auth::user()->rol; 
+                                    $roleName = '';
+                                    switch ($role) {
+                                        case 1:
+                                            $roleName = 'Administrador';
+                                            break;
+                                        case 2:
+                                            $roleName = 'Juzgados';
+                                            break;
+                                        case 3:
+                                            $roleName = 'Abogado';
+                                            break;
+                                        case 4:
+                                            $roleName = 'Usuario';
+                                            break;
+                                        default:
+                                            $roleName = 'Rol desconocido';
+                                            break;
+                                    }
+                                @endphp
+                                {{ $roleName }}
+                            </span>
                         </li>
+
                         <li>
                             <hr class="dropdown-divider">
                         </li>

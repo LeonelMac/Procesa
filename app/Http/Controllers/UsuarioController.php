@@ -7,7 +7,6 @@ use App\Models\Rol;
 use App\Models\Municipio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 use \Illuminate\Validation\Rule;
 class UsuarioController extends Controller
 {

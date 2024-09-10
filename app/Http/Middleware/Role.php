@@ -16,15 +16,28 @@ class Role
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
+    // public function handle(Request $request, Closure $next, ... $roles)
+    // {
+        
+    //     $user = Auth::user();
+    //     foreach ($roles as $rol) {
+    //         if ($user->rol->value == $rol) {
+    //             return $next($request);
+    //         }
+    //     }
+    //     return redirect('');
+    // }
     public function handle(Request $request, Closure $next, ... $roles)
     {
-        
         $user = Auth::user();
+        $userRole = $user->rol->rolusuarios ?? null;
+    
         foreach ($roles as $rol) {
-            if ($user->rol->value == $rol) {
+            if ($userRole == $rol) {
                 return $next($request);
             }
         }
         return redirect('');
     }
+    
 }
