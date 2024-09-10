@@ -2,27 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\CiudadController;
-use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\DistritoController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\RolController;
 use App\Http\Controllers\PerfilController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Middleware\ResetPassword;
 
 // Formulario de login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -42,15 +26,10 @@ Route::get('/inicio_user', function () {
     return view('inicio_user'); 
 })->middleware('auth')->name('inicio_user');
 
-// Ciudades
-Route::get('/ciudades', [CiudadController::class, 'index'])->name('ciudades.index');
-Route::put('/ciudades/{id}', [CiudadController::class, 'update'])->name('ciudades.update');
-Route::delete('/ciudades/{id}', [CiudadController::class, 'destroy'])->name('ciudades.destroy');
-
-// Clientes
-Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
-Route::put('/clientes/{id}', [ClienteController::class, 'update'])->name('clientes.update');
-Route::delete('/clientes/{id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
+// Distritos
+Route::get('/distritos', [DistritoController::class, 'index'])->name('distritos.index');
+Route::put('/distritos/{id}', [DistritoController::class, 'update'])->name('distritos.update');
+Route::delete('/distritos/{id}', [DistritoController::class, 'destroy'])->name('distritos.destroy');
 
 // Expedientes
 Route::get('/expedientes', [ExpedienteController::class, 'index'])->name('expedientes.index'); 
@@ -63,13 +42,11 @@ Route::get('/expedientes_user/{id}/descripcion-copy', [ExpedienteController::cla
 
 // Usuarios
 Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
-Route::put('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
-Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
-
-// Roles
-Route::get('/roles', [RolController::class, 'index'])->name('roles.index');
-Route::put('/roles/{id}', [RolController::class, 'update'])->name('roles.update');
-Route::delete('/roles/{id}', [RolController::class, 'destroy'])->name('roles.destroy');
+// Route::get('/usuarios', [UsuariosController::class, 'listaDeUsuarios'])->name('listaDeUsuarios')->middleware('role:Administrador');
+Route::get('/usuarios/editar/{id}', [UsuarioController::class, 'editarUsuario'])->name('editarUsuario');
+Route::post('/usuarios/guardar', [UsuarioController::class, 'cambiosUsuario'])->name('cambiosUsuario');
+Route::get('/usuarios/resetPassword', [UsuarioController::class, 'cambiarPasswordVista'])->name('cambiarPasswordVista')->withoutMiddleware([ResetPassword::class]);
+Route::post('/usuarios/resetPassword', [UsuarioController::class, 'cambiarPassword'])->name('cambiarPassword')->withoutMiddleware([ResetPassword::class]);
 
 // Perfil
 Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');

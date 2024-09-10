@@ -6,44 +6,68 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Hash; // Importa Hash para encriptar contraseñas
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
-
-    /**
-     * Los atributos que se pueden asignar masivamente.
-     */
     protected $fillable = [
-        'name',
-        'email',
+        'email ',
         'password',
+        'nombres',
+        'apellidoP',
+        'apellidoM',
+        'rol',
+        'municipio',
+        'direccion',
+        'telefono',
     ];
 
-    /**
-     * Los atributos que deben ocultarse para los arrays.
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Los atributos que deben ser mutados a tipos nativos.
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Mutator para encriptar la contraseña automáticamente.
-     */
     public function setPasswordAttribute($value)
     {
-        // Solo encripta si el valor no está ya encriptado
         if (!Hash::needsRehash($value)) {
             $this->attributes['password'] = Hash::make($value);
         }
+    }
+
+    /**
+     * Scope a query to search for a term in specified columns.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  array|string  $columns
+     * @param  string  $term
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearch(Builder $query, $columns, $term)
+    {
+        if (is_array($columns)) {
+            $columns = implode(',', $columns); // Convierte el array en una cadena separada por comas
+        }
+
+        return $query->where(function ($query) use ($columns, $term) {
+            foreach (explode(',', $columns) as $column) {
+                $query->orWhere(trim($column), 'like', "%{$term}%");
+            }
+        });
+    }
+
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'rol', 'id_rolusuarios');
+    }
+
+    public function municipio()
+    {
+        return $this->belongsTo(Municipio::class, 'municipio', 'idmunicipio');
     }
 }
