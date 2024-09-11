@@ -24,12 +24,13 @@ class ExpedienteComponent extends TablaComponent
             Column::make('numero', 'Número'),
             Column::make('estatusexpediente', 'Estatus'),
             Column::make('fechaexpe', 'Fecha'),
-            Column::make('expedientes', 'Acciones')->component('columns.accionesExpedientes'),
+            Column::make('id_expedientes', 'Acciones')->component('columns.accionesExpedientes'),
         ];
     }
     
     public function verExpediente($value)
     {
-        return redirect('/expedientes/' . $value . '/descripcion');
+        return redirect('/expedientes/descripcion/' . $value);
     }
+
 }

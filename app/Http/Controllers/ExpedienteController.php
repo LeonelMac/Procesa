@@ -25,4 +25,9 @@ class ExpedienteController extends Controller
         return view('expedientes_show', compact('expediente'));
     }
 
+    public function descripcion($id_expedientes)
+    {
+        $expediente = Expediente::findOrFail($id_expedientes);
+        return view('descripcion_expedientes', compact('expediente'));
+    }
 }

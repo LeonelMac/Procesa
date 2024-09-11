@@ -1,6 +1,7 @@
 @props(['value', 'mensaje'])
 
-<button  id='{{$value}}' class="bg-transparent border-0" wire:click='edit({{ $value }})' data-toggle="tooltip" data-bs-placement="top" title='{{ $mensaje }}'>
+<button id='{{ $value }}' class="bg-transparent border-0" wire:click='edit({{ $value }})'
+    data-toggle="tooltip" data-bs-placement="top" title='{{ $mensaje }}'>
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square"
         viewBox="0 0 16 16">
         <path

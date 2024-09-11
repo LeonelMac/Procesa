@@ -43,6 +43,10 @@
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://kit.fontawesome.com/5a7f009297.js" crossorigin="anonymous"></script>
+
+    {{-- Fontawesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
     @livewireStyles
     @yield('styles')
 
@@ -82,7 +86,7 @@
                                 {{ Auth::user()->apellidoM }}</h6>
                             <span>
                                 @php
-                                    $role = Auth::user()->rol; 
+                                    $role = Auth::user()->rol;
                                     $roleName = '';
                                     switch ($role) {
                                         case 1:
@@ -146,6 +150,14 @@
                     <li><a href="{{ route('usuarios.index') }}"><i class="bi bi-circle"></i><span>Usuarios</span></a>
                     </li>
                     <li><a href="{{ route('distritos.index') }}"><i class="bi bi-circle"></i><span>Distritos</span></a>
+                    </li>
+                    <li><a href="{{ route('juzgados.index') }}"><i class="bi bi-circle"></i><span>Juzgados</span></a>
+                    </li>
+                    <li><a href="{{ route('tipoExpedientes.index') }}"><i class="bi bi-circle"></i><span>Tipo Expediente</span></a>
+                    </li>
+                    <li><a href="{{ route('estatusExpediente.index') }}"><i class="bi bi-circle"></i><span>Estatus Expediente</span></a>
+                    </li>
+                    <li><a href="{{ route('tipoBusqueda.index') }}"><i class="bi bi-circle"></i><span>Tipo Búsqueda</span></a>
                     </li>
                 </ul>
             </li>
