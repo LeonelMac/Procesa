@@ -10,7 +10,8 @@ class Distrito extends Model
 {
     use HasFactory;
     protected $table = 'distrito'; 
-    protected $fillable = ['iddistrito'];
+    protected $primaryKey = 'iddistrito'; 
+    protected $fillable = ['distrito'];
 
     /**
      * Scope a query to search for a term in specified columns.

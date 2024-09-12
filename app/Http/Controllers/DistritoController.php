@@ -13,20 +13,48 @@ class DistritoController extends Controller
         return view('distritos', compact('distritos'));
     }
 
-    public function update(Request $request, $iddistrito)
+    public function obtenerDistrito($iddistrito)
     {
         $distrito = Distrito::findOrFail($iddistrito);
-        $distrito->distritos = $request->nombreDistritos;
-        $distrito->save();
+        return response()->json($distrito);
+    }
 
+
+    public function guardarDistrito(Request $request)
+    {
+        $request->validate([
+            'distrito' => 'required|string|max:255'
+        ]);
+
+        Distrito::create([
+            'distrito' => $request->distrito
+        ]);
+
+        session()->flash('message', 'Distrito agregado correctamente');
         return redirect()->route('distritos.index');
     }
 
-    public function destroy($iddistrito )
+    public function editarDistrito(Request $request, $iddistrito)
+    {
+        $request->validate([
+            'distrito' => 'required|string|max:255'
+        ]);
+
+        $distrito = Distrito::findOrFail($iddistrito);
+        $distrito->update([
+            'distrito' => $request->distrito
+        ]);
+
+        session()->flash('message', 'Distrito actualizado correctamente');
+        return redirect()->route('distritos.index');
+    }
+
+    public function eliminarDistrito($iddistrito)
     {
         $distrito = Distrito::findOrFail($iddistrito);
         $distrito->delete();
 
+        session()->flash('message', 'Distrito eliminado correctamente');
         return redirect()->route('distritos.index');
     }
 }

@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     // Usuarios
     // Route::middleware('role:Administrador')->group(function () {
     Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
-    Route::get('/usuarios/editar/{id}', [UsuarioController::class, 'editarUsuario'])->name('editarUsuario');
+    Route::post('/usuarios/agregar', [UsuarioController::class, 'guardarUsuario'])->name('guardarUsuario');
     Route::post('/usuarios/guardar', [UsuarioController::class, 'cambiosUsuario'])->name('cambiosUsuario');
     // });
 
@@ -43,8 +43,10 @@ Route::middleware('auth')->group(function () {
 
     // Distritos
     Route::get('/distritos', [DistritoController::class, 'index'])->name('distritos.index');
-    Route::put('/distritos/{id}', [DistritoController::class, 'update'])->name('distritos.update');
-    Route::delete('/distritos/{id}', [DistritoController::class, 'destroy'])->name('distritos.destroy');
+    Route::post('/distritos/guardar', [DistritoController::class, 'guardarDistrito'])->name('distritos.guardar');
+    Route::post('/distritos/editar/{iddistrito}', [DistritoController::class, 'editarDistrito'])->name('distritos.editar');
+    Route::delete('/distritos/eliminar/{iddistrito}', [DistritoController::class, 'eliminarDistrito'])->name('distritos.eliminar');
+    Route::get('/distritos/obtener/{iddistrito}', [DistritoController::class, 'obtenerDistrito']);
 
     // Juzgados
     Route::get('/juzgados', [JuzgadoController::class, 'index'])->name('juzgados.index');

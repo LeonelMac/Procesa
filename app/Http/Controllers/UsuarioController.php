@@ -8,6 +8,7 @@ use App\Models\Municipio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use \Illuminate\Validation\Rule;
+
 class UsuarioController extends Controller
 {
     public function __construct()
@@ -21,6 +22,41 @@ class UsuarioController extends Controller
         return view('usuarios', compact('usuarios'));
     }
 
+    public function guardarUsuario(Request $request)
+    {
+        // dd($request->email);
+        $validator = Validator::make($request->all(), [
+            'nombres' => 'required|string|max:255',
+            'apellidoP' => 'required|string|max:255',
+            'apellidoM' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'rol' => 'required|numeric',
+            'municipio' => 'required|numeric',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'required|string|max:10',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        User::create([
+            'nombres' => $request->nombres,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
+            'email' => $request->email,
+            'rol' => $request->rol,
+            'municipio' => $request->municipio,
+            'direccion' => $request->direccion,
+            'telefono' => $request->telefono,
+            'password' => bcrypt('123456'),
+        ]);
+
+        session()->flash('message', 'Usuario creado correctamente.');
+        return redirect()->route('usuarios.index');
+    }
+
+
     public function editarUsuario($id)
     {
         $usuario = User::find($id);
@@ -29,16 +65,19 @@ class UsuarioController extends Controller
             session()->flash('message_type', 'error');
             return redirect('/usuarios');
         }
-    
+
         $roles = Rol::all();
         $municipios = Municipio::all();
-        
-        session()->flash('usuario', $usuario);
-        return view('auth.editar', compact('roles', 'municipios'));
-    }
-    
 
-    public function cambiarPasswordVista(){
+        session()->put('usuario', $usuario);
+        session()->put('roles', $roles);
+        session()->put('municipios', $municipios);
+
+        return view('auth.editar-modal', compact('roles', 'municipios'));
+    }
+
+    public function cambiarPasswordVista()
+    {
         return view('auth.resetPassword');
     }
 
@@ -55,25 +94,26 @@ class UsuarioController extends Controller
             'direccion' => ['required', 'string', 'max:255'],
             'telefono' => ['required', 'string', 'max:10']
         ]);
-    
+
         if ($validator->fails()) {
             session()->flash('message', $validator->errors()->first());
             session()->flash('message_type', 'error');
             return back();
         }
-    
+
         $formFields = $validator->validated();
         $id = $formFields['id'];
         unset($formFields['id']);
-    
+
         User::find($id)->update($formFields);
-        
+
         session()->flash('message', 'Usuario editado');
         session()->flash('message_type', 'success');
         return redirect('/usuarios');
-    }    
+    }
 
-    public function cambiarPassword(Request $request){
+    public function cambiarPassword(Request $request)
+    {
         $requestData = request()->all();
         $validator =  Validator::make($requestData, [
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -88,5 +128,4 @@ class UsuarioController extends Controller
         $usuariosController->usuario('cambiarPassword', 'actualizó o intentó actualizar su contraseña', $request);
         return redirect('/');
     }
-
 }

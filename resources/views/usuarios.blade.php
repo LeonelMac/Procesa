@@ -21,6 +21,11 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
+                                <div class="position-relative mb-3">
+                                    <div class="offset-end">
+                                        <x-acciones.agregar mensaje="Agregar Usuario" />
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <livewire:usuarios-table></livewire:usuarios-table>
                                 </div>
@@ -31,4 +36,12 @@
             </div>
         </section>
     </main>
+
+    <style>
+        .offset-end {
+            position: absolute;
+            right: 25px; 
+            top: 15px;
+        }
+    </style>
 @endsection

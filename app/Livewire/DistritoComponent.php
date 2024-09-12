@@ -21,8 +21,8 @@ class DistritoComponent extends TablaComponent
     public function columns(): array
     {
         return [
-            Column::make('iddistrito', 'Núm.'),
             Column::make('distrito', 'Distrito'),
+            Column::make('iddistrito', 'Acciones')->component('columns.acciones'),
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 @section('content')
     <main id="main" class="main">
-        <!-- Page Title -->
         <div class="pagetitle">
             <h1>Distritos</h1>
             <nav>
@@ -13,14 +12,17 @@
                 </ol>
             </nav>
         </div>
-        <!-- End Page Title -->
-
         <section class="section dashboard">
             <div class="row">
                 <section class="section">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
+                                <div class="position-relative mb-3">
+                                    <div class="offset-end">
+                                        <x-acciones.agregarDistrito mensaje="Agregar Distrito" />
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <livewire:distrito-component></livewire:distrito-component>
                                 </div>
@@ -31,4 +33,12 @@
             </div>
         </section>
     </main>
+
+    <style>
+        .offset-end {
+            position: absolute;
+            right: 25px; 
+            top: 15px;
+        }
+    </style>
 @endsection

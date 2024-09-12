@@ -5,13 +5,15 @@
     <x-acciones.contrasenia :value="$value" mensaje="Restablecer contraseña"></x-acciones.contrasenia>
     <x-acciones.eliminar :value="$value" mensaje="Eliminar usuario"></x-acciones.eliminar>
 
-    <x-modal :value="$value" mensajeBoton="Restablecer" accion="resetPassword({{ $value }})" titulo="Confirmar Acción">¿Deseas restablecer la contraseña de este usuario?</x-modal>
-    <x-modal :value="$value . 'eliminar'" mensajeBoton="Eliminar" accion="deleteUser({{ $value }})" titulo="Confirmar Acción">¿Deseas eliminar este usuario?</x-modal>
+    <x-modal :value="$value" mensajeBoton="Restablecer" accion="resetPassword({{ $value }})"
+        titulo="Confirmar Acción">¿Deseas restablecer la contraseña de este usuario?</x-modal>
+    <x-modal :value="$value . 'eliminar'" mensajeBoton="Eliminar" accion="deleteUser({{ $value }})"
+        titulo="Confirmar Acción">¿Deseas eliminar este usuario?</x-modal>
 
 </div>
 <script>
     // inicializa los tooltips
-    $(function () {
+    $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
