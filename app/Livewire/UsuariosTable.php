@@ -7,6 +7,7 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\UsuarioController;
+use Illuminate\Support\Facades\DB;
 
 class UsuariosTable extends TablaComponent
 {
@@ -66,7 +67,12 @@ class UsuariosTable extends TablaComponent
     public function query(): Builder
     {
         return User::query()
-            ->select('users.*', 'rolusuarios.rolusuarios AS rol_nombre', 'municipio.municipio AS municipio_nombre')
+            ->select(
+                'users.*', 
+                DB::raw("CONCAT(users.nombres, ' ', users.apellidoP, ' ', users.apellidoM) AS nombre_completo"), 
+                'rolusuarios.rolusuarios AS rol_nombre', 
+                'municipio.municipio AS municipio_nombre'
+            )
             ->leftJoin('rolusuarios', 'users.rol', '=', 'rolusuarios.id_rolusuarios')
             ->leftJoin('municipio', 'users.municipio', '=', 'municipio.idmunicipio');
     }
@@ -74,9 +80,7 @@ class UsuariosTable extends TablaComponent
     public function columns(): array
     {
         return [
-            Column::make('nombres', 'Nombre'),
-            Column::make('apellidoP', 'Apellido paterno'),
-            Column::make('apellidoM', 'Apellido materno'),
+            Column::make('nombre_completo', 'Nombre'),
             Column::make('rol_nombre', 'Rol'),
             Column::make('municipio_nombre', 'Municipio'),
             Column::make('direccion', 'Dirección'),
@@ -84,10 +88,6 @@ class UsuariosTable extends TablaComponent
             Column::make('id', 'Acciones')->component('columns.accionesUsuarios'),
         ];
     }
-
-    // public function edit($value) {
-    //     return redirect('/usuarios/editar/' . $value);
-    // }
 
     public function resetPassword($id)
     {

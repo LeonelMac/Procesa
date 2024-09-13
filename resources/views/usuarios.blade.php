@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <main id="main" class="main">
+    <main id="main2" class="main2">
         <!-- Page Title -->
         <div class="pagetitle">
             <h1>Usuarios</h1>
@@ -40,7 +40,7 @@
     <style>
         .offset-end {
             position: absolute;
-            right: 25px; 
+            right: 25px;
             top: 15px;
         }
     </style>

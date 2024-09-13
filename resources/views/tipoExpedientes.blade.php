@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <main id="main" class="main">
+    <main id="main2" class="main2">
         <!-- Page Title -->
         <div class="pagetitle">
             <h1>Tipo Expedientes</h1>

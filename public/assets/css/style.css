@@ -635,6 +635,11 @@ h6 {
   #footer {
     margin-left: 300px;
   }
+
+  #main2
+  {
+    margin-left: 100px;
+  }
 }
 
 @media (max-width: 1199px) {

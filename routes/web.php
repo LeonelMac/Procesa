@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
 
     // Perfil
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
-    Route::put('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+    Route::post('/perfil/agregar', [PerfilController::class, 'guardarUsuario'])->name('guardarUsuario');
+    Route::post('/perfil/guardar', [PerfilController::class, 'cambiosUsuario'])->name('cambiosUsuario');
     Route::put('/perfil/settings', [PerfilController::class, 'updateSettings'])->name('perfil.settings');
     Route::put('/perfil/change-password', [PerfilController::class, 'changePassword'])->name('perfil.change_password');
 

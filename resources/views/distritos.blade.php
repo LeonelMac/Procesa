@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <main id="main" class="main">
+    <main id="main2" class="main2">
         <div class="pagetitle">
             <h1>Distritos</h1>
             <nav>
