@@ -13,20 +13,47 @@ class TipoExpedienteController extends Controller
         return view('tipoExpedientes', compact('tipoExpedientes'));
     }
 
-    public function update(Request $request, $idtipoexpediente)
+    public function obtenerTipoExpediente($idtipoexpediente)
     {
-        $tipoExpediente = TipoExpediente::findOrFail($idtipoexpediente);
-        $tipoExpediente->tipoExpedientes = $request->tipoExpedientes;
-        $tipoExpediente->save();
+        $idtipoexpediente = TipoExpediente::findOrFail($idtipoexpediente);
+        return response()->json($idtipoexpediente);
+    }
 
+    public function guardarTipoExpediente(Request $request)
+    {
+        $request->validate([
+            'tipoexpediente' => 'required|string|max:255'
+        ]);
+
+        TipoExpediente::create([
+            'tipoexpediente' => $request->tipoexpediente
+        ]);
+
+        session()->flash('message', 'Tipo de Expediente agregado correctamente');
         return redirect()->route('tipoExpedientes.index');
     }
 
-    public function destroy($idtipoexpediente)
+    public function editarTipoExpediente(Request $request, $idtipoexpediente)
     {
-        $tipoExpediente = TipoExpediente::findOrFail($idtipoexpediente);
-        $tipoExpediente->delete();
+        $request->validate([
+            'tipoexpediente' => 'required|string|max:255'
+        ]);
 
+        $idtipoexpediente = TipoExpediente::findOrFail($idtipoexpediente);
+        $idtipoexpediente->update([
+            'tipoexpediente' => $request->tipoexpediente
+        ]);
+
+        session()->flash('message', 'Tipo de Expediente actualizado correctamente');
+        return redirect()->route('tipoExpedientes.index');
+    }
+
+    public function eliminarTipoExpediente($idtipoexpediente)
+    {
+        $idtipoexpediente = TipoExpediente::findOrFail($idtipoexpediente);
+        $idtipoexpediente->delete();
+
+        session()->flash('message', 'Tipo de Expediente eliminado correctamente');
         return redirect()->route('tipoExpedientes.index');
     }
 }

@@ -61,14 +61,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/expedientes/descripcion/{id_expedientes}', [ExpedienteController::class, 'descripcion'])->name('descripcionExpedientes');
 
     // Tipo Expediente
-    Route::get('/tipo/expedientes', [TipoExpedienteController::class, 'index'])->name('tipoExpedientes.index');
-    Route::put('/tipo/expedientes/{id}', [TipoExpedienteController::class, 'update'])->name('tipoExpedientes.update');
-    Route::delete('/tipo/expedientes/{id}', [TipoExpedienteController::class, 'destroy'])->name('tipoExpedientes.destroy');
+    Route::get('/tipoExpedientes', [TipoExpedienteController::class, 'index'])->name('tipoExpedientes.index');
+    Route::post('/tipoExpedientes/guardar', [TipoExpedienteController::class, 'guardarTipoExpediente'])->name('tipoExpedientes.guardar');
+    Route::post('/tipoExpedientes/editar/{idtipoexpediente}', [TipoExpedienteController::class, 'editarTipoExpediente'])->name('tipoExpedientes.editar');
+    Route::delete('/tipoExpedientes/eliminar/{idtipoexpediente}', [TipoExpedienteController::class, 'eliminarTipoExpediente'])->name('tipoExpedientes.eliminar');
+    Route::get('/tipoExpedientes/obtener/{idtipoexpediente}', [TipoExpedienteController::class, 'obtenerTipoExpediente']);
 
     // Estatus Expediente
     Route::get('/estatus/expedientes', [EstatusExpedienteController::class, 'index'])->name('estatusExpediente.index');
-    Route::put('/estatus/expedientes/{id}', [EstatusExpedienteController::class, 'update'])->name('estatusExpediente.update');
-    Route::delete('/estatus/expedientes/{id}', [EstatusExpedienteController::class, 'destroy'])->name('estatusExpediente.destroy');
+    Route::post('/estatus/expedientes/guardar', [EstatusExpedienteController::class, 'guardarEstatusExpediente'])->name('estatusExpediente.guardar');
+    Route::post('/estatus/expedientes/editar/{idestatusexpediente}', [EstatusExpedienteController::class, 'editarEstatusExpediente'])->name('estatusExpediente.editar');
+    Route::delete('/estatus/expedientes/eliminar/{idestatusexpediente}', [EstatusExpedienteController::class, 'eliminarEstatusExpediente'])->name('estatusExpediente.eliminar');
+    Route::get('/estatus/expedientes/obtener/{idestatusexpediente}', [EstatusExpedienteController::class, 'obtenerEstatusExpediente']);
 
     // Tipo Búsqueda
     Route::get('/tipo/busquedas', [TipoBusquedaController::class, 'index'])->name('tipoBusquedas.index');

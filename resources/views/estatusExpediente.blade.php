@@ -21,6 +21,9 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
+                                <div class="offset-end">
+                                    <x-acciones.agregarEstatusExpediente mensaje="Agregar Tipo Expediente" />
+                                </div>
                                 <div class="card-body">
                                     <livewire:estatus-expediente-component></livewire:estatus-expediente-component>
                                 </div>
@@ -31,4 +34,12 @@
             </div>
         </section>
     </main>
+
+    <style>
+        .offset-end {
+            position: absolute;
+            right: 25px; 
+            top: 15px;
+        }
+    </style>
 @endsection

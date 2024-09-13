@@ -23,7 +23,7 @@
                             <div class="card">
                                 <div class="position-relative mb-3">
                                     <div class="offset-end">
-                                        <x-acciones.agregarJuzgado mensaje="Agregar Distrito" />
+                                        <x-acciones.agregarJuzgado mensaje="Agregar Juzgado" />
                                     </div>
                                 </div>
                                 <div class="card-body">

@@ -13,20 +13,47 @@ class EstatusExpedienteController extends Controller
         return view('estatusExpediente', compact('estatusExpediente'));
     }
 
-    public function update(Request $request, $idestatusexpediente)
+    public function obtenerEstatusExpediente($idestatusexpediente)
     {
-        $estatusExpedientes = EstatusExpediente::findOrFail($idestatusexpediente);
-        $estatusExpedientes->estatusExpediente = $request->estatusExpediente;
-        $estatusExpedientes->save();
+        $idestatusexpediente = EstatusExpediente::findOrFail($idestatusexpediente);
+        return response()->json($idestatusexpediente);
+    }
 
+    public function guardarEstatusExpediente(Request $request)
+    {
+        $request->validate([
+            'estatusexpediente' => 'required|string|max:255'
+        ]);
+
+        EstatusExpediente::create([
+            'estatusexpediente' => $request->estatusexpediente
+        ]);
+
+        session()->flash('message', 'Estatus de Expediente agregado correctamente');
         return redirect()->route('estatusExpediente.index');
     }
 
-    public function destroy($idestatusexpediente)
+    public function editarEstatusExpediente(Request $request, $idestatusexpediente)
     {
-        $estatusExpedientes = EstatusExpediente::findOrFail($idestatusexpediente);
-        $estatusExpedientes->delete();
+        $request->validate([
+            'estatusexpediente' => 'required|string|max:255'
+        ]);
 
+        $idestatusexpediente = EstatusExpediente::findOrFail($idestatusexpediente);
+        $idestatusexpediente->update([
+            'estatusexpediente' => $request->estatusexpediente
+        ]);
+
+        session()->flash('message', 'Estatus de Expediente actualizado correctamente');
+        return redirect()->route('estatusExpediente.index');
+    }
+
+    public function eliminarEstatusExpediente($idestatusexpediente)
+    {
+        $idestatusexpediente = EstatusExpediente::findOrFail($idestatusexpediente);
+        $idestatusexpediente->delete();
+
+        session()->flash('message', 'Estatus de Expediente eliminado correctamente');
         return redirect()->route('estatusExpediente.index');
     }
 }

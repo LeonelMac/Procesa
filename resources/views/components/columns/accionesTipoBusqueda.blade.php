@@ -1,8 +1,8 @@
 @props(['value', 'state'])
 
 <div>
-    <x-acciones.editarTipoBusqueda :value="$value" mensaje="Editar usuario"></x-acciones.editarTipoBusqueda>
-    {{-- <x-acciones.eliminarTipoBusqueda :value="$value" mensaje="Eliminar usuario"></x-acciones.eliminarTipoBusqueda> --}}
+    <x-acciones.editarTipoBusqueda :value="$value" mensaje="Editar Tipo Búsqueda"></x-acciones.editarTipoBusqueda>
+    <x-acciones.eliminarTipoBusqueda :value="$value" mensaje="Eliminar Tipo Búsqueda"></x-acciones.eliminarTipoBusqueda>
 </div>
 <script>
     // inicializa los tooltips

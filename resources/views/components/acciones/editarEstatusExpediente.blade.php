@@ -1,7 +1,7 @@
 <div>
     <button type="button" class="bg-transparent border-0" data-bs-toggle="modal"
-        data-bs-target="#editarDistritoModal-{{ $value }}" data-toggle="tooltip" data-bs-placement="top"
-        title="Editar Distrito" onclick="cargarDatosDistrito({{ $value }})">
+        data-bs-target="#editarEstatusExpedienteModal-{{ $value }}" data-toggle="tooltip" data-bs-placement="top"
+        title="Editar Estatus" onclick="cargarDatosDistrito({{ $value }})">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
             class="bi bi-pencil-square" viewBox="0 0 16 16">
             <path
@@ -12,21 +12,21 @@
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="editarDistritoModal-{{ $value }}" tabindex="-1"
-        aria-labelledby="editarDistritoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editarEstatusExpedienteModal-{{ $value }}" tabindex="-1"
+        aria-labelledby="editarEstatusExpedienteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editarDistritoModalLabel">Editar Distrito</h5>
+                    <h5 class="modal-title" id="editarEstatusExpedienteModalLabel">Editar Estatus</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('distritos.editar', ['iddistrito' => $value]) }}">
+                    <form method="POST" action="{{ route('estatusExpediente.editar', ['idestatusexpediente' => $value]) }}">
                         @csrf
-                        <!-- Campo para el distrito -->
+                        <!-- Campo para el estatus -->
                         <div class="mb-3">
-                            <label for="distrito" class="form-label">Nombre del Distrito</label>
-                            <input type="text" class="form-control" id="editar-distrito-{{ $value }}" name="distrito" value="" required>
+                            <label for="estatusexpediente" class="form-label">Nombre del Estatus</label>
+                            <input type="text" class="form-control" id="editar-estatusexpediente-{{ $value }}" name="estatusexpediente" value="" required>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar cambios</button>
@@ -40,12 +40,12 @@
 
 <!-- Script para cargar datos en el modal -->
 <script>
-    function cargarDatosDistrito(iddistrito) {
+    function cargarDatosDistrito(idestatusexpediente) {
         $.ajax({
-            url: '/distritos/obtener/' + iddistrito,  
+            url: '/estatus/expedientes/obtener/' + idestatusexpediente,  
             type: 'GET',
             success: function (data) {
-                $('#editar-distrito-' + iddistrito).val(data.distrito);
+                $('#editar-estatusexpediente-' + idestatusexpediente).val(data.estatusexpediente);
             }
         });
     }

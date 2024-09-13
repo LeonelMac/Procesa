@@ -10,7 +10,8 @@ class EstatusExpediente extends Model
 {
     use HasFactory;
     protected $table = 'estatusexpediente'; 
-    protected $fillable = ['idestatusexpediente'];
+    protected $primaryKey = 'idestatusexpediente'; 
+    protected $fillable = ['estatusexpediente'];
 
     /**
      * Scope a query to search for a term in specified columns.

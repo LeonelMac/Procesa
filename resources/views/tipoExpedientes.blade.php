@@ -21,6 +21,10 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
+                                <div class="position-relative mb-3">
+                                    <div class="offset-end">
+                                        <x-acciones.agregarTipoExpediente mensaje="Agregar Tipo Expediente" />
+                                    </div>
                                 <div class="card-body">
                                     <livewire:tipo-expediente-component></livewire:tipo-expediente-component>
                                 </div>
@@ -31,4 +35,12 @@
             </div>
         </section>
     </main>
+    
+    <style>
+        .offset-end {
+            position: absolute;
+            right: 25px; 
+            top: 15px;
+        }
+    </style>
 @endsection

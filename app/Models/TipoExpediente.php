@@ -10,7 +10,8 @@ class TipoExpediente extends Model
 {
     use HasFactory;
     protected $table = 'tipoexpediente'; 
-    protected $fillable = ['idtipoexpediente '];
+    protected $primaryKey = 'idtipoexpediente';
+    protected $fillable = ['tipoexpediente'];
 
     /**
      * Scope a query to search for a term in specified columns.

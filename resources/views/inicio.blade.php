@@ -5,7 +5,7 @@
 @section('content')
     <!-- Page Title -->
     <div class="pagetitle">
-        <h1>BIENVENIDO</h1>
+        <h1>Bienvenido</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="#">Inicio</a></li>

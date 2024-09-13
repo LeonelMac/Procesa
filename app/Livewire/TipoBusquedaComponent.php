@@ -25,7 +25,7 @@ class TipoBusquedaComponent extends TablaComponent
         return [
             Column::make('tipobusqueda', 'Tipo Búsqueda'),
             Column::make('juzgado_nombre', 'Juzgado'),
-            Column::make('idjuzgados', 'Acciones')->component('columns.accionesTipoBusqueda'),
+            Column::make('idtipobusqueda', 'Acciones')->component('columns.accionesTipoBusqueda'),
         ];
     }
 }
