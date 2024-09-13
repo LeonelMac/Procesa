@@ -50,8 +50,10 @@ Route::middleware('auth')->group(function () {
 
     // Juzgados
     Route::get('/juzgados', [JuzgadoController::class, 'index'])->name('juzgados.index');
-    Route::put('/juzgados/{id}', [JuzgadoController::class, 'update'])->name('juzgados.update');
-    Route::delete('/juzgados/{id}', [JuzgadoController::class, 'destroy'])->name('juzgados.destroy');
+    Route::post('/juzgados/guardar', [JuzgadoController::class, 'guardarJuzgado'])->name('juzgados.guardar');
+    Route::post('/juzgados/editar/{idjuzgados}', [JuzgadoController::class, 'editarJuzgado'])->name('juzgados.editar');
+    Route::delete('/juzgados/eliminar/{idjuzgados}', [JuzgadoController::class, 'eliminarJuzgado'])->name('juzgados.eliminar');
+    Route::get('/juzgados/obtener/{idjuzgados?}', [JuzgadoController::class, 'obtenerJuzgado']);
 
     // Expedientes
     Route::get('/expedientes', [ExpedienteController::class, 'index'])->name('expedientes.index');
@@ -69,9 +71,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/estatus/expedientes/{id}', [EstatusExpedienteController::class, 'destroy'])->name('estatusExpediente.destroy');
 
     // Tipo Búsqueda
-    Route::get('/tipo/busqueda', [TipoBusquedaController::class, 'index'])->name('tipoBusqueda.index');
-    Route::put('/tipo/busqueda/{id}', [TipoBusquedaController::class, 'update'])->name('tipoBusqueda.update');
-    Route::delete('/tipo/busqueda/{id}', [TipoBusquedaController::class, 'destroy'])->name('tipoBusqueda.destroy');
+    Route::get('/tipo/busquedas', [TipoBusquedaController::class, 'index'])->name('tipoBusquedas.index');
+    Route::post('/tipo/busquedas/guardar', [TipoBusquedaController::class, 'guardarTipoBusqueda'])->name('tipoBusquedas.guardar');
+    Route::post('/tipo/busquedas/editar/{idtipobusqueda}', [TipoBusquedaController::class, 'editarTipoBusqueda'])->name('tipoBusquedas.editar');
+    Route::delete('/tipo/busquedas/eliminar/{idtipobusqueda}', [TipoBusquedaController::class, 'eliminarTipoBusqueda'])->name('tipoBusquedas.eliminar');
+    Route::get('/tipo/busquedas/obtener/{idtipobusqueda?}', [TipoBusquedaController::class, 'obtenerTipoBusqueda']);    
 });
 
 // // Rutas sin middleware de autenticación

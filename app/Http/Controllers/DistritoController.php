@@ -19,7 +19,6 @@ class DistritoController extends Controller
         return response()->json($distrito);
     }
 
-
     public function guardarDistrito(Request $request)
     {
         $request->validate([

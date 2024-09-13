@@ -157,7 +157,7 @@
                     </li>
                     <li><a href="{{ route('estatusExpediente.index') }}"><i class="bi bi-circle"></i><span>Estatus Expediente</span></a>
                     </li>
-                    <li><a href="{{ route('tipoBusqueda.index') }}"><i class="bi bi-circle"></i><span>Tipo Búsqueda</span></a>
+                    <li><a href="{{ route('tipoBusquedas.index') }}"><i class="bi bi-circle"></i><span>Tipo Búsqueda</span></a>
                     </li>
                 </ul>
             </li>

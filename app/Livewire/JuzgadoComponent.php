@@ -15,15 +15,17 @@ class JuzgadoComponent extends TablaComponent
 
     public function query(): Builder
     {
-        return Juzgado::query();
+        return Juzgado::query()
+            ->select('juzgados.*', 'distrito.distrito AS distrito_nombre')
+            ->leftJoin('distrito', 'juzgados.distrito', '=', 'distrito.iddistrito');
     }
 
     public function columns(): array
     {
         return [
-            Column::make('idjuzgados', 'Núm.'),
             Column::make('juzgados', 'Juzgado'),
-            Column::make('distrito', 'Distrito'),
+            Column::make('distrito_nombre', 'Distrito'),
+            Column::make('idjuzgados', 'Acciones')->component('columns.accionesJuzgado'),
         ];
     }
 }

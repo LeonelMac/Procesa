@@ -21,7 +21,6 @@ class TipoExpedienteComponent extends TablaComponent
     public function columns(): array
     {
         return [
-            Column::make('idtipoexpediente', 'Núm.'),
             Column::make('tipoexpediente', 'Tipo Expediente'),
         ];
     }

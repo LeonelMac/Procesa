@@ -21,7 +21,6 @@ class EstatusExpedienteComponent extends TablaComponent
     public function columns(): array
     {
         return [
-            Column::make('idestatusexpediente', 'Núm.'),
             Column::make('estatusexpediente', 'Estatus Expediente'),
         ];
     }

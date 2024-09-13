@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 class Juzgado extends Model
 {
     use HasFactory;
-    protected $table = 'juzgados'; 
-    protected $fillable = ['idjuzgados'];
+    protected $table = 'juzgados';
+    protected $primaryKey = 'idjuzgados';
+    protected $fillable = ['idjuzgados', 'juzgados', 'distrito'];
 
     /**
      * Scope a query to search for a term in specified columns.
@@ -31,5 +32,10 @@ class Juzgado extends Model
                 $query->orWhere(trim($column), 'like', "%{$term}%");
             }
         });
+    }
+
+    public function distrito()
+    {
+        return $this->belongsTo(Distrito::class, 'distrito', 'iddistrito');
     }
 }

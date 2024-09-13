@@ -15,15 +15,17 @@ class TipoBusquedaComponent extends TablaComponent
 
     public function query(): Builder
     {
-        return TipoBusqueda::query();
+        return TipoBusqueda::query()
+            ->select('tipobusqueda.*', 'juzgados.juzgados AS juzgado_nombre')
+            ->leftJoin('juzgados', 'tipobusqueda.juzgado', '=', 'juzgados.idjuzgados');
     }
 
     public function columns(): array
     {
         return [
-            Column::make('idtipobusqueda', 'Núm.'),
             Column::make('tipobusqueda', 'Tipo Búsqueda'),
-            Column::make('juzgado', 'Juzgado'),
+            Column::make('juzgado_nombre', 'Juzgado'),
+            Column::make('idjuzgados', 'Acciones')->component('columns.accionesTipoBusqueda'),
         ];
     }
 }
