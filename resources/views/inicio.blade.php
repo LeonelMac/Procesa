@@ -22,7 +22,7 @@
                 <div class="row">
 
                     <!-- Sales Card -->
-                    <div class="col-xxl-4 col-md-6">
+                    <div class="col-xxl-6 col-md-6">
                         <div class="card info-card sales-card">
 
                             <div class="card-body">
@@ -43,7 +43,7 @@
                     </div><!-- End Sales Card -->
 
                     <!-- Revenue Card -->
-                    <div class="col-xxl-4 col-md-6">
+                    <div class="col-xxl-6 col-md-6">
                         <div class="card info-card revenue-card">
 
                             <div class="card-body">
@@ -65,7 +65,7 @@
                     </div><!-- End Revenue Card -->
 
                     <!-- Customers Card -->
-                    <div class="col-xxl-4 col-xl-12">
+                    <div class="col-xxl-12 col-xl-12">
 
                         <div class="card info-card customers-card">
 

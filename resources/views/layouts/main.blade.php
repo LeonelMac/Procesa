@@ -115,11 +115,11 @@
                         </li>
                         <li><a class="dropdown-item d-flex align-items-center" href="{{ route('perfil.index') }}"><i
                                     class="bi bi-person"></i><span>Mi Perfil</span></a></li>
-                        <li>
+                        {{-- <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item d-flex align-items-center" href="#"><i
-                                    class="bi bi-gear"></i><span>Configuraciones de la cuenta</span></a></li>
+                                    class="bi bi-gear"></i><span>Configuraciones de la cuenta</span></a></li> --}}
                         <li>
                             <hr class="dropdown-divider">
                         </li>

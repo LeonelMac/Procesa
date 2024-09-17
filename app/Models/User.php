@@ -33,12 +33,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // public function setPasswordAttribute($value)
+    // {
+    //     if (!Hash::needsRehash($value)) {
+    //         $this->attributes['password'] = Hash::make($value);
+    //     }
+    // }
+
     public function setPasswordAttribute($value)
-    {
-        if (!Hash::needsRehash($value)) {
-            $this->attributes['password'] = Hash::make($value);
-        }
+{
+    // Solo hashea si el valor no es ya un hash
+    if (!Hash::needsRehash($value)) {
+        $this->attributes['password'] = $value;
+    } else {
+        $this->attributes['password'] = Hash::make($value);
     }
+}
+
 
     /**
      * Scope a query to search for a term in specified columns.

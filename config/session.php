@@ -169,7 +169,8 @@ return [
     */
 
     // 'secure' => env('SESSION_SECURE_COOKIE'),
-    'secure' => env('SESSION_SECURE_COOKIE', true),
+    // 'secure' => env('SESSION_SECURE_COOKIE', true), ACTIVAR CUANDO SE USE HTTPS
+    'secure' => env('SESSION_SECURE_COOKIE', false),
 
     /*
     |--------------------------------------------------------------------------

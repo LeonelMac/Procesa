@@ -67,10 +67,10 @@
                                         Perfil</button>
                                 </li>
 
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab"
                                         data-bs-target="#profile-settings">Ajustes</button>
-                                </li>
+                                </li> --}}
 
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab"

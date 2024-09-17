@@ -7,7 +7,8 @@ use App\Models\Rol;
 use App\Models\Municipio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use \Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UsuarioController extends Controller
 {
@@ -24,7 +25,6 @@ class UsuarioController extends Controller
 
     public function guardarUsuario(Request $request)
     {
-        // dd($request->email);
         $validator = Validator::make($request->all(), [
             'nombres' => 'required|string|max:255',
             'apellidoP' => 'required|string|max:255',
@@ -76,11 +76,6 @@ class UsuarioController extends Controller
         return view('auth.editar-modal', compact('roles', 'municipios'));
     }
 
-    public function cambiarPasswordVista()
-    {
-        return view('auth.resetPassword');
-    }
-
     public function cambiosUsuario(Request $request)
     {
         $requestData = request()->all();
@@ -114,18 +109,32 @@ class UsuarioController extends Controller
 
     public function cambiarPassword(Request $request)
     {
-        $requestData = request()->all();
-        $validator =  Validator::make($requestData, [
+        $request->validate([
+            'current_password' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-        $validator->validate();
-        $id = auth()->user()->id;
-        $user = User::find($id);
-        $user->password = bcrypt($validator->getData()['password']);
-        $user->password_restaurada = false;
-        $user->save();
-        $usuariosController = new UsuarioController();
-        $usuariosController->usuario('cambiarPassword', 'actualizó o intentó actualizar su contraseña', $request);
-        return redirect('/');
+    
+        $userId = auth()->id(); 
+        if (!$userId) {
+            return redirect()->back()->withErrors(['error' => 'Usuario no autenticado o no encontrado.']);
+        }
+        $usuario = User::find($userId); 
+        if (!$usuario) {
+            return redirect()->back()->withErrors(['error' => 'Usuario no encontrado en la base de datos.']);
+        }
+        $currentPassword = trim($request->current_password);
+        if (!Hash::check($currentPassword, $usuario->password)) {
+            return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
+        }
+        $usuario->password = Hash::make($request->password);
+        $usuario->password_restaurada = false;
+        $usuario->setRememberToken(Str::random(60));
+        $usuario->save();
+        return redirect('/inicio')->with('message', 'Contraseña actualizada correctamente.');
+    }
+    
+    public function cambiarPasswordVista()
+    {
+        return view('auth.resetPassword');
     }
 }

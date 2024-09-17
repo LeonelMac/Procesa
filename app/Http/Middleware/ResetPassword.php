@@ -16,8 +16,8 @@ class ResetPassword
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-        if($user && $user->password_restaurada){
+        $usuario = Auth::user();
+        if($usuario && $usuario->password_restaurada){
             return redirect('/usuarios/resetPassword');
         }
         return $next($request);

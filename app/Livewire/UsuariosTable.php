@@ -6,8 +6,10 @@ use App\Clases\Column;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\DB;
+use App\Mail\PasswordResetNotification;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class UsuariosTable extends TablaComponent
 {
@@ -68,9 +70,9 @@ class UsuariosTable extends TablaComponent
     {
         return User::query()
             ->select(
-                'users.*', 
-                DB::raw("CONCAT(users.nombres, ' ', users.apellidoP, ' ', users.apellidoM) AS nombre_completo"), 
-                'rolusuarios.rolusuarios AS rol_nombre', 
+                'users.*',
+                DB::raw("CONCAT(users.nombres, ' ', users.apellidoP, ' ', users.apellidoM) AS nombre_completo"),
+                'rolusuarios.rolusuarios AS rol_nombre',
                 'municipio.municipio AS municipio_nombre'
             )
             ->leftJoin('rolusuarios', 'users.rol', '=', 'rolusuarios.id_rolusuarios')
@@ -89,14 +91,27 @@ class UsuariosTable extends TablaComponent
         ];
     }
 
+    public function generateSecurePassword($length = 12)
+    {
+        $upper = Str::upper(Str::random(2));
+        $lower = Str::lower(Str::random(4));
+        $numbers = random_int(10, 99) . random_int(10, 99);
+        $specialCharacters = '!@#$%^&*';
+        $special = substr(str_shuffle($specialCharacters), 0, 2);
+        $password = str_shuffle($upper . $lower . $numbers . $special);
+        return substr($password, 0, $length);
+    }
+
     public function resetPassword($id)
     {
         $usuario = User::find($id);
         if ($usuario) {
-            $usuario->password = bcrypt('123456789');
+            $nuevaPassword = $this->generateSecurePassword(12);
+            $usuario->password = $nuevaPassword;
             $usuario->password_restaurada = true;
             $usuario->save();
-            session()->flash('message', 'Contraseña restablecida');
+            Mail::to($usuario->email)->send(new PasswordResetNotification($usuario, $nuevaPassword));
+            session()->flash('message', 'Contraseña restablecida y correo enviado');
             session()->flash('message_type', 'success');
             return redirect('/usuarios');
         } else {
