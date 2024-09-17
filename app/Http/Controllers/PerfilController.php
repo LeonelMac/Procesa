@@ -11,11 +11,17 @@ use Illuminate\Support\Facades\Validator;
 
 class PerfilController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        $usuario = auth()->user();
-        return view('perfil', compact('usuario'));
+        $usuario = User::with('rol', 'municipio')->find(auth()->id());
+        $roles = Rol::all();
+        $municipios = Municipio::all();
+        if (!$usuario) {
+            return redirect('/perfil')->with('error', 'Usuario no encontrado');
+        }
+        return view('perfil', compact('usuario', 'roles', 'municipios'));
     }
+    
 
     public function editarUsuario($id)
     {
@@ -30,12 +36,12 @@ class PerfilController extends Controller
         $municipios = Municipio::all();
         
         session()->flash('usuario', $usuario);
-        return view('auth.perfil', compact('roles', 'municipios'));
+        return view('perfil', compact('roles', 'municipios'));
     }
 
     public function cambiosUsuario(Request $request)
     {
-        $requestData = request()->all();
+        $requestData = $request->all();
         $validator = Validator::make($requestData, [
             'id' => ['required', 'numeric'],
             'nombres' => ['required', 'string', 'max:255'],
@@ -46,23 +52,23 @@ class PerfilController extends Controller
             'direccion' => ['required', 'string', 'max:255'],
             'telefono' => ['required', 'string', 'max:10']
         ]);
-    
         if ($validator->fails()) {
             session()->flash('message', $validator->errors()->first());
             session()->flash('message_type', 'error');
             return back();
         }
-    
         $formFields = $validator->validated();
         $id = $formFields['id'];
-        unset($formFields['id']);
+        $usuario = User::find($id);
+        if (!$usuario) {
+            session()->flash('message', 'Usuario no encontrado');
+            session()->flash('message_type', 'error');
+            return redirect()->route('perfil.index', ['id' => $id]);
+        }
+        $usuario->update($formFields);
+        return redirect()->route('perfil.index', ['id' => $usuario->id])->with('success', 'Perfil actualizado correctamente');
+    }
     
-        User::find($id)->update($formFields);
-        
-        session()->flash('message', 'Usuario editado');
-        session()->flash('message_type', 'success');
-        return redirect('/usuarios');
-    }  
 
     public function updateSettings(Request $request)
     {
@@ -75,22 +81,28 @@ class PerfilController extends Controller
         // return redirect()->route('perfil.index')->with('success', 'Configuraciones actualizadas correctamente');
     }
 
-    public function changePassword(Request $request)
+    public function cambiarPassword(Request $request)
     {
-        // $request->validate([
-        //     'current_password' => 'required',
-        //     'new_password' => 'required|confirmed|min:6',
-        // ]);
-
-        // $usuario = auth()->user();
-
-        // if (!Hash::check($request->current_password, $usuario->password)) {
-        //     return back()->withErrors(['current_password' => 'La contraseña actual no es correcta']);
-        // }
-
-        // $usuario->password = Hash::make($request->new_password);
-        // $usuario->save();
-
-        // return redirect()->route('perfil.index')->with('success', 'Contraseña actualizada correctamente');
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    
+        $userId = auth()->id(); 
+        if (!$userId) {
+            return redirect()->back()->withErrors(['error' => 'Usuario no autenticado o no encontrado.']);
+        }
+        $usuario = User::find($userId); 
+        if (!$usuario) {
+            return redirect()->back()->withErrors(['error' => 'Usuario no encontrado en la base de datos.']);
+        }
+        $currentPassword = trim($request->current_password);
+        if (!Hash::check($currentPassword, $usuario->password)) {
+            return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
+        }
+        $usuario->password = Hash::make($request->password);
+        $usuario->password_restaurada = false;
+        $usuario->save();
+        return redirect()->route('perfil.index')->with('success', 'Configuraciones actualizadas correctamente');
     }
 }

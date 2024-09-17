@@ -41,15 +41,14 @@ class User extends Authenticatable
     // }
 
     public function setPasswordAttribute($value)
-{
-    // Solo hashea si el valor no es ya un hash
-    if (!Hash::needsRehash($value)) {
-        $this->attributes['password'] = $value;
-    } else {
-        $this->attributes['password'] = Hash::make($value);
+    {
+        // Solo hashea si el valor no es ya un hash
+        if (!Hash::needsRehash($value)) {
+            $this->attributes['password'] = $value;
+        } else {
+            $this->attributes['password'] = Hash::make($value);
+        }
     }
-}
-
 
     /**
      * Scope a query to search for a term in specified columns.
@@ -62,7 +61,7 @@ class User extends Authenticatable
     public function scopeSearch(Builder $query, $columns, $term)
     {
         if (is_array($columns)) {
-            $columns = implode(',', $columns); // Convierte el array en una cadena separada por comas
+            $columns = implode(',', $columns); 
         }
 
         return $query->where(function ($query) use ($columns, $term) {

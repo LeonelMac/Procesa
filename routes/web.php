@@ -36,11 +36,11 @@ Route::middleware('auth')->group(function () {
     // });
 
     // Perfil
-    Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
+    Route::get('/perfil/{id}', [PerfilController::class, 'index'])->name('perfil.index');
     Route::post('/perfil/agregar', [PerfilController::class, 'guardarUsuario'])->name('guardarUsuario');
     Route::post('/perfil/guardar', [PerfilController::class, 'cambiosUsuario'])->name('cambiosUsuario');
     Route::put('/perfil/settings', [PerfilController::class, 'updateSettings'])->name('perfil.settings');
-    Route::put('/perfil/change-password', [PerfilController::class, 'changePassword'])->name('perfil.change_password');
+    Route::put('/perfil/cambiarPassword', [PerfilController::class, 'cambiarPassword'])->name('cambiarPassword');
 
     // Distritos
     Route::get('/distritos', [DistritoController::class, 'index'])->name('distritos.index');
@@ -83,6 +83,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/tipo/busquedas/obtener/{idtipobusqueda?}', [TipoBusquedaController::class, 'obtenerTipoBusqueda']);    
 });
 
-// // Rutas sin middleware de autenticación
+// Rutas sin middleware de autenticación
 Route::get('/usuarios/resetPassword', [UsuarioController::class, 'cambiarPasswordVista'])->name('cambiarPasswordVista')->withoutMiddleware([ResetPassword::class]);
 Route::post('/usuarios/resetPassword', [UsuarioController::class, 'cambiarPassword'])->name('cambiarPassword')->withoutMiddleware([ResetPassword::class]);

@@ -15,71 +15,41 @@
         <section class="section profile">
             <div class="row">
                 <div class="col-xl-4">
-
                     <div class="card">
                         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
                             <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
-                            {{-- <h2>{{ $usuario->nombres }}</h2> --}}
-                            <h2>{{ Auth::user()->nombres }} {{ Auth::user()->apellidoP }}
-                                {{ Auth::user()->apellidoM }}</h2>
-                            <h3> <span>
+                            <h2>{{ Auth::user()->nombres }} {{ Auth::user()->apellidoP }} {{ Auth::user()->apellidoM }}</h2>
+                            <h3> 
+                                <span>
                                     @php
-                                        $role = Auth::user()->rol;
-                                        $roleName = '';
-                                        switch ($role) {
-                                            case 1:
-                                                $roleName = 'Administrador';
-                                                break;
-                                            case 2:
-                                                $roleName = 'Juzgados';
-                                                break;
-                                            case 3:
-                                                $roleName = 'Abogado';
-                                                break;
-                                            case 4:
-                                                $roleName = 'Usuario';
-                                                break;
-                                            default:
-                                                $roleName = 'Rol desconocido';
-                                                break;
-                                        }
+                                        $rolUsuario = $roles->firstWhere('id_rolusuarios', $usuario->rol);
                                     @endphp
-                                    {{ $roleName }}
-                                </span></h3>
+                                    <p class="form-control-plaintext">
+                                        {{ $rolUsuario ? $rolUsuario->rolusuarios : 'Rol no asignado' }}</p>
+                                </span>
+                            </h3>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-8">
-
                     <div class="card">
                         <div class="card-body pt-3">
                             <!-- Bordered Tabs -->
                             <ul class="nav nav-tabs nav-tabs-bordered">
-
                                 <li class="nav-item">
                                     <button class="nav-link active" data-bs-toggle="tab"
                                         data-bs-target="#profile-overview">Descripción General</button>
                                 </li>
-
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar
                                         Perfil</button>
                                 </li>
-
-                                {{-- <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab"
-                                        data-bs-target="#profile-settings">Ajustes</button>
-                                </li> --}}
-
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab"
                                         data-bs-target="#profile-change-password">Cambiar la Contraseña</button>
                                 </li>
-
                             </ul>
                             <div class="tab-content pt-2">
-
                                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                     <h5 class="card-title">Detalles del perfil</h5>
 
@@ -95,9 +65,32 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Rol</div>
-                                        <div class="col-lg-9 col-md-8">Administrador</div>
+                                        <label for="rol" class="col-lg-3 col-md-4 label">{{ __('Rol') }}</label>
+                                        <div class="col-lg-9 col-md-8">
+                                            @php
+                                                $rolUsuario = $roles->firstWhere('id_rolusuarios', $usuario->rol);
+                                            @endphp
+                                            <p class="form-control-plaintext">
+                                                {{ $rolUsuario ? $rolUsuario->rolusuarios : 'Rol no asignado' }}</p>
+                                        </div>
                                     </div>
+
+                                    <div class="row">
+                                        <label for="municipio"
+                                            class="col-lg-3 col-md-4 label">{{ __('Municipio') }}</label>
+                                        <div class="col-lg-9 col-md-8">
+                                            @php
+                                                $municipioUsuario = $municipios->firstWhere(
+                                                    'idmunicipio',
+                                                    $usuario->municipio,
+                                                );
+                                            @endphp
+                                            <p class="form-control-plaintext">
+                                                {{ $municipioUsuario ? $municipioUsuario->municipio : 'Municipio no asignado' }}
+                                            </p>
+                                        </div>
+                                    </div>
+
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Dirección</div>
@@ -108,11 +101,9 @@
                                         <div class="col-lg-3 col-md-4 label">Teléfono</div>
                                         <div class="col-lg-9 col-md-8">{{ $usuario->telefono }}</div>
                                     </div>
-
                                 </div>
 
                                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-
                                     <!-- Profile Edit Form -->
                                     <form method="POST" action="{{ route('cambiosUsuario') }}">
                                         <h5 class="card-title">Detalles del perfil</h5>
@@ -168,11 +159,30 @@
                                             </div>
                                         </div>
 
-                                        <!-- Rol -->
-                                        {{-- <div class="row mb-3">
-                                            <label for="rol" class="col-md-4 col-form-label text-md-end">{{ __('Rol') }}</label>
+                                        <!-- Email -->
+                                        <div class="row mb-3">
+                                            <label for="email"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Correo Electrónico') }}</label>
                                             <div class="col-md-6">
-                                                <select id="rol" class="form-control @error('rol') is-invalid @enderror" name="rol" required>
+                                                <input id="email" type="text"
+                                                    class="form-control @error('email') is-invalid @enderror"
+                                                    name="email" value="{{ $usuario->email }}" required>
+                                                @error('email')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <!-- Rol -->
+                                        <div class="row mb-3">
+                                            <label for="rol"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Rol') }}</label>
+                                            <div class="col-md-6">
+                                                <select id="rol"
+                                                    class="form-control @error('rol') is-invalid @enderror" name="rol"
+                                                    required>
                                                     <option value="">Seleccione un rol</option>
                                                     @foreach ($roles as $rol)
                                                         <option value="{{ $rol->id_rolusuarios }}"
@@ -188,13 +198,15 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                    
+
                                         <!-- Municipio -->
                                         <div class="row mb-3">
-                                            <label for="municipio" class="col-md-4 col-form-label text-md-end">{{ __('Municipio') }}</label>
+                                            <label for="municipio"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Municipio') }}</label>
                                             <div class="col-md-6">
-                                                <select id="municipio" class="form-control @error('municipio') is-invalid @enderror" name="municipio"
-                                                    required>
+                                                <select id="municipio"
+                                                    class="form-control @error('municipio') is-invalid @enderror"
+                                                    name="municipio" required>
                                                     <option value="">Seleccione un municipio</option>
                                                     @foreach ($municipios as $municipio)
                                                         <option value="{{ $municipio->idmunicipio }}"
@@ -209,7 +221,7 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                        </div> --}}
+                                        </div>
 
                                         <!-- Dirección -->
                                         <div class="row mb-3">
@@ -246,125 +258,84 @@
                                         <!-- Botón de Guardar -->
                                         <div class="row mb-0">
                                             <div class="col-md-6 offset-md-4">
-                                                <button type="submit" class="btn btn-success">
-                                                    {{ __('Guardar') }}
-                                                </button>
+                                                <button type="submit"
+                                                    class="btn btn-success">{{ __('Guardar') }}</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-                                <div class="tab-pane fade pt-3" id="profile-settings">
-
-                                    <!-- Settings Form -->
-                                    <form action="{{ route('perfil.settings') }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="row mb-3">
-                                            <label for="notificationSettings"
-                                                class="col-md-4 col-lg-3 col-form-label">Configuración de
-                                                Notificaciones</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="emailNotifications" name="emailNotifications"
-                                                        {{ $usuario->notificaciones_email ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="emailNotifications">
-                                                        Correo Electrónico
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="whatsappNotifications" name="whatsappNotifications"
-                                                        {{ $usuario->notificaciones_whatsapp ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="whatsappNotifications">
-                                                        Whatsapp
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="smsNotifications"
-                                                        name="smsNotifications"
-                                                        {{ $usuario->notificaciones_sms ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="smsNotifications">
-                                                        SMS
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                                        </div>
-                                    </form><!-- End settings Form -->
-
-                                </div>
 
                                 <div class="tab-pane fade pt-3" id="profile-change-password">
                                     <!-- Change Password Form -->
-                                    <form action="{{ route('perfil.change_password') }}" method="POST">
+                                    <form method="POST" action="{{ route('cambiarPassword') }}">
                                         @csrf
-                                        @method('PUT')
                                         <div class="row mb-3">
-                                            <label for="currentPassword"
-                                                class="col-md-4 col-lg-3 col-form-label">Contraseña actual</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="current_password" type="password" class="form-control"
-                                                    id="currentPassword">
+                                            <label for="current-password" class="col-md-4 col-form-label text-md-end">{{ __('Contraseña actual') }}</label>
+                                    
+                                            <div class="col-md-6">
+                                                <input id="current-password" type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" required>
+                                    
+                                                @error('current_password')
+                                                    <script>
+                                                        toastr.error('Contraseña actual inválida', '', {
+                                                            timeOut: 5000
+                                                        });
+                                                    </script>
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
-
+                                    
                                         <div class="row mb-3">
-                                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nueva
-                                                contraseña</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="new_password" type="password" class="form-control"
-                                                    id="newPassword">
+                                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Nueva contraseña') }}</label>
+                                    
+                                            <div class="col-md-6">
+                                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                    
+                                                @error('password')
+                                                    <script>
+                                                        toastr.error('Contraseña inválida', '', {
+                                                            timeOut: 5000
+                                                        });
+                                                    </script>
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
-
+                                    
                                         <div class="row mb-3">
-                                            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Vuelva a
-                                                ingresar la nueva contraseña</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="new_password_confirmation" type="password"
-                                                    class="form-control" id="renewPassword">
+                                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirmar nueva contraseña') }}</label>
+                                    
+                                            <div class="col-md-6">
+                                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                             </div>
                                         </div>
-
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Cambiar la contraseña</button>
+                                    
+                                        <div class="row mb-0">
+                                            <div class="d-flex col-md-6 offset-md-4">
+                                                <button type="submit" class="btn btn-success ms-auto">
+                                                    {{ __('Cambiar contraseña') }}
+                                                </button>
+                                            </div>
                                         </div>
-                                    </form><!-- End Change Password Form -->
-
+                                    </form>                 
                                 </div>
-
-                            </div><!-- End Bordered Tabs -->
-
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
-
-    </main><!-- End #main -->
+    </main>
 @endsection
 
-@section('scripts')
-    <!-- Vendor JS Files -->
-    <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>
-    <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/quill/quill.js') }}"></script>
-    <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-    <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
-
-    <!-- Template Main JS File -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
-
-    <!-- Incluir Flatpickr JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Incluir SweetAlert2 JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@section('additional-scripts')
+    <!-- Scripts específicos para esta vista -->
+    <script>
+        // Tu código JavaScript específico para la vista de perfil
+    </script>
 @endsection

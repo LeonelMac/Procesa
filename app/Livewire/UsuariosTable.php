@@ -19,6 +19,31 @@ class UsuariosTable extends TablaComponent
     public $id;
     public $nombres, $apellidoP, $apellidoM, $rol, $municipio, $direccion, $telefono;
 
+    public function query(): Builder
+    {
+        return User::query()
+            ->select(
+                'users.*',
+                DB::raw("CONCAT(users.nombres, ' ', users.apellidoP, ' ', users.apellidoM) AS nombre_completo"),
+                'rolusuarios.rolusuarios AS rol_nombre',
+                'municipio.municipio AS municipio_nombre'
+            )
+            ->leftJoin('rolusuarios', 'users.rol', '=', 'rolusuarios.id_rolusuarios')
+            ->leftJoin('municipio', 'users.municipio', '=', 'municipio.idmunicipio');
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::make('nombre_completo', 'Nombre'),
+            Column::make('rol_nombre', 'Rol'),
+            Column::make('municipio_nombre', 'Municipio'),
+            Column::make('direccion', 'Dirección'),
+            Column::make('telefono', 'Teléfono'),
+            Column::make('id', 'Acciones')->component('columns.accionesUsuarios'),
+        ];
+    }
+
     public function mount($id = null)
     {
         if ($id) {
@@ -64,31 +89,6 @@ class UsuariosTable extends TablaComponent
             session()->flash('message', 'Usuario actualizado correctamente.');
             $this->emit('usuarioActualizado');
         }
-    }
-
-    public function query(): Builder
-    {
-        return User::query()
-            ->select(
-                'users.*',
-                DB::raw("CONCAT(users.nombres, ' ', users.apellidoP, ' ', users.apellidoM) AS nombre_completo"),
-                'rolusuarios.rolusuarios AS rol_nombre',
-                'municipio.municipio AS municipio_nombre'
-            )
-            ->leftJoin('rolusuarios', 'users.rol', '=', 'rolusuarios.id_rolusuarios')
-            ->leftJoin('municipio', 'users.municipio', '=', 'municipio.idmunicipio');
-    }
-
-    public function columns(): array
-    {
-        return [
-            Column::make('nombre_completo', 'Nombre'),
-            Column::make('rol_nombre', 'Rol'),
-            Column::make('municipio_nombre', 'Municipio'),
-            Column::make('direccion', 'Dirección'),
-            Column::make('telefono', 'Teléfono'),
-            Column::make('id', 'Acciones')->component('columns.accionesUsuarios'),
-        ];
     }
 
     public function generateSecurePassword($length = 12)
