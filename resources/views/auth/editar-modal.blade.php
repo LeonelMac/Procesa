@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('cambiosUsuario') }}">
+<form method="POST" action="{{ route('usuarios.cambios') }}">
     @csrf
     <!-- Campo oculto para el ID -->
     <input id="id" type="number" hidden name="id" value="{{ $usuario->id }}" required>

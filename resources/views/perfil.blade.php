@@ -91,7 +91,6 @@
                                         </div>
                                     </div>
 
-
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Dirección</div>
                                         <div class="col-lg-9 col-md-8">{{ $usuario->direccion }}</div>
@@ -105,7 +104,7 @@
 
                                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
                                     <!-- Profile Edit Form -->
-                                    <form method="POST" action="{{ route('cambiosUsuario') }}">
+                                    <form method="POST" action="{{ route('perfil.cambios') }}">
                                         <h5 class="card-title">Detalles del perfil</h5>
                                         @csrf
                                         <!-- Campo oculto para el ID -->
@@ -152,22 +151,6 @@
                                                     class="form-control @error('apellidoM') is-invalid @enderror"
                                                     name="apellidoM" value="{{ $usuario->apellidoM }}" required>
                                                 @error('apellidoM')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <!-- Email -->
-                                        <div class="row mb-3">
-                                            <label for="email"
-                                                class="col-md-4 col-form-label text-md-end">{{ __('Correo Electrónico') }}</label>
-                                            <div class="col-md-6">
-                                                <input id="email" type="text"
-                                                    class="form-control @error('email') is-invalid @enderror"
-                                                    name="email" value="{{ $usuario->email }}" required>
-                                                @error('email')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>

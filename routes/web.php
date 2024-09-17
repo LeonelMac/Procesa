@@ -31,16 +31,16 @@ Route::middleware('auth')->group(function () {
     // Usuarios
     // Route::middleware('role:Administrador')->group(function () {
     Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
-    Route::post('/usuarios/agregar', [UsuarioController::class, 'guardarUsuario'])->name('guardarUsuario');
-    Route::post('/usuarios/guardar', [UsuarioController::class, 'cambiosUsuario'])->name('cambiosUsuario');
+    Route::post('/usuarios/agregar', [UsuarioController::class, 'guardarUsuario'])->name('usuarios.guardar');
+    Route::post('/usuarios/guardar', [UsuarioController::class, 'cambiosUsuario'])->name('usuarios.cambios');
     // });
 
     // Perfil
     Route::get('/perfil/{id}', [PerfilController::class, 'index'])->name('perfil.index');
-    Route::post('/perfil/agregar', [PerfilController::class, 'guardarUsuario'])->name('guardarUsuario');
-    Route::post('/perfil/guardar', [PerfilController::class, 'cambiosUsuario'])->name('cambiosUsuario');
+    Route::post('/perfil/agregar', [PerfilController::class, 'guardarUsuario'])->name('perfil.guardar');
+    Route::post('/perfil/guardar', [PerfilController::class, 'cambiosUsuario'])->name('perfil.cambios');
     Route::put('/perfil/settings', [PerfilController::class, 'updateSettings'])->name('perfil.settings');
-    Route::put('/perfil/cambiarPassword', [PerfilController::class, 'cambiarPassword'])->name('cambiarPassword');
+    Route::put('/perfil/cambiarPassword', [PerfilController::class, 'cambiarPassword'])->name('perfil.cambiarPassword');
 
     // Distritos
     Route::get('/distritos', [DistritoController::class, 'index'])->name('distritos.index');

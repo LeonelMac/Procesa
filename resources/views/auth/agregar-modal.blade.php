@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('guardarUsuario') }}">
+<form method="POST" action="{{ route('usuarios.guardar') }}">
     @csrf
     <!-- Nombres -->
     <div class="row mb-3">

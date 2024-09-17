@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
 
 class UsuarioController extends Controller
 {
@@ -35,12 +37,11 @@ class UsuarioController extends Controller
             'direccion' => 'required|string|max:255',
             'telefono' => 'required|string|max:10',
         ]);
-
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-
-        User::create([
+        $password = $this->generateSecurePassword(12);
+        $usuario = User::create([
             'nombres' => $request->nombres,
             'apellidoP' => $request->apellidoP,
             'apellidoM' => $request->apellidoM,
@@ -49,13 +50,23 @@ class UsuarioController extends Controller
             'municipio' => $request->municipio,
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
-            'password' => bcrypt('123456'),
+            'password' => $password,
         ]);
-
+        Mail::to($usuario->email)->send(new WelcomeEmail($usuario, $password));
         session()->flash('message', 'Usuario creado correctamente.');
         return redirect()->route('usuarios.index');
     }
 
+    public function generateSecurePassword($length = 12)
+    {
+        $upper = Str::upper(Str::random(2));
+        $lower = Str::lower(Str::random(4));
+        $numbers = random_int(10, 99) . random_int(10, 99);
+        $specialCharacters = '!@#$%^&*';
+        $special = substr(str_shuffle($specialCharacters), 0, 2);
+        $password = str_shuffle($upper . $lower . $numbers . $special);
+        return substr($password, 0, $length);
+    }
 
     public function editarUsuario($id)
     {
@@ -104,7 +115,7 @@ class UsuarioController extends Controller
 
         session()->flash('message', 'Usuario editado');
         session()->flash('message_type', 'success');
-        return redirect('/usuarios');
+        return redirect()->route('usuarios.index');
     }
 
     public function cambiarPassword(Request $request)
@@ -113,12 +124,12 @@ class UsuarioController extends Controller
             'current_password' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-    
-        $userId = auth()->id(); 
+
+        $userId = auth()->id();
         if (!$userId) {
             return redirect()->back()->withErrors(['error' => 'Usuario no autenticado o no encontrado.']);
         }
-        $usuario = User::find($userId); 
+        $usuario = User::find($userId);
         if (!$usuario) {
             return redirect()->back()->withErrors(['error' => 'Usuario no encontrado en la base de datos.']);
         }
@@ -132,7 +143,7 @@ class UsuarioController extends Controller
         $usuario->save();
         return redirect('/inicio')->with('message', 'Contraseña actualizada correctamente.');
     }
-    
+
     public function cambiarPasswordVista()
     {
         return view('auth.resetPassword');

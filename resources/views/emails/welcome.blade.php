@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Restablecimiento de Contraseña</title>
+    <title>¡Bienvenido al equipo {{ config('app.name') }}!</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -33,18 +33,22 @@
             padding: 20px;
             line-height: 1.6;
         }
+        .content h1 {
+            color: #4285f4;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
         .content p {
             margin: 0 0 15px;
         }
-        .password-box {
+        .credentials-box {
             background-color: #f1f3f4; /* Light grey background */
             color: #333;
             padding: 15px;
             border-radius: 5px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
+            font-size: 16px;
             margin: 20px 0;
+            line-height: 1.4;
         }
         .footer {
             text-align: center;
@@ -63,18 +67,19 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>Restablecimiento de Contraseña</h1>
+            <h1>¡Bienvenido al equipo {{ config('app.name') }}!</h1>
         </div>
         <div class="content">
-            <p>Hola {{ $usuario->nombres }} {{ $usuario->apellidoP }} {{ $usuario->apellidoM }}.</p>
-            <p>Su contraseña ha sido restablecida exitosamente. Su nueva contraseña es:</p>
-            <div class="password-box">
-                {{ $nuevaPassword }}
+            <h1>Hola, {{ $usuario->nombres }} {{ $usuario->apellidoP }}</h1>
+            <p>Estamos emocionados de que te unas a nuestra plataforma. A continuación, encontrarás tus credenciales de inicio de sesión:</p>
+            <div class="credentials-box">
+                <p><strong>Email:</strong> {{ $usuario->email }}</p>
+                <p><strong>Contraseña:</strong> {{ $password }}</p>
             </div>
-            <p>Le recomendamos encarecidamente cambiar esta contraseña una vez que inicie sesión para mantener la seguridad de su cuenta.</p>
+            <p>Por favor, inicia sesión y cambia tu contraseña después de iniciar sesión por primera vez para garantizar la seguridad de tu cuenta.</p>
         </div>
         <div class="footer">
-            <p>Saludos<br>del equipo de {{ config('app.name') }}</p>
+            <p>Saludos,<br>El equipo de {{ config('app.name') }}</p>
             <img src="{{ $message->embed(public_path('assets/img/procesa.png')) }}" alt="Logo">
         </div>
     </div>
