@@ -29,7 +29,15 @@ class ExpDescripcionComponent extends TablaComponent
             Column::make('destino', 'Destino'),
             Column::make('fechaexpe', 'Fecha'),
             Column::make('sintesis', 'Síntesis'),
-            Column::make('id_expedientes', 'Acciones')->component('columns.accionesDescripcionExpedientes'),
+            Column::make('documentoexpe', 'Acciones')->component('columns.accionesDescripcionExpedientes'),
         ];
     }
+
+    public function verExpediente($id)
+    {
+        $expediente = Expediente::findOrFail($id);
+        $pdfUrl = asset("assets/pdf/{$expediente->documentoexpe}");
+        return redirect()->to($pdfUrl);
+    }
+    
 }
