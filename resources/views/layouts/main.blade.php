@@ -174,7 +174,7 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
 
     @livewireScripts
-    @yield('additional-scripts')
+    @yield('scripts')
 
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf

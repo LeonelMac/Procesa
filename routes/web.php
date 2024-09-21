@@ -11,6 +11,7 @@ use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Middleware\ResetPassword;
+use App\Http\Controllers\EventController;
 
 // Proceso de Login y Logout
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -23,7 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/inicio', function () {
         return view('inicio');
     })->name('inicio');
-
     Route::get('/inicio_user', function () {
         return view('inicio_user');
     })->name('inicio_user');
@@ -80,7 +80,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/tipo/busquedas/guardar', [TipoBusquedaController::class, 'guardarTipoBusqueda'])->name('tipoBusquedas.guardar');
     Route::post('/tipo/busquedas/editar/{idtipobusqueda}', [TipoBusquedaController::class, 'editarTipoBusqueda'])->name('tipoBusquedas.editar');
     Route::delete('/tipo/busquedas/eliminar/{idtipobusqueda}', [TipoBusquedaController::class, 'eliminarTipoBusqueda'])->name('tipoBusquedas.eliminar');
-    Route::get('/tipo/busquedas/obtener/{idtipobusqueda?}', [TipoBusquedaController::class, 'obtenerTipoBusqueda']);    
+    Route::get('/tipo/busquedas/obtener/{idtipobusqueda?}', [TipoBusquedaController::class, 'obtenerTipoBusqueda']);
+
+    // Eventos Calendario
+    Route::get('/events', [EventController::class, 'index']);
+    Route::post('/events', [EventController::class, 'store']);
+    Route::put('/events/{id}', [EventController::class, 'update']);
+    Route::delete('/events/{id}', [EventController::class, 'destroy']);
 });
 
 // Rutas sin middleware de autenticación
