@@ -1,273 +1,136 @@
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
+document.addEventListener('DOMContentLoaded', function() {
+  // Inicializar el calendario
+  var calendarEl = document.getElementById('calendar');
+  var calendar;
 
-        if (calendarEl) {
-            var today = new Date();
-            today.setHours(0, 0, 0, 0); // Asegura que el día actual no tenga problemas con zonas horarias
+  if (typeof FullCalendar !== 'undefined') {
+      // Inicializar el calendario
+      calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          selectable: true,
+          editable: true,
+          events: '/events',  // Asegúrate de que esta ruta esté sirviendo los eventos correctamente
+          eventClick: function(info) {
+              // Mostrar los detalles del evento en el modal cuando se hace clic en un evento
+              var event = info.event;
+              document.getElementById('eventTitleInput').value = event.title;
+              document.getElementById('eventDetails').value = event.extendedProps.description;
+              document.getElementById('eventStart').value = event.start.toISOString().substring(0, 10); // Solo la fecha
 
-            // Fechas importantes o festivos
-            var importantDates = [
-                {
-                    date: '2024-12-25',
-                    title: 'Navidad',
-                    className: 'bg-warning text-dark'
-                },
-                {
-                    date: '2024-09-16',
-                    title: 'Independencia de México',
-                    className: 'bg-danger text-white'
-                }
-            ];
+              // Si tiene horas de inicio y fin
+              if (event.start.getHours()) {
+                  document.getElementById('startTime').value = event.start.toTimeString().substring(0, 5);
+                  if (event.end) {
+                      document.getElementById('endTime').value = event.end.toTimeString().substring(0, 5);
+                  }
+                  document.getElementById('allDayCheckbox').checked = false;  // Desmarcar "Todo el día"
+              } else {
+                  document.getElementById('allDayCheckbox').checked = true;  // Marcar "Todo el día"
+                  document.getElementById('startTime').value = '';
+                  document.getElementById('endTime').value = '';
+              }
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                locale: 'es',
-                initialView: 'dayGridMonth',
-                editable: true,
-                selectable: true,
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                buttonText: {
-                    today: 'Hoy',
-                    month: 'Mes',
-                    week: 'Semana',
-                    day: 'Día'
-                },
-                titleFormat: {
-                    year: 'numeric',
-                    month: 'long'
-                },
-                themeSystem: 'standard',
+              toggleTimeInputs();  // Asegurarse de mostrar/ocultar las horas correctamente
 
-                // Modificar estilo para fechas anteriores a hoy, pero dejarlas visibles
-                dayCellClassNames: function (info) {
-                    var date = new Date(info.date);
-                    if (date < today) {
-                        return ['fc-day-past']; // Añadir una clase para días anteriores
-                    }
-                },
+              var myModal = new bootstrap.Modal(document.getElementById('interactiveEventModal'));
+              myModal.show();
+          },
+          dateClick: function(info) {
+              // Al hacer clic en una fecha, restablecer el formulario y mostrar el modal
+              document.getElementById('eventForm').reset();
+              document.getElementById('eventStart').value = info.dateStr;  // Establecer la fecha seleccionada
+              document.getElementById('startTime').value = '';
+              document.getElementById('endTime').value = '';
+              document.getElementById('allDayCheckbox').checked = true;  // Marcar "Todo el día" por defecto
 
-                // Deshabilitar selección de fechas anteriores pero mostrarlas opacas
-                selectAllow: function (selectInfo) {
-                    return selectInfo.start >= today; // No permitir selección de fechas pasadas
-                },
+              toggleTimeInputs();  // Asegurarse de mostrar/ocultar las horas correctamente
 
-                // Añadir las fechas importantes o festivos y eventos del servidor
-                events: function (fetchInfo, successCallback, failureCallback) {
-                    // Cargar eventos del servidor (base de datos)
-                    $.ajax({
-                        url: '/events',
-                        method: 'GET',
-                        success: function (serverEvents) {
-                            // Añadir eventos importantes
-                            let importantEvents = importantDates.map(dateObj => ({
-                                title: dateObj.title,
-                                start: dateObj.date,
-                                allDay: true,
-                                className: dateObj.className
-                            }));
+              var myModal = new bootstrap.Modal(document.getElementById('interactiveEventModal'));
+              myModal.show();
+          }
+      });
 
-                            // Combinar eventos del servidor y fechas importantes
-                            let allEvents = serverEvents.concat(importantEvents);
+      calendar.render();  // Renderizar el calendario
+  } else {
+      console.error('FullCalendar no está disponible.');
+  }
 
-                            successCallback(allEvents);
-                        },
-                        error: function (xhr) {
-                            console.log('Error al cargar eventos del servidor:', xhr.responseText);
-                            failureCallback(xhr);
-                        }
-                    });
-                },
+  // Escuchar el cambio del checkbox "Todo el día" para habilitar/deshabilitar los campos de hora
+  var allDayCheckbox = document.getElementById('allDayCheckbox');
+  var startTimeInput = document.getElementById('startTime');
+  var endTimeInput = document.getElementById('endTime');
+  var timeSelectors = document.getElementById('timeSelectors');
 
-                select: function (info) {
-                    if (info.start < today) {
-                        alert('No puedes crear eventos en días anteriores.');
-                        return;
-                    }
-                    $('#eventForm')[0].reset();
-                    $('#eventId').val('');
-                    $('#eventStart').val(info.startStr);
-                    $('#eventEnd').val(info.endStr);
-                    $('#eventInfo').addClass('d-none');
-                    $('#eventForm').removeClass('d-none');
+  function toggleTimeInputs() {
+      if (allDayCheckbox.checked) {
+          startTimeInput.disabled = true;
+          endTimeInput.disabled = true;
+          timeSelectors.classList.add('d-none');
+      } else {
+          startTimeInput.disabled = false;
+          endTimeInput.disabled = false;
+          timeSelectors.classList.remove('d-none');
+      }
+  }
 
-                    // Abrir el modal de agregar evento
-                    $('#interactiveEventModal').modal('show');
-                    $('#interactiveEventModalLabel').html('<i class="fas fa-plus-circle"></i> Agregar Evento');
+  allDayCheckbox.addEventListener('change', toggleTimeInputs);
+  toggleTimeInputs();  // Ejecutar la función al cargar la página
 
-                    // Mostrar opciones de repetición y todo el día
-                    $('#repetitionOptions').removeClass('d-none');
-                    $('#allDayCheckbox').prop('checked', true); // Por defecto, todo el día
+  // Guardar el evento
+  document.getElementById('saveEventBtn').addEventListener('click', function() {
+      var title = document.getElementById('eventTitleInput').value;
+      var start = document.getElementById('eventStart').value;
+      var description = document.getElementById('eventDetails').value;
+      var repetition = document.getElementById('repetitionSelect').value;
+      var allDay = allDayCheckbox.checked;
 
-                    // Mostrar u ocultar el selector de horas según si es todo el día o no
-                    $('#allDayCheckbox').change(function () {
-                        if ($(this).is(':checked')) {
-                            $('#timeSelectors').addClass('d-none'); // Ocultar selección de horas
-                        } else {
-                            $('#timeSelectors').removeClass('d-none'); // Mostrar selección de horas
-                        }
-                    });
+      var startTime = startTimeInput.value;
+      var endTime = endTimeInput.value;
 
-                    $('#saveEventBtn').off('click').on('click', function () {
-                        var newEvent = {
-                            title: $('#eventTitleInput').val(),
-                            all_day: $('#allDayCheckbox').is(':checked'),
-                            repeat: $('#repetitionSelect').val() // Repetición seleccionada
-                        };
+      if (!allDay && (!startTime || !endTime)) {
+          alert('Debe especificar la hora de inicio y fin si no es un evento de todo el día.');
+          return;
+      }
 
-                        // Validar que las fechas de inicio y fin sean válidas antes de convertirlas
-                        var startDate = $('#eventStart').val();
-                        var endDate = $('#eventEnd').val();
+      if (!allDay && startTime >= endTime) {
+          alert('La hora de inicio debe ser anterior a la hora de fin.');
+          return;
+      }
 
-                        if (!startDate || !endDate) {
-                            alert('Las fechas de inicio y fin son obligatorias.');
-                            return;
-                        }
+      if (title) {
+          // Configurar CSRF Token
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
 
-                        // Convertir las fechas en el formato correcto
-                        newEvent.start = new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
-                        newEvent.end = new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
+          // Hacer la solicitud AJAX para guardar el evento
+          $.ajax({
+              url: '/events',
+              type: 'POST',
+              data: {
+                  title: title,
+                  start: start,
+                  description: description,
+                  all_day: allDay ? 1 : 0,
+                  repetition: repetition,
+                  start_time: allDay ? null : startTime,
+                  end_time: allDay ? null : endTime
+              },
+              success: function(response) {
+                  console.log('Evento guardado correctamente');
+                  calendar.refetchEvents(); // Refrescar el calendario
 
-                        // Agregar hora de inicio y fin si no es un evento de todo el día
-                        if (!newEvent.all_day) {
-                            newEvent.start += ' ' + $('#startTime').val();
-                            newEvent.end += ' ' + $('#endTime').val();
-                        }
-
-                        // Lógica para repetición de eventos
-                        let events = [];
-                        if (newEvent.repeat === 'daily') {
-                            for (let d = new Date(newEvent.start); d <= new Date(newEvent.end); d.setDate(d.getDate() + 1)) {
-                                events.push({
-                                    title: newEvent.title,
-                                    start: new Date(d),
-                                    allDay: newEvent.all_day
-                                });
-                            }
-                        } else if (newEvent.repeat === 'weekdays') {
-                            for (let d = new Date(newEvent.start); d <= new Date(newEvent.end); d.setDate(d.getDate() + 1)) {
-                                if (d.getDay() !== 0 && d.getDay() !== 6) { // Solo lunes a viernes
-                                    events.push({
-                                        title: newEvent.title,
-                                        start: new Date(d),
-                                        allDay: newEvent.all_day
-                                    });
-                                }
-                            }
-                        } else {
-                            events.push(newEvent); // No repetir
-                        }
-
-                        // Enviar eventos creados al servidor
-                        $.ajax({
-                            url: '/events',
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify(events),
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function (response) {
-                                response.forEach(function (event) {
-                                    calendar.addEvent(event); // Añadir eventos al calendario
-                                });
-                                $('#interactiveEventModal').modal('hide');
-                                alert('Evento creado con éxito');
-                            },
-                            error: function (xhr) {
-                                console.log(xhr.responseText);
-                                alert('Hubo un error al crear el evento');
-                            }
-                        });
-                    });
-                },
-
-                // Clic en evento para ver detalles, editar o eliminar
-                eventClick: function (info) {
-                    $('#eventTitle').text(info.event.title);
-                    $('#eventDateTime').text(info.event.start.toLocaleDateString('es-ES') + ' - ' +
-                        (info.event.end ? info.event.end.toLocaleDateString('es-ES') : ''));
-                    $('#eventDetails').text(info.event.extendedProps.details || 'Sin detalles adicionales');
-                    $('#eventId').val(info.event.id);
-                    $('#eventInfo').removeClass('d-none');
-                    $('#eventForm').addClass('d-none');
-
-                    // Abrir el modal de detalles del evento
-                    $('#interactiveEventModal').modal('show');
-                    $('#interactiveEventModalLabel').html('<i class="fas fa-calendar-alt"></i> Detalles del Evento');
-
-                    // Editar evento
-                    $('#editEventBtn').off('click').on('click', function () {
-                        $('#eventForm').removeClass('d-none');
-                        $('#eventInfo').addClass('d-none');
-                        $('#eventTitleInput').val(info.event.title);
-                    });
-
-                    // Eliminar evento
-                    $('#deleteEventBtn').off('click').on('click', function () {
-                        if (confirm('¿Estás seguro de que deseas eliminar este evento?')) {
-                            $.ajax({
-                                url: '/events/' + info.event.id,
-                                method: 'DELETE',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                success: function (response) {
-                                    info.event.remove();
-                                    $('#interactiveEventModal').modal('hide');
-                                    alert('Evento eliminado con éxito');
-                                },
-                                error: function (xhr) {
-                                    console.log(xhr.responseText);
-                                    alert('Hubo un error al eliminar el evento');
-                                }
-                            });
-                        }
-                    });
-
-                    // Guardar cambios en evento
-                    $('#saveEventBtn').off('click').on('click', function () {
-                        var updatedEvent = {
-                            title: $('#eventTitleInput').val(),
-                            all_day: true
-                        };
-
-                        // Validar que las fechas de inicio y fin sean válidas antes de convertirlas
-                        var startDate = info.event.startStr;
-                        var endDate = info.event.endStr;
-
-                        if (!startDate || !endDate) {
-                            alert('Las fechas de inicio y fin son obligatorias.');
-                            return;
-                        }
-
-                        updatedEvent.start = startDate.slice(0, 19).replace('T', ' ');
-                        updatedEvent.end = endDate.slice(0, 19).replace('T', ' ');
-
-                        $.ajax({
-                            url: '/events/' + info.event.id,
-                            method: 'PUT',
-                            contentType: 'application/json',
-                            data: JSON.stringify(updatedEvent),
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function (response) {
-                                info.event.setProp('title', updatedEvent.title);
-                                $('#interactiveEventModal').modal('hide');
-                                alert('Evento actualizado con éxito');
-                            },
-                            error: function (xhr) {
-                                console.log(xhr.responseText);
-                                alert('Hubo un error al actualizar el evento');
-                            }
-                        });
-                    });
-                }
-            });
-
-            calendar.render();
-        }
-    });
+                  var myModal = bootstrap.Modal.getInstance(document.getElementById('interactiveEventModal'));
+                  myModal.hide();
+              },
+              error: function(error) {
+                  console.error('Error al guardar el evento:', error);
+              }
+          });
+      } else {
+          alert('El título del evento es obligatorio.');
+      }
+  });
+});

@@ -80,48 +80,25 @@
                 </div>
             </div><!-- End Calendario -->
 
-            <!-- Modal interactivo para agregar/editar/eliminar evento -->
-            <div class="modal fade" id="interactiveEventModal" tabindex="-1" role="dialog"
-                aria-labelledby="interactiveEventModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal fade" id="interactiveEventModal" tabindex="-1" aria-labelledby="interactiveEventModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header bg-light">
-                            <h5 class="modal-title" id="interactiveEventModalLabel">
-                                <i class="fas fa-calendar-alt"></i> Detalles del Evento
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                style="position: absolute; right: 10px; top: 10px;"></button>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="interactiveEventModalLabel">Detalles del Evento</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div id="eventInfo" class="d-none">
-                                <h6 id="eventTitle" class="font-weight-bold"></h6>
-                                <p id="eventDateTime" class="text-muted"></p>
-                                <p id="eventDetails" class="text-muted"></p>
-                                <div class="text-right">
-                                    <button id="editEventBtn" class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </button>
-                                    <button id="deleteEventBtn" class="btn btn-outline-danger btn-sm">
-                                        <i class="fas fa-trash-alt"></i> Eliminar
-                                    </button>
-                                </div>
-                            </div>
-                            <form id="eventForm" class="d-none">
+                            <form id="eventForm">
                                 <div class="mb-3">
                                     <label for="eventTitleInput" class="form-label">Título del Evento</label>
-                                    <input type="text" class="form-control" id="eventTitleInput" name="title"
-                                        placeholder="Título...">
+                                    <input type="text" class="form-control" id="eventTitleInput" placeholder="Título...">
                                 </div>
-                                <input type="hidden" id="eventId">
                                 <input type="hidden" id="eventStart">
-                                <input type="hidden" id="eventEnd">
-                                <div class="mb-3" id="repetitionOptions">
-                                    <label for="repetitionSelect" class="form-label">Repetir</label>
-                                    <select id="repetitionSelect" class="form-select">
-                                        <option value="none" selected>No se repite</option>
-                                        <option value="daily">Cada día</option>
-                                        <option value="weekdays">Todos los días laborales (lunes a viernes)</option>
-                                    </select>
+                                <div class="mb-3">
+                                    <label for="eventDetails" class="form-label">Detalles del Evento</label>
+                                    <textarea class="form-control" id="eventDetails" rows="3"></textarea>
                                 </div>
                                 <div class="mb-3 form-check">
                                     <input type="checkbox" class="form-check-input" id="allDayCheckbox" checked>
@@ -133,16 +110,61 @@
                                     <label for="endTime" class="form-label mt-2">Hora de fin</label>
                                     <input type="time" class="form-control" id="endTime">
                                 </div>
-                                <div class="text-right">
-                                    <button type="button" id="saveEventBtn" class="btn btn-success">
-                                        <i class="fas fa-save"></i> Guardar
-                                    </button>
+                                <div class="mb-3">
+                                    <label for="repetitionSelect" class="form-label">Repetición</label>
+                                    <select class="form-select" id="repetitionSelect">
+                                        <option value="none" selected>No repetir</option>
+                                        <option value="monthly">Cada mes</option>
+                                        <option value="weekdays">De Lunes a Viernes</option>
+                                    </select>
                                 </div>
                             </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="saveEventBtn">Guardar</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="viewEventModal" tabindex="-1" aria-labelledby="viewEventModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="viewEventModalLabel">Detalles del Evento</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="viewEventForm">
+                                <div class="mb-3">
+                                    <label for="viewEventTitle" class="form-label">Título del Evento</label>
+                                    <input type="text" class="form-control" id="viewEventTitle" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="viewEventDetails" class="form-label">Detalles del Evento</label>
+                                    <textarea class="form-control" id="viewEventDetails" rows="3" readonly></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="viewEventTime" class="form-label">Fecha y Hora</label>
+                                    <input type="text" class="form-control" id="viewEventTime" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="viewRepetition" class="form-label">Repetición</label>
+                                    <input type="text" class="form-control" id="viewRepetition" readonly>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="deleteEventBtn">Eliminar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" id="editEventBtn">Editar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
             <!-- Actividad recientes -->
             <div class="col-xxl-4 col-xl-4 col-lg-4">
                 <div class="card">

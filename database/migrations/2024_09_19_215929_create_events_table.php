@@ -16,6 +16,7 @@ return new class extends Migration
             $table->dateTime('start');
             $table->dateTime('end')->nullable();
             $table->boolean('all_day')->default(false);
+            $table->string('recurrence_rule')->nullable();
             $table->string('backgroundColor')->default('#007bff');
             $table->timestamps();
         });

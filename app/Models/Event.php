@@ -16,6 +16,7 @@ class Event extends Model
         'start',
         'end',
         'all_day',
-        'backgroundColor'
+        'backgroundColor',
+        'recurrence_rule'
     ];
 }
