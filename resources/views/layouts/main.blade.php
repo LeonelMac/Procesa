@@ -37,6 +37,9 @@
     <!-- Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
+    {{-- Flatpickr --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     @livewireStyles
     @yield('additional-styles')
 
@@ -152,6 +155,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    {{-- Flatpickr --}}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     @vite(['resources/js/app.js'])
 
 

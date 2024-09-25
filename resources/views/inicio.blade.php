@@ -69,8 +69,8 @@
                         </div>
                     </div>
                 </div>
-            </div><!-- End Avisos Card -->
-        </div><!-- End Row for Top Cards -->
+            </div>
+        </div>
 
         <div class="row">
             <!-- Calendario -->
@@ -79,7 +79,6 @@
                     <div id="calendar" style="max-width: 100%; height: auto;"></div>
                 </div>
             </div><!-- End Calendario -->
-
 
             <div class="modal fade" id="interactiveEventModal" tabindex="-1" aria-labelledby="interactiveEventModalLabel"
                 aria-hidden="true">
@@ -112,12 +111,12 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="repetitionSelect" class="form-label">Repetición</label>
-                                    <select class="form-select" id="repetitionSelect">
-                                        <option value="none" selected>No repetir</option>
+                                    <select id="repetitionSelect" name="repetition_type" class="form-select">
+                                        <option value="none">No repetir</option>
                                         <option value="monthly">Cada mes</option>
-                                        <option value="weekdays">De Lunes a Viernes</option>
+                                        <option value="weekdays">De lunes a viernes</option>
                                     </select>
-                                </div>                                
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -128,12 +127,14 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="viewEventModal" tabindex="-1" aria-labelledby="viewEventModalLabel" aria-hidden="true">
+            <div class="modal fade" id="viewEventModal" tabindex="-1" aria-labelledby="viewEventModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="viewEventModalLabel">Detalles del Evento</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -152,7 +153,7 @@
                                 <strong>Repetición:</strong>
                                 <p id="viewRepetition"></p>
                             </div>
-            
+
                             <!-- Campo oculto para almacenar el ID del evento -->
                             <input type="hidden" id="eventId">
                         </div>
@@ -163,7 +164,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <!-- Actividad recientes -->
             <div class="col-xxl-4 col-xl-4 col-lg-4">
