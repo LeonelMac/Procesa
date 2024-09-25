@@ -117,7 +117,7 @@
                                         <option value="monthly">Cada mes</option>
                                         <option value="weekdays">De Lunes a Viernes</option>
                                     </select>
-                                </div>
+                                </div>                                
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -136,29 +136,29 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="viewEventForm">
-                                <div class="mb-3">
-                                    <label for="viewEventTitle" class="form-label">Título del Evento</label>
-                                    <input type="text" class="form-control" id="viewEventTitle" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="viewEventDetails" class="form-label">Detalles del Evento</label>
-                                    <textarea class="form-control" id="viewEventDetails" rows="3" readonly></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="viewEventTime" class="form-label">Fecha y Hora</label>
-                                    <input type="text" class="form-control" id="viewEventTime" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="viewRepetition" class="form-label">Repetición</label>
-                                    <input type="text" class="form-control" id="viewRepetition" readonly>
-                                </div>
-                            </form>
+                            <div class="mb-3">
+                                <strong>Título del Evento:</strong>
+                                <p id="viewEventTitle"></p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Detalles del Evento:</strong>
+                                <p id="viewEventDetails"></p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Fecha y Hora:</strong>
+                                <p id="viewEventTime"></p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Repetición:</strong>
+                                <p id="viewRepetition"></p>
+                            </div>
+            
+                            <!-- Campo oculto para almacenar el ID del evento -->
+                            <input type="hidden" id="eventId">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" id="deleteEventBtn">Eliminar</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="button" class="btn btn-primary" id="editEventBtn">Editar</button>
+                            <button type="button" class="btn btn-danger" id="deleteEventBtn">Eliminar</button>
                         </div>
                     </div>
                 </div>

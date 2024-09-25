@@ -17,6 +17,7 @@ class EventController extends Controller
         // Devolver los eventos con el campo 'description'
         $eventsData = $events->map(function ($event) {
             return [
+                'id' => $event->id,
                 'title' => $event->title,
                 'start' => $event->start,
                 'end' => $event->end,
@@ -34,7 +35,7 @@ class EventController extends Controller
         $request->merge([
             'all_day' => filter_var($request->input('all_day'), FILTER_VALIDATE_BOOLEAN)
         ]);
-    
+
         // Validar los datos
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -45,7 +46,7 @@ class EventController extends Controller
             'start_time' => 'required_if:all_day,false|nullable|date_format:H:i',
             'end_time' => 'required_if:all_day,false|nullable|date_format:H:i|after:start_time',
         ]);
-    
+
         // Combinar la fecha con la hora si no es un evento de todo el día
         if (!$validatedData['all_day']) {
             $startDateTime = Carbon::parse($validatedData['start'] . ' ' . $validatedData['start_time']);
@@ -54,7 +55,7 @@ class EventController extends Controller
             $startDateTime = Carbon::parse($validatedData['start']);
             $endDateTime = $startDateTime->copy()->endOfDay(); // 23:59 PM para eventos de todo el día
         }
-    
+
         // Crear el evento inicial
         $event = Event::create([
             'title' => $validatedData['title'],
@@ -63,15 +64,15 @@ class EventController extends Controller
             'description' => $validatedData['description'],
             'all_day' => $validatedData['all_day'],
         ]);
-    
+
         // Repetición mensual (sin cambios)
         if ($validatedData['repetition'] == 'monthly') {
             $startDate = Carbon::parse($validatedData['start']);
-    
+
             // Crear eventos cada mes por los próximos 12 meses
             for ($i = 1; $i <= 12; $i++) {
                 $newStartDateTime = $startDate->copy()->addMonthsNoOverflow($i);
-    
+
                 // Asignar horas solo si no es un evento de todo el día
                 if (!$validatedData['all_day']) {
                     $newStartDateTime->setTimeFromTimeString($validatedData['start_time']);
@@ -79,7 +80,7 @@ class EventController extends Controller
                 } else {
                     $newEndDateTime = $newStartDateTime->copy()->endOfDay();
                 }
-    
+
                 // Crear el evento mensual
                 Event::create([
                     'title' => $validatedData['title'],
@@ -90,18 +91,18 @@ class EventController extends Controller
                 ]);
             }
         }
-    
+
         // Repetición de lunes a viernes
         if ($validatedData['repetition'] == 'weekdays') {
             $startDate = Carbon::parse($validatedData['start']);
             $endDate = $startDate->copy()->endOfWeek(Carbon::FRIDAY); // Termina el viernes de esa misma semana
-    
+
             // Crear eventos solo para los días laborables (lunes a viernes)
             for ($date = $startDate->copy()->addDay(); $date->lte($endDate); $date->addDay()) {
                 if ($date->isWeekday()) {
                     $newStartDateTime = $date->copy();
                     $newEndDateTime = $date->copy();
-    
+
                     // Solo asignar horas si no es un evento de todo el día
                     if (!$validatedData['all_day']) {
                         $newStartDateTime->setTimeFromTimeString($validatedData['start_time']);
@@ -109,7 +110,7 @@ class EventController extends Controller
                     } else {
                         $newEndDateTime = $newStartDateTime->copy()->endOfDay(); // 23:59 PM para eventos de todo el día
                     }
-    
+
                     Event::create([
                         'title' => $validatedData['title'],
                         'start' => $newStartDateTime,
@@ -120,51 +121,37 @@ class EventController extends Controller
                 }
             }
         }
-    
+
         return response()->json(['success' => true, 'event' => $event]);
     }
 
     public function update(Request $request, $id)
     {
-        // Validar los datos
+        // Buscar el evento por ID
+        $event = Event::findOrFail($id);
+
+        // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'start' => 'required|date',
             'description' => 'nullable|string',
-            'all_day' => 'required|boolean',
-            'repetition' => 'nullable|string',
-            'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
         ]);
-    
-        // Buscar el evento por ID y actualizarlo
-        $event = Event::find($id);
-        if (!$event) {
-            return response()->json(['success' => false, 'message' => 'Evento no encontrado'], 404);
-        }
-    
-        // Actualizar el evento
+
+        // Actualizar los datos del evento
         $event->update([
             'title' => $validatedData['title'],
-            'start' => $validatedData['start'] . ' ' . ($validatedData['start_time'] ?? '00:00:00'),
-            'end' => $validatedData['end_time'] ? $validatedData['start'] . ' ' . $validatedData['end_time'] : null,
             'description' => $validatedData['description'],
-            'all_day' => $validatedData['all_day'],
         ]);
-    
+
         return response()->json(['success' => true, 'event' => $event]);
     }
-    
+
+
     public function destroy($id)
     {
-        // Buscar el evento y eliminarlo
-        $event = Event::find($id);
-        if (!$event) {
-            return response()->json(['success' => false, 'message' => 'Evento no encontrado'], 404);
-        }
-    
+        // Buscar el evento por ID y eliminarlo
+        $event = Event::findOrFail($id);
         $event->delete();
+
         return response()->json(['success' => true]);
     }
-    
 }

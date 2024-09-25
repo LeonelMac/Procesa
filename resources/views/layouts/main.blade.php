@@ -34,6 +34,9 @@
     <!-- FullCalendar CSS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
 
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
     @livewireStyles
     @yield('additional-styles')
 
@@ -42,13 +45,13 @@
             background-color: #ffeb3b !important;
             color: #000 !important;
         }
-
     </style>
 </head>
 
 <body>
 
-    <header id="header" class="header fixed-top d-flex align-items-center" style="background: url('{{ asset('assets/img/Azul.svg') }}'); background-size: cover; background-position: center;">
+    <header id="header" class="header fixed-top d-flex align-items-center"
+        style="background: url('{{ asset('assets/img/Azul.svg') }}'); background-size: cover; background-position: center;">
         <div class="d-flex align-items-center justify-content-between">
             <a href="{{ route('inicio') }}" class="logo d-flex align-items-center">
                 <img src="{{ asset('assets/img/procesa_blanco.png') }}" alt="Logo de Sistema Procesa">
@@ -59,8 +62,10 @@
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
                 <li class="nav-item dropdown pe-3">
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0 text-light" href="#" data-bs-toggle="dropdown">
-                        <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Imagen de perfil del usuario" class="rounded-circle">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0 text-light" href="#"
+                        data-bs-toggle="dropdown">
+                        <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Imagen de perfil del usuario"
+                            class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->nombres }}
                             {{ Auth::user()->apellidoP }}
                             {{ Auth::user()->apellidoM }}</span>
@@ -77,11 +82,15 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ route('perfil.index', ['id' => Auth::user()->id]) }}"><i class="bi bi-person"></i><span>Mi Perfil</span></a></li>
+                        <li><a class="dropdown-item d-flex align-items-center"
+                                href="{{ route('perfil.index', ['id' => Auth::user()->id]) }}"><i
+                                    class="bi bi-person"></i><span>Mi Perfil</span></a></li>
 
                         <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item d-flex align-items-center" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi bi-box-arrow-right"></i><span>Salir</span></a></li>
+                <li><a class="dropdown-item d-flex align-items-center" href="#"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                            class="bi bi-box-arrow-right"></i><span>Salir</span></a></li>
             </ul>
             </li>
             </ul>
@@ -91,13 +100,17 @@
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('inicio') }}"><i class="bi bi-house"></i><span>Inicio</span></a>
+                <a class="nav-link collapsed" href="{{ route('inicio') }}"><i
+                        class="bi bi-house"></i><span>Inicio</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('expedientes.index') }}"><i class="bi bi-book"></i><span>Expedientes</span></a>
+                <a class="nav-link collapsed" href="{{ route('expedientes.index') }}"><i
+                        class="bi bi-book"></i><span>Expedientes</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"><i class="bi bi-menu-button-wide"></i><span>Configuración</span><i class="bi bi-books"></i></a>
+                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse"
+                    href="#"><i class="bi bi-menu-button-wide"></i><span>Configuración</span><i
+                        class="bi bi-books"></i></a>
                 <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li><a href="{{ route('usuarios.index') }}"><i class="bi bi-circle"></i><span>Usuarios</span></a>
                     </li>
@@ -137,6 +150,8 @@
     <!-- FullCalendar JS -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @vite(['resources/js/app.js'])
 
 
