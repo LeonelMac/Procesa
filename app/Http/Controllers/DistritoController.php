@@ -56,4 +56,10 @@ class DistritoController extends Controller
         session()->flash('message', 'Distrito eliminado correctamente');
         return redirect()->route('distritos.index');
     }
+
+    public function verificarDuplicado(Request $request)
+    {
+        $existe = Distrito::where('distrito', $request->distrito)->exists();
+        return response()->json(['exists' => $existe]);
+    }
 }

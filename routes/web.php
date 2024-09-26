@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/distritos/editar/{iddistrito}', [DistritoController::class, 'editarDistrito'])->name('distritos.editar');
     Route::delete('/distritos/eliminar/{iddistrito}', [DistritoController::class, 'eliminarDistrito'])->name('distritos.eliminar');
     Route::get('/distritos/obtener/{iddistrito}', [DistritoController::class, 'obtenerDistrito']);
+    Route::post('/distritos/verificar-duplicado', [DistritoController::class, 'verificarDuplicado']);
 
     // Juzgados
     Route::get('/juzgados', [JuzgadoController::class, 'index'])->name('juzgados.index');
