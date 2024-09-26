@@ -54,7 +54,6 @@
             </div><!-- End Revisados Card -->
 
             <div class="col-xxl-4 col-md-4">
-                <!-- Avisos Card -->
                 <div class="card info-card customers-card">
                     <div class="card-body">
                         <h5 class="card-title">Avisos <span>| Hoy</span></h5>
@@ -63,7 +62,7 @@
                                 <i class="bi bi-bell"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>12</h6>
+                                <h6 id="eventCount">0</h6> 
                                 <span class="text-muted small pt-2 ps-1">Avisos</span>
                             </div>
                         </div>
@@ -72,151 +71,170 @@
             </div>
         </div>
 
-        <div class="row">
-            <!-- Calendario -->
+        <div class="row"> 
             <div class="col-xxl-8 col-xl-8 col-lg-8">
-                <div class="card info-card revenue-card">
+                <div class="card info-card revenue-card shadow-sm rounded">
                     <div id="calendar" style="max-width: 100%; height: auto;"></div>
                 </div>
-            </div><!-- End Calendario -->
-
-            <div class="modal fade" id="interactiveEventModal" tabindex="-1" aria-labelledby="interactiveEventModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="interactiveEventModalLabel">Detalles del Evento</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="eventForm">
-                                <div class="mb-3">
-                                    <label for="eventTitleInput" class="form-label">Título del Evento</label>
-                                    <input type="text" class="form-control" id="eventTitleInput" placeholder="Título...">
-                                </div>
-                                <input type="hidden" id="eventStart">
-                                <div class="mb-3">
-                                    <label for="eventDetails" class="form-label">Detalles del Evento</label>
-                                    <textarea class="form-control" id="eventDetails" rows="3"></textarea>
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="allDayCheckbox" checked>
-                                    <label class="form-check-label" for="allDayCheckbox">Todo el día</label>
-                                </div>
-                                <div class="mb-3 d-none" id="timeSelectors">
-                                    <label for="startTime" class="form-label">Hora de inicio</label>
-                                    <input type="time" class="form-control" id="startTime">
-                                    <label for="endTime" class="form-label mt-2">Hora de fin</label>
-                                    <input type="time" class="form-control" id="endTime">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="repetitionSelect" class="form-label">Repetición</label>
-                                    <select id="repetitionSelect" name="repetition_type" class="form-select">
-                                        <option value="none">No repetir</option>
-                                        <option value="monthly">Cada mes</option>
-                                        <option value="weekdays">De lunes a viernes</option>
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" id="saveEventBtn">Guardar</button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <div class="modal fade" id="viewEventModal" tabindex="-1" aria-labelledby="viewEventModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="viewEventModalLabel">Detalles del Evento</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <strong>Título del Evento:</strong>
-                                <p id="viewEventTitle"></p>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Detalles del Evento:</strong>
-                                <p id="viewEventDetails"></p>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Fecha y Hora:</strong>
-                                <p id="viewEventTime"></p>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Repetición:</strong>
-                                <p id="viewRepetition"></p>
-                            </div>
-
-                            <!-- Campo oculto para almacenar el ID del evento -->
-                            <input type="hidden" id="eventId">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="editEventBtn">Editar</button>
-                            <button type="button" class="btn btn-danger" id="deleteEventBtn">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Actividad recientes -->
             <div class="col-xxl-4 col-xl-4 col-lg-4">
-                <div class="card">
-                    <div class="filter">
-                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li class="dropdown-header text-start">
-                                <h6>Filtro</h6>
-                            </li>
-                            <li><a class="dropdown-item" href="#">Hoy</a></li>
-                            <li><a class="dropdown-item" href="#">Este Mes</a></li>
-                            <li><a class="dropdown-item" href="#">Este Año</a></li>
-                        </ul>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="card info-card customers-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Avisos Generales</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-calendar3"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6 id="generalEventCount">0</h6> 
+                                        <span class="text-muted small pt-2 ps-1">Eventos futuros</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Actividad recientes</h5>
-                        <div class="activity">
-                            <div class="activity-item d-flex">
-                                <div class="activite-label">32 min</div>
-                                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                                <div class="activity-content">
-                                    Expediente número 12 Liberado
+
+                    <!-- Actividad recientes Card (col-12 dentro de col-4 para apilar verticalmente) -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="filter">
+                                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                    <li class="dropdown-header text-start">
+                                        <h6>Filtro</h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Hoy</a></li>
+                                    <li><a class="dropdown-item" href="#">Este Mes</a></li>
+                                    <li><a class="dropdown-item" href="#">Este Año</a></li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Actividad recientes</h5>
+                                <div class="activity">
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label">32 min</div>
+                                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                        <div class="activity-content">
+                                            Expediente número 12 Liberado
+                                        </div>
+                                    </div><!-- End activity item-->
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label">56 min</div>
+                                        <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                                        <div class="activity-content">
+                                            Expediente número 2 Cerrado
+                                        </div>
+                                    </div><!-- End activity item-->
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label">2 days</div>
+                                        <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
+                                        <div class="activity-content">
+                                            Expediente número 14 En proceso
+                                        </div>
+                                    </div><!-- End activity item-->
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label">4 weeks</div>
+                                        <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
+                                        <div class="activity-content">
+                                            Expediente número 4 Cancelado
+                                        </div>
+                                    </div><!-- End activity item-->
                                 </div>
-                            </div><!-- End activity item-->
-                            <div class="activity-item d-flex">
-                                <div class="activite-label">56 min</div>
-                                <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                                <div class="activity-content">
-                                    Expediente número 2 Cerrado
-                                </div>
-                            </div><!-- End activity item-->
-                            <div class="activity-item d-flex">
-                                <div class="activite-label">2 days</div>
-                                <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                                <div class="activity-content">
-                                    Expediente número 14 En proceso
-                                </div>
-                            </div><!-- End activity item-->
-                            <div class="activity-item d-flex">
-                                <div class="activite-label">4 weeks</div>
-                                <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                                <div class="activity-content">
-                                    Expediente número 4 Cancelado
-                                </div>
-                            </div><!-- End activity item-->
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- End Actividad recientes -->
+            </div> <!-- End Columna para las tarjetas -->
         </div>
     </section>
+
+    <!-- Modales de calendario -->
+    <div class="modal fade" id="interactiveEventModal" tabindex="-1" aria-labelledby="interactiveEventModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="interactiveEventModalLabel">Detalles del Evento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="eventForm">
+                        <div class="mb-3">
+                            <label for="eventTitleInput" class="form-label">Título del Evento</label>
+                            <input type="text" class="form-control" id="eventTitleInput" placeholder="Título...">
+                        </div>
+                        <input type="hidden" id="eventStart">
+                        <div class="mb-3">
+                            <label for="eventDetails" class="form-label">Detalles del Evento</label>
+                            <textarea class="form-control" id="eventDetails" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="allDayCheckbox" checked>
+                            <label class="form-check-label" for="allDayCheckbox">Todo el día</label>
+                        </div>
+                        <div class="mb-3 d-none" id="timeSelectors">
+                            <label for="startTime" class="form-label">Hora de inicio</label>
+                            <input type="time" class="form-control" id="startTime">
+                            <label for="endTime" class="form-label mt-2">Hora de fin</label>
+                            <input type="time" class="form-control" id="endTime">
+                        </div>
+                        <div class="mb-3">
+                            <label for="repetitionSelect" class="form-label">Repetición</label>
+                            <select id="repetitionSelect" name="repetition_type" class="form-select">
+                                <option value="none">No repetir</option>
+                                <option value="monthly">Cada mes</option>
+                                <option value="weekdays">De lunes a viernes</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveEventBtn">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewEventModal" tabindex="-1" aria-labelledby="viewEventModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewEventModalLabel">Detalles del Evento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <strong>Título del Evento:</strong>
+                        <p id="viewEventTitle"></p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Detalles del Evento:</strong>
+                        <p id="viewEventDetails"></p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Fecha y Hora:</strong>
+                        <p id="viewEventTime"></p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Repetición:</strong>
+                        <p id="viewRepetition"></p>
+                    </div>
+                    <input type="hidden" id="eventId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="editEventBtn">Editar</button>
+                    <button type="button" class="btn btn-danger" id="deleteEventBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')

@@ -88,6 +88,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/events/{id}', [EventController::class, 'update']);
     Route::delete('/events/{id}', [EventController::class, 'destroy']);
     Route::get('/events/check-repetition/{id}', [EventController::class, 'checkRepetition']);
+    Route::get('/events/today/count', [EventController::class, 'getTodayEventsCount']);
+    Route::get('/events/upcoming/count', [EventController::class, 'countUpcomingEvents']);
 });
 
 // Rutas sin middleware de autenticación
