@@ -127,3 +127,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+function cargarDatosDistrito(iddistrito) {
+    $.ajax({
+        url: '/distritos/obtener/' + iddistrito,  
+        type: 'GET',
+        success: function (data) {
+            $('#editar-distrito-' + iddistrito).val(data.distrito);
+        }
+    });
+}

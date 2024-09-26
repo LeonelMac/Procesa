@@ -21,7 +21,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Formulario para agregar un nuevo juzgado -->
-                    <form method="POST" action="{{ route('juzgados.guardar') }}">
+                    <form id="formAgregarJuzgado" method="POST" action="{{ route('juzgados.guardar') }}" novalidate>
                         @csrf
                         <!-- Campo para el juzgado -->
                         <div class="mb-3">
@@ -62,22 +62,4 @@
         margin: 0;
     }
 </style>
-<script>
-    $('#agregarJuzgadoModal').on('show.bs.modal', function () {
-        $.ajax({
-            url: '/juzgados/obtener', 
-            type: 'GET',
-            success: function(data) {
-                let selectDistrito = $('#distrito');
-                selectDistrito.empty();
-                selectDistrito.append('<option value="">Selecciona un distrito</option>');
-                data.forEach(function(distrito) {
-                    selectDistrito.append('<option value="' + distrito.iddistrito + '">' + distrito.distrito + '</option>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error al obtener los distritos:', error);
-            }
-        });
-    });
-</script>
+

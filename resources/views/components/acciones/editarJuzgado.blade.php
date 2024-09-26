@@ -22,7 +22,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('juzgados.editar', ['idjuzgados' => $value]) }}">
+                    <form method="POST" action="{{ route('juzgados.editar', ['idjuzgados' => $value]) }}" novalidate>
                         @csrf
                         <!-- Campo para el juzgado -->
                         <div class="mb-3">
@@ -48,27 +48,6 @@
     </div>
 </div>
 
-<script>
-    function cargarDatosJuzgado(idjuzgados) {
-        $.ajax({
-            url: '/juzgados/obtener/' + idjuzgados,
-            type: 'GET',
-            success: function(data) {
-                $('#editar-juzgado-' + idjuzgados).val(data.juzgado.juzgados);
-                let selectDistrito = $('#editar-distrito-' + idjuzgados);
-                selectDistrito.empty();
-                selectDistrito.append('<option value="">Selecciona un distrito</option>');
-                data.distritos.forEach(function(distrito) {
-                    selectDistrito.append('<option value="' + distrito.iddistrito + '">' + distrito.distrito + '</option>');
-                });
-                selectDistrito.val(data.juzgado.distrito.iddistrito);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error al obtener los datos del juzgado:', error);
-            }
-        });
-    }
-</script>
 
 
 

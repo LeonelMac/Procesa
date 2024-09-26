@@ -1,6 +1,5 @@
 @props(['value', 'mensaje'])
 
-<!-- Botón para abrir el modal de confirmación -->
 <button id='{{ $value }}' class="bg-transparent border-0" data-bs-toggle="modal"
     data-bs-target="#confirmModal{{ $value }}eliminar" data-toggle="tooltip" data-bs-placement="top"
     title='{{ $mensaje }}'>
@@ -11,7 +10,6 @@
     </svg>
 </button>
 
-<!-- Modal de confirmación -->
 <div class="modal fade" id="confirmModal{{ $value }}eliminar" tabindex="-1" aria-labelledby="confirmModalLabel{{ $value }}eliminar" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

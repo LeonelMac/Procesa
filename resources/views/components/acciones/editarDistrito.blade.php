@@ -11,7 +11,6 @@
         </svg>
     </button>
 
-    <!-- Modal -->
     <div class="modal fade" id="editarDistritoModal-{{ $value }}" tabindex="-1"
         aria-labelledby="editarDistritoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -38,15 +37,3 @@
     </div>
 </div>
 
-<!-- Script para cargar datos en el modal -->
-<script>
-    function cargarDatosDistrito(iddistrito) {
-        $.ajax({
-            url: '/distritos/obtener/' + iddistrito,  
-            type: 'GET',
-            success: function (data) {
-                $('#editar-distrito-' + iddistrito).val(data.distrito);
-            }
-        });
-    }
-</script>
