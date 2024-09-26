@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                                <div class="tab-pane fade profile-edit" id="profile-edit">
                                     <!-- Profile Edit Form -->
                                     <form method="POST" action="{{ route('perfil.cambios') }}">
                                         <h5 class="card-title">Detalles del perfil</h5>
