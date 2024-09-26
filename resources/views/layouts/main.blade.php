@@ -39,6 +39,7 @@
 
     {{-- Flatpickr --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     @livewireStyles
     @yield('additional-styles')
@@ -152,7 +153,6 @@
     <script src="{{ asset('assets/js/main.js') }}" defer></script>
     <!-- FullCalendar JS -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     {{-- Flatpickr --}}

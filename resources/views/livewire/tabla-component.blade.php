@@ -71,11 +71,8 @@
 </div>
 <script>
     window.addEventListener('update', event => {
-        console.log("update-item")
-
         setTimeout(() => {
             $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
-            console.log($('[data-toggle="tooltip"]'))
         }, 1500);
 
     });

@@ -373,10 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
-                        console.log(
-                            "Errores de validación:",
-                            xhr.responseJSON.errors
-                        );
+
                     }
                 },
             });

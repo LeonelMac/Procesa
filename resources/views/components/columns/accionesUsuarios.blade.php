@@ -11,9 +11,3 @@
         titulo="Confirmar Acción">¿Deseas eliminar este usuario?</x-modal>
 
 </div>
-<script>
-    // inicializa los tooltips
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
