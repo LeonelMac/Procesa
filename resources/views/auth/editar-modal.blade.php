@@ -1,8 +1,6 @@
-<form method="POST" action="{{ route('usuarios.cambios') }}">
+<form id="editarUsuarioModal" method="POST" action="{{ route('usuarios.cambios') }}">
     @csrf
-    <!-- Campo oculto para el ID -->
     <input id="id" type="number" hidden name="id" value="{{ $usuario->id }}" required>
-
     <!-- Nombres -->
     <div class="row mb-3">
         <label for="nombres" class="col-md-4 col-form-label text-md-end">{{ __('Nombre') }}</label>

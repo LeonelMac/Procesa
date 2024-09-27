@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
     Route::post('/usuarios/agregar', [UsuarioController::class, 'guardarUsuario'])->name('usuarios.guardar');
     Route::post('/usuarios/guardar', [UsuarioController::class, 'cambiosUsuario'])->name('usuarios.cambios');
+    Route::post('/usuarios/actualizar', [UsuarioController::class, 'cambiosUsuario'])->name('usuarios.cambios');
+    Route::delete('/usuarios/eliminar/{id}', [UsuarioController::class, 'eliminarUsuario'])->name('usuarios.eliminar');
+    Route::post('/usuarios/resetPassword/{id}', [UsuarioController::class, 'resetPassword'])->name('usuarios.resetPassword');
     // });
 
     // Perfil
@@ -77,6 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/estatus/expedientes/editar/{idestatusexpediente}', [EstatusExpedienteController::class, 'editarEstatusExpediente'])->name('estatusExpediente.editar');
     Route::delete('/estatus/expedientes/eliminar/{idestatusexpediente}', [EstatusExpedienteController::class, 'eliminarEstatusExpediente'])->name('estatusExpediente.eliminar');
     Route::get('/estatus/expedientes/obtener/{idestatusexpediente}', [EstatusExpedienteController::class, 'obtenerEstatusExpediente']);
+    Route::post('/estatus/expedientes/verificar', [EstatusExpedienteController::class, 'verificarDuplicado']);
 
     // Tipo Búsqueda
     Route::get('/tipo/busquedas', [TipoBusquedaController::class, 'index'])->name('tipoBusquedas.index');

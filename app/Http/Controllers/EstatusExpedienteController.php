@@ -56,4 +56,13 @@ class EstatusExpedienteController extends Controller
         session()->flash('message', 'Estatus de Expediente eliminado correctamente');
         return redirect()->route('estatusExpediente.index');
     }
+
+    public function verificarDuplicado(Request $request)
+    {
+        $request->validate([
+            'estatusexpediente' => 'required|string|max:255',
+        ]);
+        $existe = EstatusExpediente::where('estatusexpediente', $request->estatusexpediente)->exists();
+        return response()->json(['exists' => $existe]);
+    }
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Mail\PasswordResetNotification;
 use App\Mail\WelcomeEmail;
 use Illuminate\Support\Facades\Mail;
 
@@ -21,7 +22,7 @@ class UsuarioController extends Controller
 
     public function index()
     {
-        $usuarios = User::all();
+        $usuarios = User::with('rol', 'municipio')->get(); // Asegúrate de que las relaciones estén definidas en el modelo User
         return view('usuarios', compact('usuarios'));
     }
 
@@ -50,11 +51,82 @@ class UsuarioController extends Controller
             'municipio' => $request->municipio,
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
-            'password' => $password,
+            'password' => Hash::make($password),
         ]);
         Mail::to($usuario->email)->send(new WelcomeEmail($usuario, $password));
         session()->flash('message', 'Usuario creado correctamente.');
         return redirect()->route('usuarios.index');
+    }
+
+    public function cambiosUsuario(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric',
+            'nombres' => 'required|string|max:255',
+            'apellidoP' => 'required|string|max:255',
+            'apellidoM' => 'required|string|max:255',
+            'rol' => 'required|numeric',
+            'municipio' => 'required|numeric',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'required|string|max:10',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('message', $validator->errors()->first());
+            session()->flash('message_type', 'error');
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $usuario = User::find($request->id);
+
+        if (!$usuario) {
+            session()->flash('message', 'Usuario no encontrado.');
+            return redirect()->route('usuarios.index');
+        }
+
+        $usuario->update([
+            'nombres' => $request->nombres,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
+            'rol' => $request->rol,
+            'municipio' => $request->municipio,
+            'direccion' => $request->direccion,
+            'telefono' => $request->telefono,
+        ]);
+
+        session()->flash('message', 'Usuario actualizado correctamente.');
+        return redirect()->route('usuarios.index');
+    }
+
+    public function eliminarUsuario($id)
+    {
+        $usuario = User::find($id);
+        if (!$usuario) {
+            return response()->json(['success' => false, 'message' => 'Usuario no encontrado.'], 404);
+        }
+        if ($usuario->id == auth()->user()->id) {
+            return response()->json(['success' => false, 'message' => 'No puedes eliminar tu propio usuario.'], 403);
+        }
+        $usuario->delete();
+        return response()->json(['success' => true, 'message' => 'Usuario eliminado correctamente.']);
+    }
+    
+    public function resetPassword($id)
+    {
+        $usuario = User::find($id);
+
+        if (!$usuario) {
+            return response()->json(['success' => false, 'message' => 'Usuario no encontrado'], 404);
+        }
+
+        $nuevaPassword = $this->generateSecurePassword(12);
+        $usuario->password = Hash::make($nuevaPassword);
+        $usuario->password_restaurada = true;
+        $usuario->save();
+
+        Mail::to($usuario->email)->send(new PasswordResetNotification($usuario, $nuevaPassword));
+
+        return response()->json(['success' => true, 'message' => 'Contraseña restablecida correctamente y correo enviado.']);
     }
 
     public function generateSecurePassword($length = 12)
@@ -66,56 +138,6 @@ class UsuarioController extends Controller
         $special = substr(str_shuffle($specialCharacters), 0, 2);
         $password = str_shuffle($upper . $lower . $numbers . $special);
         return substr($password, 0, $length);
-    }
-
-    public function editarUsuario($id)
-    {
-        $usuario = User::find($id);
-        if (!$usuario) {
-            session()->flash('message', 'Usuario no encontrado');
-            session()->flash('message_type', 'error');
-            return redirect('/usuarios');
-        }
-
-        $roles = Rol::all();
-        $municipios = Municipio::all();
-
-        session()->put('usuario', $usuario);
-        session()->put('roles', $roles);
-        session()->put('municipios', $municipios);
-
-        return view('auth.editar-modal', compact('roles', 'municipios'));
-    }
-
-    public function cambiosUsuario(Request $request)
-    {
-        $requestData = request()->all();
-        $validator = Validator::make($requestData, [
-            'id' => ['required', 'numeric'],
-            'nombres' => ['required', 'string', 'max:255'],
-            'apellidoP' => ['required', 'string', 'max:255'],
-            'apellidoM' => ['required', 'string', 'max:255'],
-            'rol' => ['required', 'numeric'],
-            'municipio' => ['required', 'numeric'],
-            'direccion' => ['required', 'string', 'max:255'],
-            'telefono' => ['required', 'string', 'max:10']
-        ]);
-
-        if ($validator->fails()) {
-            session()->flash('message', $validator->errors()->first());
-            session()->flash('message_type', 'error');
-            return back();
-        }
-
-        $formFields = $validator->validated();
-        $id = $formFields['id'];
-        unset($formFields['id']);
-
-        User::find($id)->update($formFields);
-
-        session()->flash('message', 'Usuario editado');
-        session()->flash('message_type', 'success');
-        return redirect()->route('usuarios.index');
     }
 
     public function cambiarPassword(Request $request)

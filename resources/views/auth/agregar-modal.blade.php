@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('usuarios.guardar') }}">
+<form id="agregarUsuarioModal" method="POST" action="{{ route('usuarios.guardar') }}" novalidate>
     @csrf
     <!-- Nombres -->
     <div class="row mb-3">
@@ -112,7 +112,8 @@
         <label for="telefono" class="col-md-4 col-form-label text-md-end">{{ __('Teléfono') }}</label>
         <div class="col-md-6">
             <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror"
-                name="telefono" value="{{ old('telefono') }}" required>
+                name="telefono" value="{{ old('telefono') }}" required maxlength="10" pattern="[0-9]{10}"
+                title="Debe ingresar un número de 10 dígitos">
             @error('telefono')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -121,10 +122,9 @@
         </div>
     </div>
 
-    <!-- Botón de Guardar -->
     <div class="row mb-0">
         <div class="col-md-6 offset-md-4">
-            <button type="submit" class="btn btn-success">
+            <button id="guardar" name="guardar" type="submit" class="btn btn-success">
                 {{ __('Guardar') }}
             </button>
         </div>

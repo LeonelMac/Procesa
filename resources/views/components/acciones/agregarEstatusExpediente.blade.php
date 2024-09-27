@@ -20,7 +20,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('estatusExpediente.guardar') }}">
+                    <form id="formAgregarEstatusExpediente" method="POST" action="{{ route('estatusExpediente.guardar') }}" novalidate>
                         @csrf
                         <!-- Campo para el estatus -->
                         <div class="mb-3">

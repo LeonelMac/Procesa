@@ -1,7 +1,7 @@
 <div>
     <button type="button" class="bg-transparent border-0" data-bs-toggle="modal"
         data-bs-target="#editarEstatusExpedienteModal-{{ $value }}" data-toggle="tooltip" data-bs-placement="top"
-        title="Editar Estatus" onclick="cargarDatosDistrito({{ $value }})">
+        title="Editar Estatus" onclick="cargarDatosEstatusExpediente({{ $value }})">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
             class="bi bi-pencil-square" viewBox="0 0 16 16">
             <path
@@ -21,7 +21,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('estatusExpediente.editar', ['idestatusexpediente' => $value]) }}">
+                    <form method="POST" action="{{ route('estatusExpediente.editar', ['idestatusexpediente' => $value]) }}" novalidate>
                         @csrf
                         <!-- Campo para el estatus -->
                         <div class="mb-3">
@@ -38,15 +38,3 @@
     </div>
 </div>
 
-<!-- Script para cargar datos en el modal -->
-<script>
-    function cargarDatosDistrito(idestatusexpediente) {
-        $.ajax({
-            url: '/estatus/expedientes/obtener/' + idestatusexpediente,  
-            type: 'GET',
-            success: function (data) {
-                $('#editar-estatusexpediente-' + idestatusexpediente).val(data.estatusexpediente);
-            }
-        });
-    }
-</script>
