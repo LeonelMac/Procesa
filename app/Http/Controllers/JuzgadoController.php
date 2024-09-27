@@ -71,4 +71,10 @@ class JuzgadoController extends Controller
         session()->flash('message', 'Juzgado eliminado correctamente');
         return redirect()->route('juzgados.index');
     }
+
+    public function verificarJuzgado(Request $request)
+    {
+        $existe = Juzgado::where('juzgados', $request->juzgados)->exists();
+        return response()->json(['exists' => $existe]);
+    }
 }

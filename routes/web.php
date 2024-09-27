@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/juzgados/editar/{idjuzgados}', [JuzgadoController::class, 'editarJuzgado'])->name('juzgados.editar');
     Route::delete('/juzgados/eliminar/{idjuzgados}', [JuzgadoController::class, 'eliminarJuzgado'])->name('juzgados.eliminar');
     Route::get('/juzgados/obtener/{idjuzgados?}', [JuzgadoController::class, 'obtenerJuzgado']);
+    Route::post('/juzgados/verificar', [JuzgadoController::class, 'verificarJuzgado'])->name('juzgados.verificar');
 
     // Expedientes
     Route::get('/expedientes', [ExpedienteController::class, 'index'])->name('expedientes.index');
