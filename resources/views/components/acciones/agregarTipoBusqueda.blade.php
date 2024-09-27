@@ -20,7 +20,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('tipoBusquedas.guardar') }}">
+                    <form id="formAgregarTipoBusqueda" method="POST" action="{{ route('tipoBusquedas.guardar') }}" novalidate>
                         @csrf
                         <!-- Campo para Tipo de Búsqueda -->
                         <div class="mb-3">
@@ -63,23 +63,3 @@
     }
 </style>
 
-<script>
-    $('#agregarTipoBusquedaModal').on('show.bs.modal', function() {
-        $.ajax({
-            url: '/tipo/busquedas/obtener',
-            type: 'GET',
-            success: function(data) {
-                let selectJuzgado = $('#juzgado');
-                selectJuzgado.empty();
-                selectJuzgado.append('<option value="">Selecciona un juzgado</option>');
-                data.juzgados.forEach(function(juzgado) {
-                    selectJuzgado.append('<option value="' + juzgado.idjuzgados + '">' +
-                        juzgado.juzgados + '</option>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error al obtener los juzgados:', error);
-            }
-        });
-    });
-</script>

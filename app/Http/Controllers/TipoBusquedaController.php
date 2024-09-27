@@ -13,7 +13,7 @@ class TipoBusquedaController extends Controller
         $tipoBusquedas = TipoBusqueda::all();
         $juzgados = Juzgado::all();
         return view('tipoBusquedas', compact('tipoBusquedas', 'juzgados'));
-    }    
+    }
 
     public function obtenerTipoBusqueda($idtipobusqueda = null)
     {
@@ -22,7 +22,7 @@ class TipoBusquedaController extends Controller
             $juzgados = Juzgado::all();
             return response()->json([
                 'tipobusqueda' => $tipoBusqueda,
-                'juzgados' => $juzgados 
+                'juzgados' => $juzgados
             ]);
         }
         $juzgados = Juzgado::all();
@@ -35,12 +35,12 @@ class TipoBusquedaController extends Controller
     {
         $request->validate([
             'tipobusqueda' => 'required|string|max:255',
-            'juzgado' => 'required|exists:juzgados,idjuzgados', 
+            'juzgado' => 'required|exists:juzgados,idjuzgados',
         ]);
 
         TipoBusqueda::create([
             'tipobusqueda' => $request->tipobusqueda,
-            'juzgado' => $request->juzgado, 
+            'juzgado' => $request->juzgado,
         ]);
 
         return redirect()->route('tipoBusquedas.index');
@@ -50,7 +50,7 @@ class TipoBusquedaController extends Controller
     {
         $request->validate([
             'tipobusqueda' => 'required|string|max:255',
-            'juzgado' => 'required|exists:juzgados,idjuzgados', 
+            'juzgado' => 'required|exists:juzgados,idjuzgados',
         ]);
 
         $tipoBusqueda = TipoBusqueda::findOrFail($idtipobusqueda);
@@ -58,7 +58,7 @@ class TipoBusquedaController extends Controller
             'tipobusqueda' => $request->tipobusqueda,
             'juzgado' => $request->juzgado,
         ]);
-    
+
         session()->flash('message', 'Tipo Búsqueda actualizado correctamente');
         return redirect()->route('tipoBusquedas.index');
     }
@@ -67,8 +67,17 @@ class TipoBusquedaController extends Controller
     {
         $tipoBusqueda = TipoBusqueda::findOrFail($idtipobusqueda);
         $tipoBusqueda->delete();
-    
+
         session()->flash('message', 'Tipo Búsqueda eliminado correctamente');
         return redirect()->route('tipoBusquedas.index');
+    }
+
+    public function verificarDuplicado(Request $request)
+    {
+        $request->validate([
+            'tipobusqueda' => 'required|string|max:255',
+        ]);
+        $existe = TipoBusqueda::where('tipobusqueda', $request->tipobusqueda)->exists();
+        return response()->json(['exists' => $existe]);
     }
 }

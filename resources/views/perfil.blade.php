@@ -316,9 +316,6 @@
     </main>
 @endsection
 
-@section('additional-scripts')
-    <!-- Scripts específicos para esta vista -->
-    <script>
-        // Tu código JavaScript específico para la vista de perfil
-    </script>
+@section('scripts')
+    <script src="{{ asset('assets/js/perfil.js') }}"></script>
 @endsection

@@ -45,3 +45,7 @@
         }
     </style>
 @endsection
+
+@section('scripts')
+    <script src="{{ asset('assets/js/tipoBusqueda.js') }}"></script>
+@endsection

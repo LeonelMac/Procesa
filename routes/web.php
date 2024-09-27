@@ -83,6 +83,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tipo/busquedas/editar/{idtipobusqueda}', [TipoBusquedaController::class, 'editarTipoBusqueda'])->name('tipoBusquedas.editar');
     Route::delete('/tipo/busquedas/eliminar/{idtipobusqueda}', [TipoBusquedaController::class, 'eliminarTipoBusqueda'])->name('tipoBusquedas.eliminar');
     Route::get('/tipo/busquedas/obtener/{idtipobusqueda?}', [TipoBusquedaController::class, 'obtenerTipoBusqueda']);
+    Route::post('/tipo/busquedas/verificar', [TipoBusquedaController::class, 'verificarDuplicado']);
 
     // Eventos Calendario
     Route::get('/events', [EventController::class, 'index']);

@@ -21,7 +21,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('tipoBusquedas.editar', ['idtipobusqueda' => $value]) }}">
+                    <form method="POST" action="{{ route('tipoBusquedas.editar', ['idtipobusqueda' => $value]) }}" novalidate>
                         @csrf
                         <!-- Campo para Tipo de Búsqueda -->
                         <div class="mb-3">
@@ -48,26 +48,3 @@
         </div>
     </div>
 </div>
-
-<script>
-function cargarDatosTipoBusqueda(idtipobusqueda) {
-    $.ajax({
-        url: '/tipo/busquedas/obtener/' + idtipobusqueda,
-        type: 'GET',
-        success: function(data) {
-            console.log(data);
-            $('#editar-tipobusqueda-' + idtipobusqueda).val(data.tipobusqueda.tipobusqueda);
-            let selectJuzgado = $('#editar-juzgado-' + idtipobusqueda);
-            selectJuzgado.empty();
-            selectJuzgado.append('<option value="">Selecciona un juzgado</option>');
-            data.juzgados.forEach(function(juzgado) {
-                selectJuzgado.append('<option value="' + juzgado.idjuzgados + '">' + juzgado.juzgados + '</option>');
-            });
-            selectJuzgado.val(data.tipobusqueda.juzgado.idjuzgados);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error al obtener los datos:', error);
-        }
-    });
-}
-</script>

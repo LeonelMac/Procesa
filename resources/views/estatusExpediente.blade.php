@@ -43,3 +43,7 @@
         }
     </style>
 @endsection
+
+@section('scripts')
+    <script src="{{ asset('assets/js/estatusExpediente.js') }}"></script>
+@endsection

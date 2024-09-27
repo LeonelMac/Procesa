@@ -44,3 +44,7 @@
         }
     </style>
 @endsection
+
+@section('scripts')
+    <script src="{{ asset('assets/js/tipoExpediente.js') }}"></script>
+@endsection
