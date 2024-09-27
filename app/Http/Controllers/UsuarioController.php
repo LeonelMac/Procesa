@@ -22,7 +22,7 @@ class UsuarioController extends Controller
 
     public function index()
     {
-        $usuarios = User::with('rol', 'municipio')->get(); // Asegúrate de que las relaciones estén definidas en el modelo User
+        $usuarios = User::with('rol', 'municipio')->get();
         return view('usuarios', compact('usuarios'));
     }
 
@@ -65,6 +65,7 @@ class UsuarioController extends Controller
             'nombres' => 'required|string|max:255',
             'apellidoP' => 'required|string|max:255',
             'apellidoM' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
             'rol' => 'required|numeric',
             'municipio' => 'required|numeric',
             'direccion' => 'required|string|max:255',
@@ -88,6 +89,7 @@ class UsuarioController extends Controller
             'nombres' => $request->nombres,
             'apellidoP' => $request->apellidoP,
             'apellidoM' => $request->apellidoM,
+            'email' => $request->email,
             'rol' => $request->rol,
             'municipio' => $request->municipio,
             'direccion' => $request->direccion,
@@ -97,6 +99,24 @@ class UsuarioController extends Controller
         session()->flash('message', 'Usuario actualizado correctamente.');
         return redirect()->route('usuarios.index');
     }
+
+    public function verificarDuplicados(Request $request)
+    {
+        $correoExistente = User::where('email', $request->email)->first();
+        $telefonoExistente = User::where('telefono', $request->telefono)->first();
+        if ($request->has('id')) {
+            $correoExistente = User::where('email', $request->email)->where('id', '!=', $request->id)->first();
+            $telefonoExistente = User::where('telefono', $request->telefono)->where('id', '!=', $request->id)->first();
+        }
+        if ($correoExistente) {
+            return response()->json(['success' => false, 'message' => 'Este correo electrónico ya se encuentra en uso, utilice otro por favor.']);
+        }
+        if ($telefonoExistente) {
+            return response()->json(['success' => false, 'message' => 'Este teléfono ya se encuentra en uso, utilice otro por favor.']);
+        }
+        return response()->json(['success' => true, 'message' => 'No hay duplicados.']);
+    }
+
 
     public function eliminarUsuario($id)
     {
@@ -110,7 +130,7 @@ class UsuarioController extends Controller
         $usuario->delete();
         return response()->json(['success' => true, 'message' => 'Usuario eliminado correctamente.']);
     }
-    
+
     public function resetPassword($id)
     {
         $usuario = User::find($id);

@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/usuarios/actualizar', [UsuarioController::class, 'cambiosUsuario'])->name('usuarios.cambios');
     Route::delete('/usuarios/eliminar/{id}', [UsuarioController::class, 'eliminarUsuario'])->name('usuarios.eliminar');
     Route::post('/usuarios/resetPassword/{id}', [UsuarioController::class, 'resetPassword'])->name('usuarios.resetPassword');
+    Route::post('/usuarios/verificar-duplicados', [UsuarioController::class, 'verificarDuplicados'])->name('usuarios.verificarDuplicados');
     // });
 
     // Perfil

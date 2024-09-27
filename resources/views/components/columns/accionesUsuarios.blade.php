@@ -3,16 +3,14 @@
 <div class="acciones-container">
     <x-acciones.editar :value="$value" mensaje="Editar Usuario"></x-acciones.editar>
     <x-acciones.contrasenia :value="$value" mensaje="Restablecer Contraseña"></x-acciones.contrasenia>
-    <x-modal :value="$value" mensajeBoton="Restablecer" accion="resetPassword"
-        titulo="Confirmar Acción">¿Deseas restablecer la contraseña de este usuario?</x-modal>
-    <x-modal :value="$value . 'eliminar'" mensajeBoton="Eliminar" accion="deleteUser"
-        titulo="Confirmar Acción">¿Deseas eliminar este usuario?</x-modal>
+    <x-resetPasswordModal :value="$value" mensajeBoton="Restablecer" titulo="Confirmar Acción" />
     <x-acciones.eliminar :value="$value" mensaje="Eliminar Usuario"></x-acciones.eliminar>
+    <x-deleteUserModal :value="$value" mensajeBoton="Eliminar" titulo="Confirmar Acción" />
 </div>
 
 <style>
     .acciones-container button {
         display: block;
-        margin-bottom: 10px; 
+        margin-bottom: 10px;
     }
 </style>

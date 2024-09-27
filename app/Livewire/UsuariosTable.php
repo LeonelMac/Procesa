@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsuariosTable extends TablaComponent
 {
-    public $perPage = 10;
+    public $perPage = 5;
     public $sortBy = '';
     public $searchBy = ['nombres', 'apellidoP', 'apellidoM'];
 

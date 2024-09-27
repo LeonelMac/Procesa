@@ -1,20 +1,21 @@
-@props(['value', 'mensajeBoton', 'accion', 'titulo'])
+@props(['value', 'mensajeBoton', 'titulo'])
 
-<!-- Modal -->
-<div class="modal fade" id="confirmModal{{ $value }}" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+<!-- Modal para Eliminar Usuario -->
+<div class="modal fade" id="deleteUserModal{{ $value }}" tabindex="-1" aria-labelledby="deleteUserModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">{{ $titulo }}</h5>
+                <h5 class="modal-title" id="deleteUserModalLabel">{{ $titulo }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {{ $slot }}
+                ¿Estás seguro de que deseas eliminar a este usuario?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <!-- Botón diferenciado por acción -->
-                <button type="button" class="btn btn-danger" id="{{ $accion }}{{ $value }}" data-user-id="{{ $value }}">
+                <button type="button" class="btn btn-danger" id="confirmDeleteUser{{ $value }}"
+                    data-user-id="{{ $value }}">
                     {{ $mensajeBoton }}
                 </button>
             </div>
