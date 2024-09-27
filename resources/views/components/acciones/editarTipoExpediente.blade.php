@@ -21,7 +21,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('tipoExpedientes.editar', ['idtipoexpediente' => $value]) }}">
+                    <form method="POST" action="{{ route('tipoExpedientes.editar', ['idtipoexpediente' => $value]) }}" novalidate>
                         @csrf
                         <!-- Campo para el tipo expediente -->
                         <div class="mb-3">

@@ -20,7 +20,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('tipoExpedientes.guardar') }}">
+                    <form id="formAgregarTipoExpediente" method="POST" action="{{ route('tipoExpedientes.guardar') }}" novalidate>
                         @csrf
                         <!-- Campo para el distrito -->
                         <div class="mb-3">

@@ -56,4 +56,13 @@ class TipoExpedienteController extends Controller
         session()->flash('message', 'Tipo de Expediente eliminado correctamente');
         return redirect()->route('tipoExpedientes.index');
     }
+
+    public function verificarDuplicado(Request $request)
+    {
+        $request->validate([
+            'tipoexpediente' => 'required|string|max:255',
+        ]);
+        $existe = TipoExpediente::where('tipoexpediente', $request->tipoexpediente)->exists();
+        return response()->json(['exists' => $existe]);
+    }
 }

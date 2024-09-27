@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tipoExpedientes/editar/{idtipoexpediente}', [TipoExpedienteController::class, 'editarTipoExpediente'])->name('tipoExpedientes.editar');
     Route::delete('/tipoExpedientes/eliminar/{idtipoexpediente}', [TipoExpedienteController::class, 'eliminarTipoExpediente'])->name('tipoExpedientes.eliminar');
     Route::get('/tipoExpedientes/obtener/{idtipoexpediente}', [TipoExpedienteController::class, 'obtenerTipoExpediente']);
+    Route::post('/tipoExpedientes/verificar', [TipoExpedienteController::class, 'verificarDuplicado']);
 
     // Estatus Expediente
     Route::get('/estatus/expedientes', [EstatusExpedienteController::class, 'index'])->name('estatusExpediente.index');
