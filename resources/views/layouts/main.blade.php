@@ -105,38 +105,51 @@
 
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
+    
+            <!-- Inicio accesible por todos los roles -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('inicio') }}"><i
-                        class="bi bi-house"></i><span>Inicio</span></a>
+                <a class="nav-link collapsed" href="{{ route('inicio') }}">
+                    <i class="bi bi-house"></i><span>Inicio</span>
+                </a>
             </li>
+    
+            <!-- Expedientes accesible por todos los roles -->
+            @if(in_array(Auth::user()->rol, [1, 2, 3, 4]))
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('expedientes.index') }}"><i
-                        class="bi bi-book"></i><span>Expedientes</span></a>
+                <a class="nav-link collapsed" href="{{ route('expedientes.index') }}">
+                    <i class="bi bi-book"></i><span>Expedientes</span>
+                </a>
             </li>
+            @endif
+    
+            <!-- Búsquedas accesible solo para Consultores (rol 3) -->
+            @if(Auth::user()->rol == 3)
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse"
-                    href="#"><i class="bi bi-menu-button-wide"></i><span>Configuración</span><i
-                        class="bi bi-books"></i></a>
+                <a class="nav-link collapsed" href="{{ route('tipoBusquedas.index') }}">
+                    <i class="bi bi-search"></i><span>Búsquedas</span>
+                </a>
+            </li>
+            @endif
+    
+            <!-- Configuración accesible solo para Administradores (rol 1) -->
+            @if(Auth::user()->rol == 1)
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Configuración</span><i class="bi bi-books"></i>
+                </a>
                 <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                    <li><a href="{{ route('usuarios.index') }}"><i class="bi bi-circle"></i><span>Usuarios</span></a>
-                    </li>
-                    <li><a href="{{ route('distritos.index') }}"><i class="bi bi-circle"></i><span>Distritos</span></a>
-                    </li>
-                    <li><a href="{{ route('juzgados.index') }}"><i class="bi bi-circle"></i><span>Juzgados</span></a>
-                    </li>
-                    <li><a href="{{ route('tipoExpedientes.index') }}"><i class="bi bi-circle"></i><span>Tipo
-                                Expediente</span></a>
-                    </li>
-                    <li><a href="{{ route('estatusExpediente.index') }}"><i class="bi bi-circle"></i><span>Estatus
-                                Expediente</span></a>
-                    </li>
-                    <li><a href="{{ route('tipoBusquedas.index') }}"><i class="bi bi-circle"></i><span>Tipo
-                                Búsqueda</span></a>
-                    </li>
+                    <li><a href="{{ route('usuarios.index') }}"><i class="bi bi-circle"></i><span>Usuarios</span></a></li>
+                    <li><a href="{{ route('distritos.index') }}"><i class="bi bi-circle"></i><span>Distritos</span></a></li>
+                    <li><a href="{{ route('juzgados.index') }}"><i class="bi bi-circle"></i><span>Juzgados</span></a></li>
+                    <li><a href="{{ route('tipoExpedientes.index') }}"><i class="bi bi-circle"></i><span>Tipo Expediente</span></a></li>
+                    <li><a href="{{ route('estatusExpediente.index') }}"><i class="bi bi-circle"></i><span>Estatus Expediente</span></a></li>
+                    <li><a href="{{ route('tipoBusquedas.index') }}"><i class="bi bi-circle"></i><span>Tipo Búsqueda</span></a></li>
                 </ul>
             </li>
+            @endif
         </ul>
     </aside>
+    
 
     <main id="main" class="main">
         @yield('content')
