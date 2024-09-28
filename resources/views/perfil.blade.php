@@ -104,7 +104,7 @@
 
                                 <div class="tab-pane fade profile-edit" id="profile-edit">
                                     <!-- Profile Edit Form -->
-                                    <form method="POST" action="{{ route('perfil.cambios') }}">
+                                    <form id="profileForm" method="POST" action="{{ route('perfil.cambios') }}" novalidate>
                                         <h5 class="card-title">Detalles del perfil</h5>
                                         @csrf
                                         <!-- Campo oculto para el ID -->
@@ -250,7 +250,7 @@
 
                                 <div class="tab-pane fade pt-3" id="profile-change-password">
                                     <!-- Change Password Form -->
-                                    <form method="POST" action="{{ route('cambiarPassword') }}">
+                                    <form id="passwordForm" action="{{ route('cambiarPassword') }}" novalidate>
                                         @csrf
                                         <div class="row mb-3">
                                             <label for="current-password" class="col-md-4 col-form-label text-md-end">{{ __('Contraseña actual') }}</label>

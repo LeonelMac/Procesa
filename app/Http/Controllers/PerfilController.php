@@ -21,7 +21,7 @@ class PerfilController extends Controller
         }
         return view('perfil', compact('usuario', 'roles', 'municipios'));
     }
-    
+
 
     public function editarUsuario($id)
     {
@@ -31,10 +31,10 @@ class PerfilController extends Controller
             session()->flash('message_type', 'error');
             return redirect('/perfil');
         }
-    
+
         $roles = Rol::all();
         $municipios = Municipio::all();
-        
+
         session()->flash('usuario', $usuario);
         return view('perfil', compact('roles', 'municipios'));
     }
@@ -42,6 +42,8 @@ class PerfilController extends Controller
     public function cambiosUsuario(Request $request)
     {
         $requestData = $request->all();
+
+        // Validación
         $validator = Validator::make($requestData, [
             'id' => ['required', 'numeric'],
             'nombres' => ['required', 'string', 'max:255'],
@@ -50,25 +52,39 @@ class PerfilController extends Controller
             'rol' => ['required', 'numeric'],
             'municipio' => ['required', 'numeric'],
             'direccion' => ['required', 'string', 'max:255'],
-            'telefono' => ['required', 'string', 'max:10']
+            'telefono' => ['required', 'string', 'max:10'],
         ]);
+
+        // Si la validación falla, devolver respuesta JSON con errores
         if ($validator->fails()) {
-            session()->flash('message', $validator->errors()->first());
-            session()->flash('message_type', 'error');
-            return back();
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422); // Código de estado 422 Unprocessable Entity
         }
+
+        // Validación exitosa
         $formFields = $validator->validated();
         $id = $formFields['id'];
         $usuario = User::find($id);
+
+        // Verificar si el usuario existe
         if (!$usuario) {
-            session()->flash('message', 'Usuario no encontrado');
-            session()->flash('message_type', 'error');
-            return redirect()->route('perfil.index', ['id' => $id]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ], 404); // Código de estado 404 Not Found
         }
+
+        // Actualizar los datos del usuario
         $usuario->update($formFields);
-        return redirect()->route('perfil.index', ['id' => $usuario->id])->with('success', 'Perfil actualizado correctamente');
+
+        // Devolver respuesta JSON exitosa
+        return response()->json([
+            'success' => true,
+            'message' => 'Perfil actualizado correctamente'
+        ], 200); // Código de estado 200 OK
     }
-    
 
     public function updateSettings(Request $request)
     {
@@ -83,26 +99,56 @@ class PerfilController extends Controller
 
     public function cambiarPassword(Request $request)
     {
-        $request->validate([
+        // Validar la solicitud
+        $validator = Validator::make($request->all(), [
             'current_password' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-    
-        $userId = auth()->id(); 
+
+        // Si la validación falla, devolver errores en formato JSON
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+        // Obtener el ID del usuario autenticado
+        $userId = auth()->id();
         if (!$userId) {
-            return redirect()->back()->withErrors(['error' => 'Usuario no autenticado o no encontrado.']);
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no autenticado o no encontrado.',
+            ], 401); // Código de estado 401 Unauthorized
         }
-        $usuario = User::find($userId); 
+
+        // Encontrar al usuario
+        $usuario = User::find($userId);
         if (!$usuario) {
-            return redirect()->back()->withErrors(['error' => 'Usuario no encontrado en la base de datos.']);
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado en la base de datos.',
+            ], 404); // Código de estado 404 Not Found
         }
+
+        // Validar la contraseña actual
         $currentPassword = trim($request->current_password);
         if (!Hash::check($currentPassword, $usuario->password)) {
-            return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
+            return response()->json([
+                'success' => false,
+                'message' => 'La contraseña actual no es correcta.',
+            ], 422); // Código de estado 422 Unprocessable Entity
         }
+
+        // Actualizar la nueva contraseña
         $usuario->password = Hash::make($request->password);
         $usuario->password_restaurada = false;
         $usuario->save();
-        return redirect()->route('perfil.index')->with('success', 'Configuraciones actualizadas correctamente');
+
+        // Respuesta exitosa
+        return response()->json([
+            'success' => true,
+            'message' => 'Contraseña actualizada correctamente.',
+        ], 200); // Código de estado 200 OK
     }
 }
