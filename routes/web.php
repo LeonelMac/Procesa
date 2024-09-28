@@ -30,13 +30,14 @@ Route::middleware('auth')->group(function () {
 
     // Usuarios
     // Route::middleware('role:Administrador')->group(function () {
-    Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
-    Route::post('/usuarios/agregar', [UsuarioController::class, 'guardarUsuario'])->name('usuarios.guardar');
-    Route::post('/usuarios/guardar', [UsuarioController::class, 'cambiosUsuario'])->name('usuarios.cambios');
-    Route::post('/usuarios/actualizar', [UsuarioController::class, 'cambiosUsuario'])->name('usuarios.cambios');
-    Route::delete('/usuarios/eliminar/{id}', [UsuarioController::class, 'eliminarUsuario'])->name('usuarios.eliminar');
+    Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index'); // Listar usuarios
+    Route::post('/usuarios/guardar', [UsuarioController::class, 'guardarUsuario'])->name('usuarios.guardar'); // Guardar nuevo usuario
+    Route::post('/usuarios/editar/{id}', [UsuarioController::class, 'editarUsuario'])->name('usuarios.editar'); // Editar usuario
+    Route::delete('/usuarios/eliminar/{id}', [UsuarioController::class, 'eliminarUsuario'])->name('usuarios.eliminar'); // Eliminar usuario
+    Route::get('/usuarios/obtener/{id?}', [UsuarioController::class, 'obtenerUsuario'])->name('usuarios.obtener'); // Obtener usuario (para editar o datos adicionales)
+    Route::post('/usuarios/verificar/email', [UsuarioController::class, 'verificarEmail'])->name('usuarios.verificar.email'); // Verificar duplicado de email
+    Route::post('/usuarios/verificar/telefono', [UsuarioController::class, 'verificarTelefono'])->name('usuarios.verificar.telefono'); // Verificar duplicado de teléfono    
     Route::post('/usuarios/resetPassword/{id}', [UsuarioController::class, 'resetPassword'])->name('usuarios.resetPassword');
-    Route::post('/usuarios/verificar-duplicados', [UsuarioController::class, 'verificarDuplicados'])->name('usuarios.verificarDuplicados');
     // });
 
     // Perfil

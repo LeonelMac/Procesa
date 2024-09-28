@@ -31,10 +31,11 @@ class UsuariosTable extends TablaComponent
     {
         return [
             Column::make('nombre_completo', 'Nombre'),
+            Column::make('email', 'Correo Electrónico'),
+            Column::make('telefono', 'Teléfono'),
+            Column::make('direccion', 'Dirección'),
             Column::make('rol_nombre', 'Rol'),
             Column::make('municipio_nombre', 'Municipio'),
-            Column::make('direccion', 'Dirección'),
-            Column::make('telefono', 'Teléfono'),
             Column::make('id', 'Acciones')->component('columns.accionesUsuarios'),
         ];
     }

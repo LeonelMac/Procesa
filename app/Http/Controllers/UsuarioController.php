@@ -2,46 +2,73 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Rol;
 use App\Models\Municipio;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use App\Mail\PasswordResetNotification;
-use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use App\Mail\WelcomeEmail;
+use App\Mail\PasswordResetNotification;
 
 class UsuarioController extends Controller
 {
+    // Middleware para verificar la autenticación
     public function __construct()
     {
         $this->middleware('auth');
     }
 
+    // Mostrar listado de usuarios
     public function index()
     {
         $usuarios = User::with('rol', 'municipio')->get();
-        return view('usuarios', compact('usuarios'));
+        $roles = Rol::all();
+        $municipios = Municipio::all();
+        return view('usuarios', compact('usuarios', 'roles', 'municipios'));
     }
 
+    // Obtener usuario específico o listado de roles y municipios
+    public function obtenerUsuario($id = null)
+    {
+        $roles = Rol::all();
+        $municipios = Municipio::all();
+
+        if ($id) {
+            $usuario = User::with('rol', 'municipio')->findOrFail($id);
+            return response()->json([
+                'usuario' => $usuario,
+                'roles' => $roles,
+                'municipios' => $municipios,
+            ]);
+        }
+
+        return response()->json([
+            'roles' => $roles,
+            'municipios' => $municipios,
+        ]);
+    }
+
+    // Guardar un nuevo usuario
     public function guardarUsuario(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'nombres' => 'required|string|max:255',
             'apellidoP' => 'required|string|max:255',
             'apellidoM' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'rol' => 'required|numeric',
-            'municipio' => 'required|numeric',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'rol' => 'required|exists:rolusuarios,id_rolusuarios',
+            'municipio' => 'required|exists:municipio,idmunicipio',
             'direccion' => 'required|string|max:255',
-            'telefono' => 'required|string|max:10',
+            'telefono' => 'required|string|max:10|unique:users,telefono',
         ]);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-        $password = $this->generateSecurePassword(12);
+
+        // Generación de contraseña segura
+        $password = $this->generateSecurePassword();
+
+        // Creación del usuario
         $usuario = User::create([
             'nombres' => $request->nombres,
             'apellidoP' => $request->apellidoP,
@@ -53,38 +80,29 @@ class UsuarioController extends Controller
             'telefono' => $request->telefono,
             'password' => Hash::make($password),
         ]);
+
+        // Envío de correo de bienvenida con la contraseña generada
         Mail::to($usuario->email)->send(new WelcomeEmail($usuario, $password));
+
         session()->flash('message', 'Usuario creado correctamente.');
         return redirect()->route('usuarios.index');
     }
 
-    public function cambiosUsuario(Request $request)
+    // Editar un usuario existente
+    public function editarUsuario(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|numeric',
+        $request->validate([
             'nombres' => 'required|string|max:255',
             'apellidoP' => 'required|string|max:255',
             'apellidoM' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'rol' => 'required|numeric',
-            'municipio' => 'required|numeric',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'rol' => 'required|exists:rolusuarios,id_rolusuarios',
+            'municipio' => 'required|exists:municipio,idmunicipio',
             'direccion' => 'required|string|max:255',
-            'telefono' => 'required|string|max:10',
+            'telefono' => 'required|string|max:10|unique:users,telefono,' . $id,
         ]);
 
-        if ($validator->fails()) {
-            session()->flash('message', $validator->errors()->first());
-            session()->flash('message_type', 'error');
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $usuario = User::find($request->id);
-
-        if (!$usuario) {
-            session()->flash('message', 'Usuario no encontrado.');
-            return redirect()->route('usuarios.index');
-        }
-
+        $usuario = User::findOrFail($id);
         $usuario->update([
             'nombres' => $request->nombres,
             'apellidoP' => $request->apellidoP,
@@ -96,60 +114,71 @@ class UsuarioController extends Controller
             'telefono' => $request->telefono,
         ]);
 
-        session()->flash('message', 'Usuario actualizado correctamente.');
         return redirect()->route('usuarios.index');
     }
 
-    public function verificarDuplicados(Request $request)
-    {
-        $correoExistente = User::where('email', $request->email)->first();
-        $telefonoExistente = User::where('telefono', $request->telefono)->first();
-        if ($request->has('id')) {
-            $correoExistente = User::where('email', $request->email)->where('id', '!=', $request->id)->first();
-            $telefonoExistente = User::where('telefono', $request->telefono)->where('id', '!=', $request->id)->first();
-        }
-        if ($correoExistente) {
-            return response()->json(['success' => false, 'message' => 'Este correo electrónico ya se encuentra en uso, utilice otro por favor.']);
-        }
-        if ($telefonoExistente) {
-            return response()->json(['success' => false, 'message' => 'Este teléfono ya se encuentra en uso, utilice otro por favor.']);
-        }
-        return response()->json(['success' => true, 'message' => 'No hay duplicados.']);
-    }
-
-
+    // Eliminar un usuario
     public function eliminarUsuario($id)
     {
-        $usuario = User::find($id);
-        if (!$usuario) {
-            return response()->json(['success' => false, 'message' => 'Usuario no encontrado.'], 404);
-        }
-        if ($usuario->id == auth()->user()->id) {
-            return response()->json(['success' => false, 'message' => 'No puedes eliminar tu propio usuario.'], 403);
+        $usuario = User::findOrFail($id);
+        if (auth()->user()->id == $usuario->id) {
+            return redirect()->route('usuarios.index')->with('error', 'No puedes eliminar tu propio usuario.');
         }
         $usuario->delete();
-        return response()->json(['success' => true, 'message' => 'Usuario eliminado correctamente.']);
+        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente.');
     }
-
+    
+    // Restablecer contraseña de un usuario
     public function resetPassword($id)
     {
-        $usuario = User::find($id);
+        $usuario = User::findOrFail($id);
 
-        if (!$usuario) {
-            return response()->json(['success' => false, 'message' => 'Usuario no encontrado'], 404);
-        }
+        // Generación de nueva contraseña segura
+        $nuevaPassword = $this->generateSecurePassword();
 
-        $nuevaPassword = $this->generateSecurePassword(12);
+        // Actualización de la contraseña
         $usuario->password = Hash::make($nuevaPassword);
         $usuario->password_restaurada = true;
         $usuario->save();
 
+        // Envío de correo de notificación de restablecimiento de contraseña
         Mail::to($usuario->email)->send(new PasswordResetNotification($usuario, $nuevaPassword));
 
         return response()->json(['success' => true, 'message' => 'Contraseña restablecida correctamente y correo enviado.']);
     }
 
-    public function generateSecurePassword($length = 12)
+    // Cambiar la contraseña del usuario autenticado
+    public function cambiarPassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    
+        $usuario = User::find(auth()->id());
+    
+        // Verificar que la contraseña actual sea correcta
+        if (!$usuario || !Hash::check($request->current_password, $usuario->password)) {
+            return response()->json(['success' => false, 'message' => 'La contraseña actual no es correcta.'], 400);
+        }
+    
+        // Actualizar la nueva contraseña
+        $usuario->password = Hash::make($request->password);
+        $usuario->password_restaurada = false;
+        $usuario->save();
+    
+        return response()->json(['success' => true, 'message' => 'Contraseña actualizada correctamente.']);
+    }
+    
+
+    // Vista para cambiar la contraseña
+    public function cambiarPasswordVista()
+    {
+        return view('auth.resetPassword');
+    }
+
+    // Genera una contraseña segura de 12 caracteres
+    private function generateSecurePassword($length = 12)
     {
         $upper = Str::upper(Str::random(2));
         $lower = Str::lower(Str::random(4));
@@ -160,34 +189,30 @@ class UsuarioController extends Controller
         return substr($password, 0, $length);
     }
 
-    public function cambiarPassword(Request $request)
+    public function verificarEmail(Request $request)
     {
-        $request->validate([
-            'current_password' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-
-        $userId = auth()->id();
-        if (!$userId) {
-            return redirect()->back()->withErrors(['error' => 'Usuario no autenticado o no encontrado.']);
+        $query = User::where('email', $request->email);
+    
+        // Excluir al usuario actual en el caso de edición
+        if ($request->user_id) {
+            $query->where('id', '!=', $request->user_id);
         }
-        $usuario = User::find($userId);
-        if (!$usuario) {
-            return redirect()->back()->withErrors(['error' => 'Usuario no encontrado en la base de datos.']);
-        }
-        $currentPassword = trim($request->current_password);
-        if (!Hash::check($currentPassword, $usuario->password)) {
-            return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
-        }
-        $usuario->password = Hash::make($request->password);
-        $usuario->password_restaurada = false;
-        $usuario->setRememberToken(Str::random(60));
-        $usuario->save();
-        return redirect('/inicio')->with('message', 'Contraseña actualizada correctamente.');
+    
+        $existe = $query->exists();
+        return response()->json(['exists' => $existe]);
     }
-
-    public function cambiarPasswordVista()
+    
+    public function verificarTelefono(Request $request)
     {
-        return view('auth.resetPassword');
+        $query = User::where('telefono', $request->telefono);
+    
+        // Excluir al usuario actual en el caso de edición
+        if ($request->user_id) {
+            $query->where('id', '!=', $request->user_id);
+        }
+    
+        $existe = $query->exists();
+        return response()->json(['exists' => $existe]);
     }
+    
 }

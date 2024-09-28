@@ -6,6 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-id" content="{{ auth()->user()->id }}">
+    <meta name="change-password-url" content="{{ route('cambiarPassword') }}">
     <title>@yield('title', 'Sistema Procesa')</title>
 
     <!-- Favicons -->

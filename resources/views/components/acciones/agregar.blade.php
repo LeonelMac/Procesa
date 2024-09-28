@@ -9,7 +9,8 @@
             </svg>
         </div>
     </button>
-    <!-- Modal -->
+
+    <!-- Modal Agregar Usuario -->
     <div class="modal fade" id="agregarUsuarioModal" tabindex="-1" aria-labelledby="agregarUsuarioModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -19,11 +20,59 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @php
-                        $roles = App\Models\Rol::all();
-                        $municipios = App\Models\Municipio::all();
-                    @endphp
-                    @include('auth.agregar-modal', ['roles' => $roles, 'municipios' => $municipios])
+                    <!-- Formulario para agregar un nuevo usuario -->
+                    <form id="formAgregarUsuario" method="POST" action="{{ route('usuarios.guardar') }}" novalidate>
+                        @csrf
+                        <!-- Campo para los nombres -->
+                        <div class="mb-3">
+                            <label for="nombres" class="form-label">Nombres</label>
+                            <input type="text" class="form-control" id="nombres" name="nombres" required>
+                        </div>
+                        <!-- Campo para el apellido paterno -->
+                        <div class="mb-3">
+                            <label for="apellidoP" class="form-label">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="apellidoP" name="apellidoP" required>
+                        </div>
+                        <!-- Campo para el apellido materno -->
+                        <div class="mb-3">
+                            <label for="apellidoM" class="form-label">Apellido Materno</label>
+                            <input type="text" class="form-control" id="apellidoM" name="apellidoM" required>
+                        </div>
+                        <!-- Campo para el correo electrónico -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <!-- Campo para el teléfono -->
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="telefono" name="telefono" required>
+                        </div>
+                        <!-- Campo para el Dirección -->
+                        <div class="mb-3">
+                            <label for="direccion" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion" required>
+                        </div>
+                        <!-- Select para el rol -->
+                        <div class="mb-3">
+                            <label for="rol" class="form-label">Seleccionar Rol</label>
+                            <select class="form-select" id="rol" name="rol" required>
+                                <option value="">Selecciona un rol</option>
+                                <!-- Opciones de roles -->
+                            </select>
+                        </div>
+                        <!-- Select para el municipio -->
+                        <div class="mb-3">
+                            <label for="municipio" class="form-label">Seleccionar Municipio</label>
+                            <select class="form-select" id="municipio" name="municipio" required>
+                                <option value="">Selecciona un municipio</option>
+                                <!-- Opciones de municipios -->
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
