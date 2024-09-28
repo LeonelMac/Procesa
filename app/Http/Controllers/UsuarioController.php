@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Rol;
 use App\Models\Municipio;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\WelcomeEmail;
@@ -79,6 +79,7 @@ class UsuarioController extends Controller
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
             'password' => Hash::make($password),
+            'password_restaurada' => true,
         ]);
 
         // Envío de correo de bienvenida con la contraseña generada
