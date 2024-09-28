@@ -49,7 +49,6 @@ class PerfilController extends Controller
             'nombres' => ['required', 'string', 'max:255'],
             'apellidoP' => ['required', 'string', 'max:255'],
             'apellidoM' => ['required', 'string', 'max:255'],
-            'rol' => ['required', 'numeric'],
             'municipio' => ['required', 'numeric'],
             'direccion' => ['required', 'string', 'max:255'],
             'telefono' => ['required', 'string', 'max:10'],
@@ -84,17 +83,6 @@ class PerfilController extends Controller
             'success' => true,
             'message' => 'Perfil actualizado correctamente'
         ], 200); // Código de estado 200 OK
-    }
-
-    public function updateSettings(Request $request)
-    {
-        // $usuario = auth()->user();
-        // $usuario->notificaciones_email = $request->has('emailNotifications');
-        // $usuario->notificaciones_whatsapp = $request->has('whatsappNotifications');
-        // $usuario->notificaciones_sms = $request->has('smsNotifications');
-        // $usuario->save();
-
-        // return redirect()->route('perfil.index')->with('success', 'Configuraciones actualizadas correctamente');
     }
 
     public function cambiarPassword(Request $request)

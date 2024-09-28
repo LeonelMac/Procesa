@@ -45,7 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/perfil/{id}', [PerfilController::class, 'index'])->name('perfil.index');
     Route::post('/perfil/agregar', [PerfilController::class, 'guardarUsuario'])->name('perfil.guardar');
     Route::post('/perfil/guardar', [PerfilController::class, 'cambiosUsuario'])->name('perfil.cambios');
-    Route::put('/perfil/settings', [PerfilController::class, 'updateSettings'])->name('perfil.settings');
     Route::put('/perfil/cambiarPassword', [PerfilController::class, 'cambiarPassword'])->name('perfil.cambiarPassword');
 
     // Distritos (solo para Administrador)

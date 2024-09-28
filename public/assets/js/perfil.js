@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const apellidoM = document.getElementById("apellidoM").value.trim();
         const direccion = document.getElementById("direccion").value.trim();
         const telefono = document.getElementById("telefono").value.trim();
-        const rol = document.getElementById("rol").value;
         const municipio = document.getElementById("municipio").value;
 
         // Validar que todos los campos requeridos no estén vacíos
@@ -37,11 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (telefono === "") {
             toastr.error("El teléfono no puede estar vacío.");
-            return;
-        }
-
-        if (rol === "") {
-            toastr.error("Debe seleccionar un rol.");
             return;
         }
 

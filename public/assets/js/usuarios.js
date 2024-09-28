@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
           !validarCampoIndividual(
             nombresInput.value,
             "nombres",
-            'El campo "Nombres" es obligatorio.'
+            'El campo "Nombre" es obligatorio.'
           ) ||
           !validarCampoIndividual(
             apellidoPInput.value,
