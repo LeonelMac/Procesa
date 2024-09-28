@@ -20,7 +20,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formAgregarTipoBusqueda" method="POST" action="{{ route('tipoBusquedas.guardar') }}" novalidate>
+                    <form id="formAgregarTipoBusqueda" method="POST" action="{{ route('tipoBusquedas.guardar') }}"
+                        novalidate>
                         @csrf
                         <!-- Campo para Tipo de Búsqueda -->
                         <div class="mb-3">
@@ -62,4 +63,3 @@
         margin: 0;
     }
 </style>
-

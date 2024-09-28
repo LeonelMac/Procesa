@@ -11,7 +11,7 @@ class TipoBusqueda extends Model
     use HasFactory;
     protected $table = 'tipobusqueda';
     protected $primaryKey = 'idtipobusqueda';
-    protected $fillable = ['tipobusqueda','juzgado'];
+    protected $fillable = ['tipobusqueda', 'juzgado'];
 
     /**
      * Scope a query to search for a term in specified columns.
@@ -24,7 +24,7 @@ class TipoBusqueda extends Model
     public function scopeSearch(Builder $query, $columns, $term)
     {
         if (is_array($columns)) {
-            $columns = implode(',', $columns); // Convierte el array en una cadena separada por comas
+            $columns = implode(',', $columns);
         }
 
         return $query->where(function ($query) use ($columns, $term) {

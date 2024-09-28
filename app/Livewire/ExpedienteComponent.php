@@ -27,10 +27,9 @@ class ExpedienteComponent extends TablaComponent
             Column::make('id_expedientes', 'Acciones')->component('columns.accionesExpedientes'),
         ];
     }
-    
+
     public function verExpediente($value)
     {
         return redirect('/expedientes/descripcion/' . $value);
     }
-
 }

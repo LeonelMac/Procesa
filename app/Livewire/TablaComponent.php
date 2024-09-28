@@ -10,17 +10,11 @@ abstract class TablaComponent extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-
     public $perPage = 10;
-
     public $page = 1;
-
     public $sortBy = '';
-
     public $sortDirection = 'asc';
-
     public $searchTerm = '';
-
     public $searchBy = '';
 
     public function render()

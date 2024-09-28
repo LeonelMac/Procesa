@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Restablecimiento de Contraseña</title>
     <style>
@@ -10,6 +11,7 @@
             margin: 0;
             padding: 20px;
         }
+
         .email-container {
             max-width: 600px;
             margin: 0 auto;
@@ -19,25 +21,32 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
+
         .header {
-            background-color: #4285f4; /* Google-like blue */
+            background-color: #4285f4;
+            /* Google-like blue */
             color: #ffffff;
             padding: 20px;
             text-align: center;
         }
+
         .header h1 {
             margin: 0;
             font-size: 24px;
         }
+
         .content {
             padding: 20px;
             line-height: 1.6;
         }
+
         .content p {
             margin: 0 0 15px;
         }
+
         .password-box {
-            background-color: #f1f3f4; /* Light grey background */
+            background-color: #f1f3f4;
+            /* Light grey background */
             color: #333;
             padding: 15px;
             border-radius: 5px;
@@ -46,6 +55,7 @@
             text-align: center;
             margin: 20px 0;
         }
+
         .footer {
             text-align: center;
             color: #777;
@@ -53,6 +63,7 @@
             padding: 20px;
             background-color: #f1f3f4;
         }
+
         .footer img {
             max-width: 150px;
             height: auto;
@@ -60,6 +71,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="email-container">
         <div class="header">
@@ -71,7 +83,8 @@
             <div class="password-box">
                 {{ $nuevaPassword }}
             </div>
-            <p>Le recomendamos encarecidamente cambiar esta contraseña una vez que inicie sesión para mantener la seguridad de su cuenta.</p>
+            <p>Le recomendamos encarecidamente cambiar esta contraseña una vez que inicie sesión para mantener la
+                seguridad de su cuenta.</p>
         </div>
         <div class="footer">
             <p>Saludos<br>del equipo de {{ config('app.name') }}</p>
@@ -79,4 +92,5 @@
         </div>
     </div>
 </body>
+
 </html>

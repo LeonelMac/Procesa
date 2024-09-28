@@ -37,7 +37,7 @@
     <style>
         .offset-end {
             position: absolute;
-            right: 25px; 
+            right: 25px;
             top: 15px;
         }
     </style>

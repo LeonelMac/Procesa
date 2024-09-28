@@ -14,7 +14,7 @@ class ExpedienteController extends Controller
 
         $expedientes = Expediente::when($term, function ($query, $term) use ($columns) {
             return $query->search($columns, $term);
-        })->paginate(10); 
+        })->paginate(10);
 
         return view('expedientes', compact('expedientes'));
     }

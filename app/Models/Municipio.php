@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Municipio extends Model
 {
     use HasFactory;
-    protected $table = 'municipio'; 
+    protected $table = 'municipio';
     protected $fillable = ['municipio'];
 
     /**
@@ -23,7 +23,7 @@ class Municipio extends Model
     public function scopeSearch(Builder $query, $columns, $term)
     {
         if (is_array($columns)) {
-            $columns = implode(',', $columns); // Convierte el array en una cadena separada por comas
+            $columns = implode(',', $columns);
         }
 
         return $query->where(function ($query) use ($columns, $term) {

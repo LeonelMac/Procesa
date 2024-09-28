@@ -49,6 +49,7 @@
         background-color: #c1cad4;
         color: #fff;
     }
+
     .icon-container svg {
         margin: 0;
     }

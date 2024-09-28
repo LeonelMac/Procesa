@@ -25,21 +25,21 @@
                                     <div class="offset-end">
                                         <x-acciones.agregarTipoExpediente mensaje="Agregar Tipo Expediente" />
                                     </div>
-                                <div class="card-body">
-                                    <livewire:tipo-expediente-component></livewire:tipo-expediente-component>
+                                    <div class="card-body">
+                                        <livewire:tipo-expediente-component></livewire:tipo-expediente-component>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </section>
             </div>
         </section>
     </main>
-    
+
     <style>
         .offset-end {
             position: absolute;
-            right: 25px; 
+            right: 25px;
             top: 15px;
         }
     </style>

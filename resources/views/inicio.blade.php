@@ -62,7 +62,7 @@
                                 <i class="bi bi-bell"></i>
                             </div>
                             <div class="ps-3">
-                                <h6 id="eventCount">0</h6> 
+                                <h6 id="eventCount">0</h6>
                                 <span class="text-muted small pt-2 ps-1">Avisos</span>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <div class="row"> 
+        <div class="row">
             <div class="col-xxl-8 col-xl-8 col-lg-8">
                 <div class="card info-card revenue-card shadow-sm rounded">
                     <div id="calendar" style="max-width: 100%; height: auto;"></div>
@@ -89,7 +89,7 @@
                                         <i class="bi bi-calendar3"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6 id="generalEventCount">0</h6> 
+                                        <h6 id="generalEventCount">0</h6>
                                         <span class="text-muted small pt-2 ps-1">Eventos futuros</span>
                                     </div>
                                 </div>
@@ -101,7 +101,8 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="filter">
-                                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                        class="bi bi-three-dots"></i></a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <li class="dropdown-header text-start">
                                         <h6>Filtro</h6>
@@ -205,8 +206,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viewEventModalLabel">Detalles del Evento</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">

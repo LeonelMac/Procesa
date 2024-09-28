@@ -1,38 +1,31 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Verificar si el tipo de búsqueda ya existe
   function verificarTipoBusquedaDuplicado(tipobusqueda, callback) {
     $.ajax({
-      url: "/tipo/busquedas/verificar", // Ruta para verificar tipo de búsqueda duplicado
+      url: "/tipo/busquedas/verificar",
       method: "POST",
       data: {
         tipobusqueda: tipobusqueda,
-        _token: $('meta[name="csrf-token"]').attr("content"), // Token CSRF
+        _token: $('meta[name="csrf-token"]').attr("content"),
       },
       success: function (response) {
-        callback(response.exists); // Ejecutar el callback con el resultado
+        callback(response.exists);
       },
       error: function (xhr, status, error) {
         toastr.error("Error al verificar duplicados.");
       },
     });
   }
-
-  // Manejar el formulario de agregar tipo de búsqueda
   $("#agregarTipoBusquedaModal").on("shown.bs.modal", function () {
     let agregarForm = document.getElementById("formAgregarTipoBusqueda");
     if (agregarForm) {
       agregarForm.addEventListener("submit", function (event) {
         let tipoBusquedaInput = document.getElementById("tipobusqueda");
         let juzgadoInput = document.getElementById("juzgado");
-
-        // Validaciones básicas del campo de tipo de búsqueda
         if (tipoBusquedaInput.value.trim() === "") {
           event.preventDefault();
           toastr.error('El campo "Tipo de Búsqueda" es obligatorio.');
           return;
         }
-
-        // Validación de longitud mínima y máxima
         if (
           tipoBusquedaInput.value.trim().length < 3 ||
           tipoBusquedaInput.value.trim().length > 50
@@ -43,8 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
           );
           return;
         }
-
-        // Validación de solo letras y espacios
         if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(tipoBusquedaInput.value.trim())) {
           event.preventDefault();
           toastr.error(
@@ -58,10 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
           toastr.error('El campo "Seleccionar Juzgado" es obligatorio.');
           return;
         }
-
-        event.preventDefault(); // Prevenir el envío por defecto
-
-        // Verificar si el tipo de búsqueda ya existe
+        event.preventDefault();
         verificarTipoBusquedaDuplicado(
           tipoBusquedaInput.value.trim(),
           function (existe) {
@@ -69,15 +57,13 @@ document.addEventListener("DOMContentLoaded", function () {
               toastr.error("Ya existe un tipo de búsqueda con este nombre.");
             } else {
               toastr.success("Tipo de Búsqueda agregado exitosamente.");
-              agregarForm.submit(); // Enviar el formulario
+              agregarForm.submit();
             }
           }
         );
       });
     }
   });
-
-  // Manejar el formulario de editar tipo de búsqueda
   document
     .querySelectorAll('form[action*="/tipo/busquedas/editar"]')
     .forEach(function (form) {
@@ -86,15 +72,11 @@ document.addEventListener("DOMContentLoaded", function () {
           'input[name="tipobusqueda"]'
         );
         let juzgadoInput = form.querySelector('select[name="juzgado"]');
-
-        // Validaciones básicas del campo de tipo de búsqueda
         if (tipoBusquedaInput.value.trim() === "") {
           event.preventDefault();
           toastr.error('El campo "Tipo de Búsqueda" es obligatorio.');
           return;
         }
-
-        // Validación de longitud mínima y máxima
         if (
           tipoBusquedaInput.value.trim().length < 3 ||
           tipoBusquedaInput.value.trim().length > 50
@@ -105,8 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
           );
           return;
         }
-
-        // Validación de solo letras y espacios
         if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(tipoBusquedaInput.value.trim())) {
           event.preventDefault();
           toastr.error(
@@ -114,16 +94,12 @@ document.addEventListener("DOMContentLoaded", function () {
           );
           return;
         }
-
         if (juzgadoInput.value === "") {
           event.preventDefault();
           toastr.error('El campo "Seleccionar Juzgado" es obligatorio.');
           return;
         }
-
-        event.preventDefault(); // Prevenir envío inmediato
-
-        // Verificar si el tipo de búsqueda ya existe
+        event.preventDefault();
         verificarTipoBusquedaDuplicado(
           tipoBusquedaInput.value.trim(),
           function (existe) {
@@ -131,19 +107,18 @@ document.addEventListener("DOMContentLoaded", function () {
               toastr.error("Ya existe un tipo de búsqueda con este nombre.");
             } else {
               toastr.success("Tipo de Búsqueda editado exitosamente.");
-              form.submit(); // Enviar el formulario
+              form.submit();
             }
           }
         );
       });
     });
 
-  // Confirmar eliminación de tipo de búsqueda con SweetAlert
   document
     .querySelectorAll('form[action*="/tipo/busquedas/eliminar"]')
     .forEach(function (form) {
       form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevenir envío inmediato
+        event.preventDefault();
         Swal.fire({
           title: "¿Estás seguro?",
           text: "No podrás revertir esta acción",
@@ -154,14 +129,12 @@ document.addEventListener("DOMContentLoaded", function () {
           reverseButtons: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            form.submit(); // Enviar el formulario para eliminar
+            form.submit();
             toastr.success("Tipo de Búsqueda eliminado exitosamente.");
           }
         });
       });
     });
-
-  // Cargar juzgados cuando se abre el modal de agregar tipo de búsqueda
   $("#agregarTipoBusquedaModal").on("show.bs.modal", function () {
     $.ajax({
       url: "/tipo/busquedas/obtener",
@@ -187,7 +160,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Función para cargar los datos del tipo de búsqueda al abrir el modal de edición
 function cargarDatosTipoBusqueda(idtipobusqueda) {
   $.ajax({
     url: "/tipo/busquedas/obtener/" + idtipobusqueda,

@@ -9,22 +9,22 @@ use Illuminate\Database\Eloquent\Builder;
 class Expediente extends Model
 {
     use HasFactory;
-    
-    protected $table = 'expedientes'; 
+
+    protected $table = 'expedientes';
     protected $primaryKey = 'id_expedientes';
-    
+
     protected $fillable = [
-        'estatusexpediente', 
-        'tipoexpediente', 
-        'numero', 
-        'prom', 
-        'asunto', 
-        'resolucion', 
-        'destino', 
-        'fechaexpe', 
-        'sintesis', 
-        'documentoexpe', 
-        'usuarioresponsable', 
+        'estatusexpediente',
+        'tipoexpediente',
+        'numero',
+        'prom',
+        'asunto',
+        'resolucion',
+        'destino',
+        'fechaexpe',
+        'sintesis',
+        'documentoexpe',
+        'usuarioresponsable',
         'usuarioasignado'
     ];
 
@@ -49,4 +49,3 @@ class Expediente extends Model
         });
     }
 }
-

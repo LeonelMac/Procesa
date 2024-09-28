@@ -19,28 +19,33 @@
                                     <div class="card-title text-center">
                                         <h5 class="card-title text-center pb-0 fs-4">Inicie sesión</h5>
                                     </div>
-                                    <form id="loginForm" class="row g-3 needs-validation" method="POST" action="{{ route('login') }}" novalidate>
+                                    <form id="loginForm" class="row g-3 needs-validation" method="POST"
+                                        action="{{ route('login') }}" novalidate>
                                         @csrf
-                                    
+
                                         <div class="col-12">
                                             <label for="email" class="form-label">Correo Electrónico</label>
-                                            <input type="email" id="email" name="email" class="form-control" required>
-                                            <div class="invalid-feedback">¡Por favor, introduzca su correo electrónico!</div>
+                                            <input type="email" id="email" name="email" class="form-control"
+                                                required>
+                                            <div class="invalid-feedback">¡Por favor, introduzca su correo electrónico!
+                                            </div>
                                         </div>
-                                    
+
                                         <div class="col-12">
                                             <label for="password" class="form-label">Contraseña</label>
-                                            <input type="password" id="password" name="password" class="form-control" required>
+                                            <input type="password" id="password" name="password" class="form-control"
+                                                required>
                                             <div class="invalid-feedback">¡Por favor, introduzca su contraseña!</div>
                                         </div>
-                                    
+
                                         <div class="col-12">
                                             <button class="btn btn-primary w-100" type="submit">Acceder</button>
                                         </div>
-                                    
+
                                         <div class="col-12">
                                             @if (Route::has('register'))
-                                                <p class="small mb-0">¿No tienes cuenta? <a href="{{ route('register') }}">Crear una cuenta</a></p>
+                                                <p class="small mb-0">¿No tienes cuenta? <a
+                                                        href="{{ route('register') }}">Crear una cuenta</a></p>
                                             @endif
                                         </div>
                                     </form>
@@ -71,8 +76,7 @@
 
     <!-- Incluir SweetAlert2 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <!-- Este es el archivo login.js -->
     <script src="{{ asset('assets/js/login.js') }}"></script>
 @endsection
-

@@ -39,5 +39,4 @@ class ExpDescripcionComponent extends TablaComponent
         $pdfUrl = asset("assets/pdf/{$expediente->documentoexpe}");
         return redirect()->to($pdfUrl);
     }
-    
 }

@@ -12,7 +12,8 @@
 </button>
 
 <!-- Modal de confirmación -->
-<div class="modal fade" id="confirmModal{{ $value }}eliminar" tabindex="-1" aria-labelledby="confirmModalLabel{{ $value }}eliminar" aria-hidden="true">
+<div class="modal fade" id="confirmModal{{ $value }}eliminar" tabindex="-1"
+    aria-labelledby="confirmModalLabel{{ $value }}eliminar" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

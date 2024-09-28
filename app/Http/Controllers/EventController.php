@@ -187,7 +187,7 @@ class EventController extends Controller
     {
         try {
             $today = Carbon::today();
-            $upcomingEvents = Event::where('start', '>=', $today)->count(); 
+            $upcomingEvents = Event::where('start', '>=', $today)->count();
             return response()->json(['count' => $upcomingEvents], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al obtener el conteo de eventos'], 500);

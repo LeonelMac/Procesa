@@ -49,7 +49,7 @@
 @section('scripts')
     <script src="{{ asset('assets/js/usuarios.js') }}"></script>
     <script>
-        @if(session('message'))
+        @if (session('message'))
             toastr.success('{{ session('message') }}');
         @endif
     </script>

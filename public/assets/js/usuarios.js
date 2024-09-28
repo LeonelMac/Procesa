@@ -2,10 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function verificarEmailDuplicado(email, userId, callback) {
     let data = {
       email: email,
-      _token: $('meta[name="csrf-token"]').attr("content"), // Token CSRF
+      _token: $('meta[name="csrf-token"]').attr("content"),
     };
-
-    // Solo incluir userId si existe (caso de edición)
     if (userId) {
       data.user_id = userId;
     }
@@ -15,22 +13,18 @@ document.addEventListener("DOMContentLoaded", function () {
       method: "POST",
       data: data,
       success: function (response) {
-        callback(response.exists); // Ejecutar el callback con el resultado
+        callback(response.exists);
       },
       error: function (xhr, status, error) {
         toastr.error("Error al verificar el correo electrónico.");
       },
     });
   }
-
-  // Verificar si el teléfono ya existe, excepto para el usuario actual (solo si existe userId)
   function verificarTelefonoDuplicado(telefono, userId, callback) {
     let data = {
       telefono: telefono,
-      _token: $('meta[name="csrf-token"]').attr("content"), // Token CSRF
+      _token: $('meta[name="csrf-token"]').attr("content"),
     };
-
-    // Solo incluir userId si existe (caso de edición)
     if (userId) {
       data.user_id = userId;
     }
@@ -40,15 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
       method: "POST",
       data: data,
       success: function (response) {
-        callback(response.exists); // Ejecutar el callback con el resultado
+        callback(response.exists);
       },
       error: function (xhr, status, error) {
         toastr.error("Error al verificar el teléfono.");
       },
     });
   }
-
-  // Validar campo individual
   function validarCampoIndividual(valor, campo, mensaje) {
     if (valor.trim() === "") {
       toastr.error(mensaje);
@@ -61,8 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let agregarForm = document.getElementById("formAgregarUsuario");
     if (agregarForm) {
       agregarForm.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevenir el envío por defecto
-
+        event.preventDefault();
         let nombresInput = document.getElementById("nombres");
         let apellidoPInput = document.getElementById("apellidoP");
         let apellidoMInput = document.getElementById("apellidoM");
@@ -71,8 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let direccionInput = document.getElementById("direccion");
         let rolInput = document.getElementById("rol");
         let municipioInput = document.getElementById("municipio");
-
-        // Validar campos individualmente
         if (
           !validarCampoIndividual(
             nombresInput.value,
@@ -115,10 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
             'El campo "Seleccionar Municipio" es obligatorio.'
           )
         ) {
-          return; // Detener si hay un error de validación
+          return;
         }
-
-        // Verificar duplicado de email (sin user_id para agregar)
         verificarEmailDuplicado(
           emailInput.value.trim(),
           null,
@@ -126,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (emailExiste) {
               toastr.error("Ya existe un usuario con este correo.");
             } else {
-              // Verificar duplicado de teléfono (sin user_id para agregar)
               verificarTelefonoDuplicado(
                 telefonoInput.value.trim(),
                 null,
@@ -134,9 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
                   if (telefonoExiste) {
                     toastr.error("Ya existe un usuario con este teléfono.");
                   } else {
-                    // Si todo es válido, enviar el formulario
                     toastr.success("Usuario agregado exitosamente.");
-                    agregarForm.submit(); // Enviar el formulario
+                    agregarForm.submit();
                   }
                 }
               );
@@ -147,16 +132,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Manejar el formulario de editar usuario
   document
     .querySelectorAll('form[action*="/usuarios/editar"]')
     .forEach(function (form) {
       form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevenir envío inmediato
-
-        // Obtener el ID del usuario del campo oculto
+        event.preventDefault();
         let usuarioId = form.querySelector('input[name="id"]').value;
-
         let nombresInput = form.querySelector('input[name="nombres"]');
         let apellidoPInput = form.querySelector('input[name="apellidoP"]');
         let apellidoMInput = form.querySelector('input[name="apellidoM"]');
@@ -165,8 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let direccionInput = form.querySelector('input[name="direccion"]');
         let rolInput = form.querySelector('select[name="rol"]');
         let municipioInput = form.querySelector('select[name="municipio"]');
-
-        // Validar campos individualmente
         if (
           !validarCampoIndividual(
             nombresInput.value,
@@ -209,10 +188,8 @@ document.addEventListener("DOMContentLoaded", function () {
             'El campo "Seleccionar Municipio" es obligatorio.'
           )
         ) {
-          return; // Detener si hay un error de validación
+          return;
         }
-
-        // Verificar duplicado de email con el ID del usuario
         verificarEmailDuplicado(
           emailInput.value.trim(),
           usuarioId,
@@ -220,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (emailExiste) {
               toastr.error("Ya existe un usuario con este correo.");
             } else {
-              // Verificar duplicado de teléfono con el ID del usuario
               verificarTelefonoDuplicado(
                 telefonoInput.value.trim(),
                 usuarioId,
@@ -228,9 +204,8 @@ document.addEventListener("DOMContentLoaded", function () {
                   if (telefonoExiste) {
                     toastr.error("Ya existe un usuario con este teléfono.");
                   } else {
-                    // Si todo es válido, enviar el formulario
                     toastr.success("Usuario editado correctamente.");
-                    form.submit(); // Enviar el formulario
+                    form.submit();
                   }
                 }
               );
@@ -240,36 +215,24 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-  // Confirmar eliminación de usuario con SweetAlert
   document
     .querySelectorAll('form[action*="/usuarios/eliminar"]')
     .forEach(function (form) {
       form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevenir envío inmediato
-
-        // Verificar si el campo 'input[name="id"]' existe en el formulario
+        event.preventDefault();
         const userIdInput = form.querySelector('input[name="id"]');
-
         if (!userIdInput) {
           toastr.error("El ID del usuario no está disponible.");
-          return; // Detener la ejecución si no se encuentra el campo 'id'
+          return;
         }
-
-        // Obtener el ID del usuario que se quiere eliminar desde el formulario
         const userIdToDelete = userIdInput.value;
-
-        // Obtener el ID del usuario autenticado
         const currentUserId = document
           .querySelector('meta[name="user-id"]')
           .getAttribute("content");
-
-        // Verificar si el usuario está intentando eliminarse a sí mismo
         if (userIdToDelete === currentUserId) {
           toastr.error("No puedes eliminar tu propio usuario.");
-          return; // Detener la ejecución si intenta eliminarse a sí mismo
+          return;
         }
-
-        // Confirmar eliminación con SweetAlert
         Swal.fire({
           title: "¿Estás seguro?",
           text: "No podrás revertir esta acción",
@@ -280,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
           reverseButtons: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            form.submit(); // Enviar el formulario para eliminar
+            form.submit();
             toastr.success("Usuario eliminado exitosamente.");
           }
         });
@@ -291,9 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .querySelectorAll('button[id^="confirmResetPassword"]')
     .forEach(function (button) {
       button.addEventListener("click", function () {
-        let userId = this.getAttribute("data-user-id"); // Obtener el ID del usuario desde el botón
-
-        // Usar SweetAlert para confirmar la acción
+        let userId = this.getAttribute("data-user-id");
         Swal.fire({
           title: "¿Estás seguro?",
           text: "Esta acción restablecerá la contraseña del usuario.",
@@ -304,12 +265,9 @@ document.addEventListener("DOMContentLoaded", function () {
           reverseButtons: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            // Capturamos el formulario dentro del modal usando el ID de usuario
             let form = document.querySelector(
               `#confirmModal${userId}reset form`
             );
-
-            // Enviar la solicitud AJAX para restablecer la contraseña
             let formData = new FormData(form);
             let actionUrl = form.getAttribute("action");
 
@@ -325,27 +283,22 @@ document.addEventListener("DOMContentLoaded", function () {
               .then((response) => response.json())
               .then((data) => {
                 if (data.success) {
-                  // Mostrar mensaje de éxito con SweetAlert
                   Swal.fire({
                     icon: "success",
                     title: "¡Éxito!",
                     text: data.message,
                     confirmButtonText: "Aceptar",
                   }).then(() => {
-                    // Cerrar el modal
                     let modal = document.querySelector(
                       `#confirmModal${userId}reset`
                     );
-                    let bootstrapModal = bootstrap.Modal.getInstance(modal); // Usamos Bootstrap modal instance
+                    let bootstrapModal = bootstrap.Modal.getInstance(modal);
                     bootstrapModal.hide();
-
-                    // Refrescar la página
                     setTimeout(() => {
                       location.reload();
-                    }, 500); // Refrescar después de cerrar el modal
+                    }, 500);
                   });
                 } else {
-                  // Mostrar mensaje de error con SweetAlert
                   Swal.fire({
                     icon: "error",
                     title: "Error",
@@ -355,7 +308,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               })
               .catch((error) => {
-                // Manejar errores inesperados
                 Swal.fire({
                   icon: "error",
                   title: "Error inesperado",
@@ -368,7 +320,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-  // Cargar roles y municipios cuando se abre el modal de agregar usuario
   $("#agregarUsuarioModal").on("show.bs.modal", function () {
     $.ajax({
       url: "/usuarios/obtener",
@@ -377,8 +328,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let selectRol = $("#rol");
         let selectMunicipio = $("#municipio");
 
-        selectRol.empty(); // Limpiar el select de roles antes de llenarlo
-        selectRol.append('<option value="">Selecciona un rol</option>'); // Opción por defecto
+        selectRol.empty();
+        selectRol.append('<option value="">Selecciona un rol</option>');
         data.roles.forEach(function (rol) {
           selectRol.append(
             '<option value="' +
@@ -389,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function () {
           );
         });
 
-        selectMunicipio.empty(); // Limpiar el select de municipios antes de llenarlo
+        selectMunicipio.empty();
         selectMunicipio.append(
           '<option value="">Selecciona un municipio</option>'
         ); // Opción por defecto
@@ -410,7 +361,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Función para cargar los datos del usuario al abrir el modal de edición
 function cargarDatosUsuario(idUsuario) {
   $.ajax({
     url: "/usuarios/obtener/" + idUsuario,

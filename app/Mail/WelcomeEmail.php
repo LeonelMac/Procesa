@@ -35,11 +35,10 @@ class WelcomeEmail extends Mailable
     public function build()
     {
         return $this->view('emails.welcome')
-                    ->subject('Bienvenido a la Plataforma')
-                    ->with([
-                        'usuario' => $this->usuario,
-                        'password' => $this->password,
-                    ]);
+            ->subject('Bienvenido a la Plataforma')
+            ->with([
+                'usuario' => $this->usuario,
+                'password' => $this->password,
+            ]);
     }
 }
-

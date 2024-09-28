@@ -24,14 +24,14 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('inicio'); 
+            return redirect()->intended('inicio');
         }
 
         return back()->withErrors([
             'email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
         ])->onlyInput('email');
     }
-    
+
     public function logout(Request $request)
     {
         Auth::logout();

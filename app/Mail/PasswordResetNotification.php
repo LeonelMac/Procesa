@@ -32,6 +32,6 @@ class PasswordResetNotification extends Mailable
     public function build()
     {
         return $this->subject('Su contraseña ha sido restablecida')
-                    ->view('emails.password_reset_notification');
+            ->view('emails.password_reset_notification');
     }
 }

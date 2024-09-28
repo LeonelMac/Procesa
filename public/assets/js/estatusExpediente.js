@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
               toastr.error("Ya existe un estatus expediente con este nombre.");
             } else {
               toastr.success("Estatus de Expediente agregado exitosamente.");
-              agregarForm.submit(); /
+              agregarForm.submit(); 
             }
           }
         );

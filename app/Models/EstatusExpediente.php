@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 class EstatusExpediente extends Model
 {
     use HasFactory;
-    protected $table = 'estatusexpediente'; 
-    protected $primaryKey = 'idestatusexpediente'; 
+    protected $table = 'estatusexpediente';
+    protected $primaryKey = 'idestatusexpediente';
     protected $fillable = ['estatusexpediente'];
 
     /**
@@ -24,7 +24,7 @@ class EstatusExpediente extends Model
     public function scopeSearch(Builder $query, $columns, $term)
     {
         if (is_array($columns)) {
-            $columns = implode(',', $columns); // Convierte el array en una cadena separada por comas
+            $columns = implode(',', $columns);
         }
 
         return $query->where(function ($query) use ($columns, $term) {

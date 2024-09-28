@@ -19,7 +19,7 @@
                         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
                             <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
                             <h2>{{ Auth::user()->nombres }} {{ Auth::user()->apellidoP }} {{ Auth::user()->apellidoM }}</h2>
-                            <h3> 
+                            <h3>
                                 <span>
                                     @php
                                         $rolUsuario = $roles->firstWhere('id_rolusuarios', $usuario->rol);
@@ -104,7 +104,8 @@
 
                                 <div class="tab-pane fade profile-edit" id="profile-edit">
                                     <!-- Profile Edit Form -->
-                                    <form id="profileForm" method="POST" action="{{ route('perfil.cambios') }}" novalidate>
+                                    <form id="profileForm" method="POST" action="{{ route('perfil.cambios') }}"
+                                        novalidate>
                                         <h5 class="card-title">Detalles del perfil</h5>
                                         @csrf
                                         <!-- Campo oculto para el ID -->
@@ -229,11 +230,14 @@
                                     <form id="passwordForm" action="{{ route('cambiarPassword') }}" novalidate>
                                         @csrf
                                         <div class="row mb-3">
-                                            <label for="current-password" class="col-md-4 col-form-label text-md-end">{{ __('Contraseña actual') }}</label>
-                                    
+                                            <label for="current-password"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Contraseña actual') }}</label>
+
                                             <div class="col-md-6">
-                                                <input id="current-password" type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" required>
-                                    
+                                                <input id="current-password" type="password"
+                                                    class="form-control @error('current_password') is-invalid @enderror"
+                                                    name="current_password" required>
+
                                                 @error('current_password')
                                                     <script>
                                                         toastr.error('Contraseña actual inválida', '', {
@@ -246,13 +250,16 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                    
+
                                         <div class="row mb-3">
-                                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Nueva contraseña') }}</label>
-                                    
+                                            <label for="password"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Nueva contraseña') }}</label>
+
                                             <div class="col-md-6">
-                                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                    
+                                                <input id="password" type="password"
+                                                    class="form-control @error('password') is-invalid @enderror"
+                                                    name="password" required autocomplete="new-password">
+
                                                 @error('password')
                                                     <script>
                                                         toastr.error('Contraseña inválida', '', {
@@ -265,15 +272,17 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                    
+
                                         <div class="row mb-3">
-                                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirmar nueva contraseña') }}</label>
-                                    
+                                            <label for="password-confirm"
+                                                class="col-md-4 col-form-label text-md-end">{{ __('Confirmar nueva contraseña') }}</label>
+
                                             <div class="col-md-6">
-                                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                                <input id="password-confirm" type="password" class="form-control"
+                                                    name="password_confirmation" required autocomplete="new-password">
                                             </div>
                                         </div>
-                                    
+
                                         <div class="row mb-0">
                                             <div class="d-flex col-md-6 offset-md-4">
                                                 <button type="submit" class="btn btn-success ms-auto">
@@ -281,7 +290,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    </form>                 
+                                    </form>
                                 </div>
                             </div>
                         </div>
