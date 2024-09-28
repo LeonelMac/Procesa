@@ -15,7 +15,6 @@
                                         <img src="{{ asset('assets/img/procesa.png') }}" alt=""
                                             style="width: 100%; height: auto;">
                                     </div>
-                                    <!-- End Logo -->
                                     <div class="card-title text-center">
                                         <h5 class="card-title text-center pb-0 fs-4">Inicie sesión</h5>
                                     </div>
@@ -27,16 +26,17 @@
                                             <label for="email" class="form-label">Correo Electrónico</label>
                                             <input type="email" id="email" name="email" class="form-control"
                                                 required>
-                                            <div class="invalid-feedback">¡Por favor, introduzca su correo electrónico!
-                                            </div>
                                         </div>
+                                        <!-- Aquí se mostrará el mensaje de error o bloqueo -->
+                                        <div id="error-message" class="col-12"></div>
 
                                         <div class="col-12">
                                             <label for="password" class="form-label">Contraseña</label>
                                             <input type="password" id="password" name="password" class="form-control"
                                                 required>
-                                            <div class="invalid-feedback">¡Por favor, introduzca su contraseña!</div>
                                         </div>
+                                        <!-- Aquí se mostrará el mensaje de error o bloqueo -->
+                                        <div id="error-message" class="col-12"></div>
 
                                         <div class="col-12">
                                             <button class="btn btn-primary w-100" type="submit">Acceder</button>
@@ -77,6 +77,28 @@
     <!-- Incluir SweetAlert2 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Este es el archivo login.js -->
+    <!-- Archivo login.js -->
     <script src="{{ asset('assets/js/login.js') }}"></script>
+
+    <!-- Mostrar SweetAlert si hay errores de credenciales -->
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "Credenciales incorrectas",
+                text: "{{ $errors->first('email') }}",
+            });
+        </script>
+    @endif
+
+    <!-- Mostrar SweetAlert si el inicio de sesión es exitoso -->
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "Bienvenido",
+                text: "{{ session('success') }}",
+            });
+        </script>
+    @endif
 @endsection

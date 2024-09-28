@@ -23,6 +23,8 @@ class User extends Authenticatable
         'municipio',
         'direccion',
         'telefono',
+        'lockout_time',
+        'login_attempts'
     ];
 
     protected $hidden = [
@@ -32,6 +34,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'lockout_time' => 'datetime',
     ];
 
     // public function setPasswordAttribute($value)

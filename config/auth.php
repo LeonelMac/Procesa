@@ -112,4 +112,10 @@ return [
 
     'password_timeout' => 10800,
 
+    // Configuración de límite de intentos de inicio de sesión
+    'throttle' => [
+        'max_attempts' => 3,    
+        'decay_minutes' => 3,  
+    ],
+
 ];

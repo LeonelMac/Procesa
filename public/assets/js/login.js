@@ -1,118 +1,119 @@
 document.addEventListener("DOMContentLoaded", function () {
-  document
-    .getElementById("loginForm")
-    .addEventListener("submit", function (event) {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      if (email === "" || password === "") {
-        event.preventDefault();
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const submitButton = document.querySelector('button[type="submit"]');
+  const loginForm = document.getElementById("loginForm");
+  if (emailInput.value) {
+    fetch(`/check-lockout?email=${encodeURIComponent(emailInput.value)}`, {
+      method: "GET",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.is_locked) {
+          Swal.fire({
+            icon: "error",
+            title: "Bloqueado",
+            text: data.message,
+          });
+
+          emailInput.disabled = true;
+          passwordInput.disabled = true;
+          submitButton.disabled = true;
+
+          const tiempoBloqueo = data.remaining_time * 1000;
+          setTimeout(function () {
+            emailInput.disabled = false;
+            passwordInput.disabled = false;
+            submitButton.disabled = false;
+            Swal.fire({
+              icon: "info",
+              title: "Puedes volver a intentarlo",
+              text: "El tiempo de bloqueo ha expirado.",
+            });
+          }, tiempoBloqueo);
+        }
+      })
+      .catch((error) =>
+        console.error("Error verificando el estado de bloqueo:", error)
+      );
+  }
+
+  loginForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      Swal.fire({
+        icon: "error",
+        title: "Campos vacíos",
+        text: "Por favor, complete todos los campos.",
+      });
+      return;
+    }
+
+    const formData = new FormData(this);
+
+    fetch("/login", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-TOKEN": document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Bienvenido a Procesa",
+            text: data.message,
+            timer: 3000,
+            showConfirmButton: false,
+          }).then(() => (window.location.href = "/inicio"));
+        } else if (data.remaining_time) {
+          Swal.fire({
+            icon: "error",
+            title: "Bloqueado",
+            text: data.message,
+          });
+
+          emailInput.disabled = true;
+          passwordInput.disabled = true;
+          submitButton.disabled = true;
+
+          setTimeout(() => {
+            emailInput.disabled = false;
+            passwordInput.disabled = false;
+            submitButton.disabled = false;
+            Swal.fire({
+              icon: "info",
+              title: "Puedes volver a intentarlo",
+              text: "El tiempo de bloqueo ha expirado.",
+            });
+          }, data.remaining_time * 1000);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Credenciales incorrectas",
+            text: data.message,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud:", error);
         Swal.fire({
           icon: "error",
-          title: "Campos vacíos",
-          text: "Por favor, complete todos los campos.",
+          title: "Error de conexión",
+          text: "Inténtelo de nuevo.",
         });
-        return;
-      }
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Correo inválido",
-          text: "Por favor, ingrese un correo electrónico válido.",
-        });
-        return;
-      }
-      if (email.length < 5 || email.length > 100) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Correo inválido",
-          text: "El correo electrónico debe tener entre 5 y 100 caracteres.",
-        });
-        return;
-      }
-      const specialCharEmailRegex = /[^a-zA-Z0-9@.]/;
-      if (specialCharEmailRegex.test(email)) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Correo con caracteres no permitidos",
-          text: "El correo no debe contener caracteres especiales no permitidos.",
-        });
-        return;
-      }
-      if (password.length < 8) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Contraseña demasiado corta",
-          text: "La contraseña debe tener al menos 8 caracteres.",
-        });
-        return;
-      }
-      if (/\s/.test(password)) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Contraseña inválida",
-          text: "La contraseña no debe contener espacios.",
-        });
-        return;
-      }
-      const commonPasswords = [
-        "123456",
-        "password",
-        "123456789",
-        "12345678",
-        "qwerty",
-        "abc123",
-      ];
-      if (commonPasswords.includes(password)) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Contraseña débil",
-          text: "Por favor, elija una contraseña más segura.",
-        });
-        return;
-      }
-      if (!/[A-Z]/.test(password)) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Contraseña débil",
-          text: "La contraseña debe contener al menos una letra mayúscula.",
-        });
-        return;
-      }
-      if (!/[a-z]/.test(password)) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Contraseña débil",
-          text: "La contraseña debe contener al menos una letra minúscula.",
-        });
-        return;
-      }
-      if (!/[0-9]/.test(password)) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Contraseña débil",
-          text: "La contraseña debe contener al menos un número.",
-        });
-        return;
-      }
-      const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-      if (!specialCharRegex.test(password)) {
-        event.preventDefault();
-        Swal.fire({
-          icon: "error",
-          title: "Contraseña débil",
-          text: "La contraseña debe contener al menos un carácter especial (por ejemplo: !@#$%^&*).",
-        });
-        return;
-      }
-    });
+      });
+  });
 });
