@@ -1429,8 +1429,8 @@ h6 {
 
 /* Estilos para el header del modal */
 .modal-header {
-    background-color: #f7f7f7 !important;
-    border-bottom: 1px solid #e3e3e3 !important;
+    /* background-color: #f7f7f7 !important;
+    border-bottom: 1px solid #e3e3e3 !important; */
     padding: 15px 20px !important;
     position: relative !important;
 }
@@ -1449,7 +1449,7 @@ h6 {
     background: transparent !important;
     border: none !important;
     font-size: 1.5rem !important;
-    color: #333 !important; /* Aseguramos que el color sea visible */
+    color: #080808 !important; /* Aseguramos que el color sea visible */
     opacity: 1 !important;
     cursor: pointer !important;
 }
@@ -1495,8 +1495,8 @@ h6 {
 
 /* Estilos para los botones del modal */
 .modal-footer {
-    background-color: #f7f7f7 !important;
-    border-top: 1px solid #e3e3e3 !important;
+    /* background-color: #f7f7f7 !important;
+    border-top: 1px solid #e3e3e3 !important; */
     padding: 15px 20px !important;
     text-align: right !important;
 }
