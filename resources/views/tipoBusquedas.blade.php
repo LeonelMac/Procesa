@@ -21,11 +21,6 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="position-relative mb-3">
-                                    <div class="offset-end">
-                                        <x-acciones.agregarTipoBusqueda mensaje="Agregar Tipo Búsqueda" />
-                                    </div>
-                                </div>
                                 <div class="card-body">
                                     <livewire:tipo-busqueda-component></livewire:tipo-busqueda-component>
                                 </div>
@@ -44,8 +39,4 @@
             top: 15px;
         }
     </style>
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('assets/js/tipoBusqueda.js') }}"></script>
 @endsection

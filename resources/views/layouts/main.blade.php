@@ -7,7 +7,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="user-id" content="{{ auth()->user()->id }}">
-    <meta name="change-password-url" content="{{ route('cambiarPassword') }}">
     <title>@yield('title', 'Sistema Procesa')</title>
 
     <!-- Favicons -->
@@ -125,7 +124,7 @@
             <!-- Búsquedas accesible solo para Consultores (rol 3) -->
             @if (Auth::user()->rol == 3)
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ route('tipoBusquedas.index') }}">
+                    <a class="nav-link collapsed" href="">
                         <i class="bi bi-search"></i><span>Búsquedas</span>
                     </a>
                 </li>

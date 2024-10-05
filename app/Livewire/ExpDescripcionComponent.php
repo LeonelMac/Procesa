@@ -29,7 +29,6 @@ class ExpDescripcionComponent extends TablaComponent
             Column::make('destino', 'Destino'),
             Column::make('fechaexpe', 'Fecha'),
             Column::make('sintesis', 'Síntesis'),
-            Column::make('documentoexpe', 'Acciones')->component('columns.accionesDescripcionExpedientes'),
         ];
     }
 

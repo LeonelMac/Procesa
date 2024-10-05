@@ -36,7 +36,6 @@ class UsuariosTable extends TablaComponent
             Column::make('direccion', 'Dirección'),
             Column::make('rol_nombre', 'Rol'),
             Column::make('municipio_nombre', 'Municipio'),
-            Column::make('id', 'Acciones')->component('columns.accionesUsuarios'),
         ];
     }
 }

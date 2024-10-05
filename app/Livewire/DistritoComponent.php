@@ -22,7 +22,6 @@ class DistritoComponent extends TablaComponent
     {
         return [
             Column::make('distrito', 'Distrito'),
-            Column::make('iddistrito', 'Acciones')->component('columns.acciones'),
         ];
     }
 }

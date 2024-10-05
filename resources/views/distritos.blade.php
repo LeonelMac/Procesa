@@ -18,11 +18,6 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="position-relative mb-3">
-                                    <div class="offset-end">
-                                        <x-acciones.agregarDistrito mensaje="Agregar Distrito" />
-                                    </div>
-                                </div>
                                 <div class="card-body">
                                     <livewire:distrito-component></livewire:distrito-component>
                                 </div>
@@ -41,8 +36,4 @@
             top: 15px;
         }
     </style>
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('assets/js/distrito.js') }}"></script>
 @endsection

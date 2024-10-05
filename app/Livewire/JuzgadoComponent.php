@@ -25,7 +25,6 @@ class JuzgadoComponent extends TablaComponent
         return [
             Column::make('juzgados', 'Juzgado'),
             Column::make('distrito_nombre', 'Distrito'),
-            Column::make('idjuzgados', 'Acciones')->component('columns.accionesJuzgado'),
         ];
     }
 }

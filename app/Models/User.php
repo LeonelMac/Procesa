@@ -37,13 +37,6 @@ class User extends Authenticatable
         'lockout_time' => 'datetime',
     ];
 
-    // public function setPasswordAttribute($value)
-    // {
-    //     if (!Hash::needsRehash($value)) {
-    //         $this->attributes['password'] = Hash::make($value);
-    //     }
-    // }
-
     public function setPasswordAttribute($value)
     {
         if (!Hash::needsRehash($value)) {

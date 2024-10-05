@@ -21,11 +21,6 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="position-relative mb-3">
-                                    <div class="offset-end">
-                                        <x-acciones.agregarJuzgado mensaje="Agregar Juzgado" />
-                                    </div>
-                                </div>
                                 <div class="card-body">
                                     <livewire:juzgado-component></livewire:juzgado-component>
                                 </div>
@@ -44,8 +39,4 @@
             top: 15px;
         }
     </style>
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('assets/js/juzgado.js') }}"></script>
 @endsection

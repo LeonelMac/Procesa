@@ -24,7 +24,6 @@ class ExpedienteComponent extends TablaComponent
             Column::make('numero', 'Número'),
             Column::make('estatusexpediente', 'Estatus'),
             Column::make('fechaexpe', 'Fecha'),
-            Column::make('id_expedientes', 'Acciones')->component('columns.accionesExpedientes'),
         ];
     }
 

@@ -16,7 +16,7 @@
                                             style="width: 100%; height: auto;">
                                     </div>
                                     <div class="card-title text-center">
-                                        <h5 class="card-title text-center pb-0 fs-4">Inicie sesión</h5>
+                                        <h5 class="card-title text-center pb-0 fs-4">Inicio de Sesión</h5>
                                     </div>
                                     <form id="loginForm" class="row g-3 needs-validation" method="POST"
                                         action="{{ route('login') }}" novalidate>

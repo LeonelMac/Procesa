@@ -21,11 +21,6 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="position-relative mb-3">
-                                    <div class="offset-end">
-                                        <x-acciones.agregar mensaje="Agregar Usuario" />
-                                    </div>
-                                </div>
                                 <div class="card-body">
                                     <livewire:usuarios-table></livewire:usuarios-table>
                                 </div>
@@ -44,13 +39,4 @@
             top: 15px;
         }
     </style>
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('assets/js/usuarios.js') }}"></script>
-    <script>
-        @if (session('message'))
-            toastr.success('{{ session('message') }}');
-        @endif
-    </script>
 @endsection

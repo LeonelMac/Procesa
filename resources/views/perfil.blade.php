@@ -104,7 +104,7 @@
 
                                 <div class="tab-pane fade profile-edit" id="profile-edit">
                                     <!-- Profile Edit Form -->
-                                    <form id="profileForm" method="POST" action="{{ route('perfil.cambios') }}"
+                                    <form id="profileForm" method="POST" action=""
                                         novalidate>
                                         <h5 class="card-title">Detalles del perfil</h5>
                                         @csrf
@@ -218,8 +218,8 @@
                                         <!-- Botón de Guardar -->
                                         <div class="row mb-0">
                                             <div class="col-md-6 offset-md-4">
-                                                <button type="submit"
-                                                    class="btn btn-success">{{ __('Guardar') }}</button>
+                                                <button type="button"
+                                                    class="btn btn-success">Guardar</button>
                                             </div>
                                         </div>
                                     </form>
@@ -227,7 +227,7 @@
 
                                 <div class="tab-pane fade pt-3" id="profile-change-password">
                                     <!-- Change Password Form -->
-                                    <form id="passwordForm" action="{{ route('cambiarPassword') }}" novalidate>
+                                    <form id="passwordForm" action="" novalidate>
                                         @csrf
                                         <div class="row mb-3">
                                             <label for="current-password"
@@ -285,8 +285,8 @@
 
                                         <div class="row mb-0">
                                             <div class="d-flex col-md-6 offset-md-4">
-                                                <button type="submit" class="btn btn-success ms-auto">
-                                                    {{ __('Cambiar contraseña') }}
+                                                <button type="button" class="btn btn-success ms-auto">
+                                                    Cambiar contraseña
                                                 </button>
                                             </div>
                                         </div>
@@ -301,6 +301,3 @@
     </main>
 @endsection
 
-@section('scripts')
-    <script src="{{ asset('assets/js/perfil.js') }}"></script>
-@endsection
