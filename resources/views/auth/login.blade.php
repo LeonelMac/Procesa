@@ -16,7 +16,7 @@
                                             style="width: 100%; height: auto;">
                                     </div>
                                     <div class="card-title text-center">
-                                        <h5 class="card-title text-center pb-0 fs-4">Inicie sesión</h5>
+                                        <h5 class="card-title text-center pb-0 fs-4">Inicio de sesión</h5>
                                     </div>
                                     <form id="loginForm" class="row g-3 needs-validation" method="POST"
                                         action="{{ route('login') }}" novalidate>
@@ -32,14 +32,22 @@
 
                                         <div class="col-12">
                                             <label for="password" class="form-label">Contraseña</label>
-                                            <input type="password" id="password" name="password" class="form-control"
-                                                required>
-                                        </div>
+                                            <div class="input-group">
+                                                <input type="password" id="password" name="password" class="form-control" required>
+                                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                    <i class="bi bi-eye-slash"></i>
+                                                </button>
+                                            </div>
+                                        </div>                                        
                                         <!-- Aquí se mostrará el mensaje de error o bloqueo -->
                                         <div id="error-message" class="col-12"></div>
 
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Acceder</button>
+                                            <button class="btn btn-primary w-100" type="submit">Iniciar sesión</button>
+                                        </div>
+
+                                        <div class="col-12 text-center">
+                                            <a href="" class="small">¿Recuperar tu contraseña?</a>
                                         </div>
 
                                         <div class="col-12">

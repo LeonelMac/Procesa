@@ -40,7 +40,7 @@ class LoginController extends Controller
             ]);
             return response()->json([
                 'success' => true,
-                'message' => 'Bienvenido a Procesa, ' . $user->nombres . ' ' . $user->apellidoP . ' ' . $user->apellidoM
+                'message' => 'Bienvenido ' . $user->nombres . ' ' . $user->apellidoP . ' ' . $user->apellidoM
             ]);
         }
         $user->increment('login_attempts');

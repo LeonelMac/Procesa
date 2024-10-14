@@ -3,6 +3,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const passwordInput = document.getElementById("password");
   const submitButton = document.querySelector('button[type="submit"]');
   const loginForm = document.getElementById("loginForm");
+  const togglePassword = document.querySelector("#togglePassword");
+
+  togglePassword.addEventListener("click", function () {
+    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+    this.querySelector("i").classList.toggle("bi-eye");
+    this.querySelector("i").classList.toggle("bi-eye-slash");
+  });
+
   if (emailInput.value) {
     fetch(`/check-lockout?email=${encodeURIComponent(emailInput.value)}`, {
       method: "GET",
